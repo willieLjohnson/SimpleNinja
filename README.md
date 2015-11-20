@@ -1,2 +1,2 @@
 # SimpleNinja
-A simple Game. With a Simple Ninja.
+A simple Game. With a simple Ninja.
