@@ -17,9 +17,9 @@ public class Player extends B2DSprite {
 
 		Texture runningAnimation = Game.game.getAssetManager().get("res/images/simple_runAll.png");
 		Texture attackingAnimation = Game.game.getAssetManager().get("res/images/simple_attackAll.png");
-		Texture idliningAnimation = Game.game.getAssetManager().get("res/images/simple_idleAll.png");
+		Texture idlingAnimation = Game.game.getAssetManager().get("res/images/simple_idleAll.png");
 		run = TextureRegion.split(runningAnimation, 54, 42)[0];
-		idle = TextureRegion.split(idliningAnimation, 54, 42)[0];
+		idle = TextureRegion.split(idlingAnimation, 54, 42)[0];
 		jump = TextureRegion.split(runningAnimation, 54, 42)[0];
 		attack = TextureRegion.split(attackingAnimation, 54, 42)[0];
 		setAnimation(idle, 1 / 7f);
@@ -50,7 +50,7 @@ public class Player extends B2DSprite {
 			idling = false;
 			jumping = true;
 			attacking = false;
-			setAnimation(jump, 1 / .0000000000000000001f);
+			setAnimation(jump, 1 / 2f);
 			break;
 		case "attack":
 			running = false;
@@ -78,7 +78,6 @@ public class Player extends B2DSprite {
 		attacking = b;
 	}
 	public boolean isAttacking() {
-		// TODO Auto-generated method stub
 		return attacking;
 	}
 

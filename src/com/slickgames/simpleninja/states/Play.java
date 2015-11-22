@@ -26,7 +26,7 @@ import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 public class Play extends GameState {
 
-    private boolean debug = false;
+    private boolean debug = true;
 
     private World world;
     private Box2DDebugRenderer b2dr;
@@ -45,6 +45,7 @@ public class Play extends GameState {
     private HUD hud;
     private int currentAttack;
     private long lastAttack;
+
 
     public Play(GameStateManager gsm) {
         super(gsm);
@@ -75,7 +76,7 @@ public class Play extends GameState {
 
     @Override
     public void handleInput() {
-        //reset game
+        // reset game
         if (MyInput.isPressed(MyInput.RESET)) {
             gsm.setState(GameStateManager.PLAY);
         }
@@ -105,14 +106,16 @@ public class Play extends GameState {
                         player.toggleAnimation("run");
                     }
                 } else if (Math.abs(player.getBody().getLinearVelocity().x) > 1) {
-                    player.getBody().applyForceToCenter((player.getBody().getLinearVelocity().x < 0) ? player.MAX_SPEED * 2 : -player.MAX_SPEED * 2, 0, true);
+                    player.getBody().applyForceToCenter(
+                            (player.getBody().getLinearVelocity().x < 0) ? player.MAX_SPEED * 2 : -player.MAX_SPEED * 2,
+                            0, true);
                 } else {
                     if (!player.isIdle() && !player.isAttacking())
                         player.toggleAnimation("idle");
 
                 }
 
-            // switch block color
+            // attack
             if (MyInput.isPressed(MyInput.ATTACK)) {
 
                 if (currentAttack >= 16) {
@@ -122,23 +125,20 @@ public class Play extends GameState {
                 }
                 if (currentAttack >= 4) {
                     currentAttack += 4;
-                    player.getAnimation().setSpeed(1 / (18f+currentAttack));
+                    player.getAnimation().setSpeed(1 / (18f + currentAttack));
                 }
                 if (!player.isAttacking()) {
                     player.toggleAnimation("attack");
                     currentAttack = 4;
                 }
                 lastAttack = TimeUtils.nanoTime();
-            } else {
-                if ((player.getAnimation().getCurrentFrame() == currentAttack) && player.isAttacking()) {
-
-                    if (TimeUtils.nanoTime() - lastAttack > 250000000f) {
-                        player.setAttacking(false);
-                        currentAttack = 0;
-
-                    } else {
-                        player.getAnimation().setSpeed(1 / .000001f);
-                    }
+            }
+            if ((player.getAnimation().getCurrentFrame() == currentAttack) && player.isAttacking()) {
+                if (TimeUtils.nanoTime() - lastAttack > 30000000f) {
+                    player.setAttacking(false);
+                    currentAttack = 0;
+                } else {
+                    player.getAnimation().setSpeed(0);
                 }
             }
 
@@ -221,7 +221,7 @@ public class Play extends GameState {
         // create player
         bdef.position.set(100 / PPM, 200 / PPM);
         bdef.type = BodyType.DynamicBody;
-//        bdef.linearVelocity.set(1f, 0);
+        // bdef.linearVelocity.set(1f, 0);
         Body body = world.createBody(bdef);
 
         shape.setAsBox(6 / PPM, 8 / PPM, new Vector2(0, -10 / PPM), 0);
@@ -261,7 +261,6 @@ public class Play extends GameState {
             float width = (float) mo.getProperties().get("width") / 2 / PPM;
             float height = (float) mo.getProperties().get("height") / 2 / PPM;
 
-
             PolygonShape pshape = new PolygonShape();
 
             pshape.setAsBox(width, height);
@@ -269,13 +268,12 @@ public class Play extends GameState {
             fdef.shape = pshape;
             fdef.filter.categoryBits = B2DVars.BIT_RED;
             fdef.filter.maskBits = B2DVars.BIT_PLAYER;
-//            fdef.friction = 1.5f;
+            // fdef.friction = 1.5f;
             Body body = world.createBody(bdef);
             body.createFixture(fdef).setUserData("ground");
 
         }
     }
-
 
     private void createCrystals() {
         crystals = new Array<>();

@@ -39,6 +39,7 @@ public class Game implements ApplicationListener {
         assets.load("res/images/simple_idleAll.png", Texture.class);
         assets.load("res/images/crystal.png", Texture.class);
         assets.load("res/images/hud.png", Texture.class);
+
         while (!assets.update()) {
             System.out.println(assets.getProgress()*100 + "%");
         }
