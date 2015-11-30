@@ -9,15 +9,17 @@ import com.slickgames.simpleninja.handlers.Animation;
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 
-public class B2DSprite {
+public abstract class B2DSprite {
     protected Body body;
     protected Animation animation;
     protected float width;
     protected float height;
+    protected int dir;
 
     public B2DSprite(Body body) {
         this.body = body;
         animation = new Animation();
+
     }
 
     public void setAnimation(TextureRegion[] reg, float delay) {
@@ -26,10 +28,8 @@ public class B2DSprite {
         width = reg[0].getRegionWidth();
     }
 
-    public void udpate(float dt) {
-        animation.update(dt);
-    }
-
+    public abstract void update(float dt);
+    public abstract void playerUpdate(float dt, float lastAttack);
     public void render(SpriteBatch sb) {
         sb.begin();
         sb.draw(animation.getFrame(), body.getPosition().x * PPM - width / 2,
@@ -54,5 +54,12 @@ public class B2DSprite {
 
     public float getHeight() {
         return height;
+    }
+
+    public void setDir(int x) {
+        dir = x;
+    }
+    public int getDir() {
+        return dir;
     }
 }

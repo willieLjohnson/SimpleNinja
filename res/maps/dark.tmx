@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="78" height="8" tilewidth="32" tileheight="32" nextobjectid="87">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="78" height="20" tilewidth="32" tileheight="32" nextobjectid="147">
  <tileset firstgid="1" name="blocks" tilewidth="32" tileheight="32" tilecount="3">
   <image source="blocks.png" width="96" height="32"/>
  </tileset>
- <tileset firstgid="4" name="darkBlocks" tilewidth="32" tileheight="32" tilecount="5">
-  <image source="dark_blocks.png" width="160" height="32"/>
+ <tileset firstgid="4" name="DarkLSiced" tilewidth="32" tileheight="32" tilecount="5">
+  <image source="../../../../GraphicsGale FreeEdition/PixelArt/simple/dark_blocks.png" width="160" height="32"/>
  </tileset>
- <layer name="visual" width="78" height="8">
+ <layer name="visual" width="78" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGAaWABQdmZ2BYQK6Z7HjMpRamxH3UABw4MBvQXeT6iQ2PudTClLiPGhgA0bcExA==
+   eJztl1EOwyAIQPlYZ+9/gh6lR9vM1oQYEbAqLOMl/FSK+KImAvwfG8Ap+UaNb8M7+g3CWx/hrY/w1kd462OEtwcRCeDQ9JIatXC85zwkedS/ODT9YUZ424ng6mCys2ej1qzo9TfznOLeWvUuZ5ZnXutvpjfJfruccbVWIfVn6Q0742qthvNnvd+KfHdQ/qy8pXq+W8q1xH6TYe2tts8ktayx9sbUdUtei8YLN37nfivfE569ZSy81TxV8l2jPT+r5glvH/D7TxL7iqZu8L3jxOvh4gX8y1c8
   </data>
  </layer>
  <objectgroup name="collision">
   <object id="37" x="0" y="192" width="224" height="64"/>
-  <object id="38" x="224" y="224" width="448" height="32"/>
-  <object id="39" x="672" y="192" width="832" height="64"/>
-  <object id="40" x="1504" y="224" width="992" height="32"/>
+  <object id="94" x="224" y="256" width="64" height="32"/>
+  <object id="95" x="192" y="256" width="32" height="384"/>
+  <object id="96" x="224" y="608" width="384" height="32"/>
+  <object id="99" x="576" y="256" width="32" height="352"/>
+  <object id="101" x="512" y="256" width="64" height="32"/>
+  <object id="103" x="480" y="288" width="64" height="32"/>
+  <object id="111" x="288" y="544" width="64" height="32"/>
+  <object id="112" x="416" y="512" width="64" height="32"/>
+  <object id="114" x="352" y="448" width="32" height="32"/>
+  <object id="115" x="416" y="384" width="32" height="32"/>
+  <object id="116" x="448" y="320" width="64" height="32"/>
+  <object id="125" x="576" y="192" width="928" height="64"/>
+  <object id="127" x="1504" y="224" width="64" height="32"/>
+  <object id="128" x="544" y="224" width="32" height="32"/>
+  <object id="131" x="1568" y="256" width="64" height="32"/>
+  <object id="132" x="1632" y="288" width="64" height="32"/>
+  <object id="133" x="1696" y="320" width="64" height="32"/>
+  <object id="134" x="1760" y="352" width="64" height="32"/>
+  <object id="136" x="1824" y="384" width="32" height="128"/>
+  <object id="137" x="1856" y="480" width="32" height="160"/>
+  <object id="138" x="1888" y="608" width="608" height="32"/>
+  <object id="141" x="2464" y="0" width="32" height="544"/>
+  <object id="142" x="2368" y="0" width="32" height="544"/>
+  <object id="143" x="2112" y="0" width="32" height="544"/>
+  <object id="144" x="1952" y="0" width="32" height="480"/>
  </objectgroup>
  <objectgroup name="crystals">
   <object id="47" x="289.333" y="148">

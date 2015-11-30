@@ -15,4 +15,13 @@ public class Crystal extends B2DSprite {
         setAnimation(sprites, 1 / 12f);
     }
 
+    @Override
+    public void update(float dt) {
+        animation.update(dt);
+    }
+
+    @Override
+    public void playerUpdate(float dt, float lastAttack) {
+        // n/a
+    }
 }
