@@ -2,6 +2,7 @@ package com.slickgames.simpleninja.handlers;
 
 import com.slickgames.simpleninja.main.Game;
 import com.slickgames.simpleninja.states.GameState;
+import com.slickgames.simpleninja.states.MainM;
 import com.slickgames.simpleninja.states.Play;
 
 import java.util.Stack;
@@ -9,9 +10,10 @@ import java.util.Stack;
 public class GameStateManager {
 
     public static final int PLAY = 1;
+    public static final int MainM =0;
     private Game game;
     private Stack<GameState> gameStates;
-
+    public static GameState PausePlayState ;
     public GameStateManager(Game game) {
         this.game = game;
         gameStates = new Stack<GameState>();
@@ -33,6 +35,8 @@ public class GameStateManager {
     private GameState getState(int state) {
         if (state == PLAY)
             return new Play(this);
+        if (state == MainM)
+            return new MainM(this);
         return null;
     }
 
