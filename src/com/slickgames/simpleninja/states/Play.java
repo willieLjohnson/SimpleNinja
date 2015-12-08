@@ -23,7 +23,7 @@ import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 public class Play extends GameState {
 
-    private boolean debug = true;
+    private boolean debug = false;
 
 
     private World world;
@@ -76,9 +76,9 @@ public class Play extends GameState {
 
     @Override
     public void handleInput() {
-        // reset game
+        // reset gameset
         if (MyInput.isPressed(MyInput.RESET)) {
-            gsm.setState(GameStateManager.PLAY);
+            gsm.setState(GameStateManager.Pause);
         }
         // player jump
 
