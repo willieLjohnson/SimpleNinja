@@ -87,9 +87,9 @@ public class Play extends GameState {
 
     @Override
     public void handleInput() {
-        // reset game
+        // reset gameset
         if (MyInput.isPressed(MyInput.RESET)) {
-            gsm.setState(GameStateManager.PLAY);
+            gsm.setState(GameStateManager.Pause);
         }
         // player jump
 
