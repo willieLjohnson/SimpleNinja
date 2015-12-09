@@ -9,7 +9,7 @@ public class Player extends B2DSprite {
     private int numCrystals;
     private int totalCrystals;
     public boolean running, idling, jumping, attacking, attacked;
-    public static final float MAX_SPEED = 5f;
+    public static final float MAX_SPEED = 3f;
     TextureRegion[] run, idle, jump, attack;
 
 
@@ -41,7 +41,7 @@ public class Player extends B2DSprite {
                 idling = false;
                 jumping = false;
                 attacking = false;
-                setAnimation(run, 1 / 18f);
+                setAnimation(run, 1 / 16f);
                 break;
             case "idle":
                 running = false;

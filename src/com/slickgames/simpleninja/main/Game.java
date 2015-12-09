@@ -2,6 +2,7 @@ package com.slickgames.simpleninja.main;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,7 +15,7 @@ import com.slickgames.simpleninja.handlers.MyInputProcessor;
 public class Game implements ApplicationListener {
     public static final String TITLE = "Simple Ninja v0.1 ALPHA";
     public static final int V_WIDTH = 1366 / 4;
-    public static final int V_HEIGHT = 720 / 4;
+    public static final int V_HEIGHT = 768/ 4;
     public static final int SCALE = 2;
 
     public static final float STEP = 1 / 60f;
@@ -37,6 +38,7 @@ public class Game implements ApplicationListener {
         assets.load("res/images/simple_runAll.png", Texture.class);
         assets.load("res/images/simple_attackAll.png", Texture.class);
         assets.load("res/images/simple_idleAll.png", Texture.class);
+        assets.load("res/images/enemy_idleAll.png", Texture.class);
         assets.load("res/images/crystal.png", Texture.class);
         assets.load("res/images/hud.png", Texture.class);
 
@@ -67,7 +69,7 @@ public class Game implements ApplicationListener {
     public void render() {
         accum += Gdx.graphics.getDeltaTime();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(106 / 255f, 99 / 255f, 84 / 255f, 1f);
+        Gdx.gl.glClearColor(53 / 255f, 49 / 255f, 42 / 255f, 1f);
         while (accum >= STEP) {
             accum -= STEP;
             gsm.update(STEP);

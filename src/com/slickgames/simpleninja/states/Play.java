@@ -3,6 +3,7 @@ package com.slickgames.simpleninja.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -14,16 +15,20 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.slickgames.simpleninja.entities.Crystal;
+import com.slickgames.simpleninja.entities.Enemy;
 import com.slickgames.simpleninja.entities.HUD;
 import com.slickgames.simpleninja.entities.Player;
-import com.slickgames.simpleninja.handlers.*;
+import com.slickgames.simpleninja.handlers.B2DVars;
+import com.slickgames.simpleninja.handlers.GameStateManager;
+import com.slickgames.simpleninja.handlers.MyContactListener;
+import com.slickgames.simpleninja.handlers.MyInput;
 import com.slickgames.simpleninja.main.Game;
 
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 public class Play extends GameState {
 
-    private boolean debug = true;
+    private boolean debug = false;
 
 
     private World world;
@@ -45,7 +50,10 @@ public class Play extends GameState {
     private long lastAttack;
     private boolean swinging;
     private int doubleJump = 0;
+    private int swingSpeed;
+    private Enemy enemy;
 
+    private ShapeRenderer sr;
 
     public Play(GameStateManager gsm) {
         super(gsm);
@@ -59,6 +67,9 @@ public class Play extends GameState {
         // create player
         createPlayer();
 
+        // create enemy
+        createEnemy();
+
         // create tiles
         createTiles();
 
@@ -71,7 +82,7 @@ public class Play extends GameState {
 
         // set up hud
         hud = new HUD(player);
-
+        sr = new ShapeRenderer();
     }
 
     @Override
@@ -84,12 +95,12 @@ public class Play extends GameState {
 
         if (MyInput.isPressed(MyInput.JUMP) && doubleJump != 1) {
             doubleJump++;
-            player.getBody().applyLinearImpulse(Math.abs(player.getBody().getLinearVelocity().x) < 5f ? 3*player.getDir() : 0, 4,0,0, true);
+            player.getBody().applyLinearImpulse(2*player.getDir(), 3f, 0, 0, true);
         } else if (cl.isPlayerOnGround()) {
             doubleJump = 0;
             if (Math.abs(player.getBody().getLinearVelocity().x) > 1 && !player.isRunning()) {
                 player.getBody().applyForceToCenter(
-                        (player.getBody().getLinearVelocity().x < 0) ? player.MAX_SPEED * 8 : -player.MAX_SPEED * 8,
+                        (player.getBody().getLinearVelocity().x < 0) ? Player.MAX_SPEED * 8 : -Player.MAX_SPEED * 8,
                         0, true);
             }
 
@@ -98,7 +109,7 @@ public class Play extends GameState {
                 if (MyInput.isDown(MyInput.LEFT)) {
                     player.setDir(-1);
 
-                    if (Math.abs(player.getBody().getLinearVelocity().x) < player.MAX_SPEED) {
+                    if (Math.abs(player.getBody().getLinearVelocity().x) < Player.MAX_SPEED) {
                         player.getBody().applyForceToCenter(-16f, 0, true);
                     }
                     if (!player.isRunning()) {
@@ -106,7 +117,7 @@ public class Play extends GameState {
                     }
                 } else if (MyInput.isDown(MyInput.RIGHT)) {
                     player.setDir(1);
-                    if (Math.abs(player.getBody().getLinearVelocity().x) < player.MAX_SPEED) {
+                    if (Math.abs(player.getBody().getLinearVelocity().x) < Player.MAX_SPEED) {
 
                         player.getBody().applyForceToCenter(16f, 0, true);
                     }
@@ -122,34 +133,39 @@ public class Play extends GameState {
             // attack
             if (MyInput.isPressed(MyInput.ATTACK) && !swinging) {
                 swinging = true;
+
                 if (currentAttack >= 16) {
                     currentAttack = 0;
-                    System.out.println("MAX");
+//                    System.out.println("MAX");
                     player.setAttacking(false);
                 }
                 if (currentAttack >= 4) {
                     currentAttack += 4;
-                    player.getAnimation().setSpeed(1 / (32f));
+                    player.getAnimation().setSpeed(1 / (32f + swingSpeed));
 
                 }
                 if (!player.isAttacking()) {
                     player.toggleAnimation("attack");
                     currentAttack = 4;
-
                 }
-                player.getBody().applyLinearImpulse(Math.abs(player.getBody().getLinearVelocity().x) > 1 ? 0f : player.getDir()*6f, 0f, 0f, 0f, true);
+                if (swingSpeed < 16) {
+                    swingSpeed += 4;
+                }
+                System.out.println(32f + swingSpeed);
+                player.getBody().applyLinearImpulse(Math.abs(player.getBody().getLinearVelocity().x) > 1 ? 0f : player.getDir() * 6f, 0f, 0f, 0f, true);
 
             }
             if ((player.getAnimation().getCurrentFrame() == currentAttack) && player.isAttacking()) {
-                player.getAnimation().setSpeed(0);
+                player.getAnimation().setSpeed(0f);
                 if (swinging) {
                     lastAttack = TimeUtils.nanoTime();
                     swinging = false;
                 }
                 player.attacked = true;
-                if (TimeUtils.nanoTime() - lastAttack > 200000000f) {
+                if (TimeUtils.nanoTime() - lastAttack > 250000000f) {
                     player.setAttacking(false);
                     currentAttack = 0;
+                    swingSpeed = 0;
                 }
 
 
@@ -168,6 +184,10 @@ public class Play extends GameState {
 
         // check input
         handleInput();
+
+        // handle enemies
+        enemy.update(dt);
+        enemy.seek(player.getBody(), world);
 
         // update box2d
         world.step(dt, 6, 2);
@@ -190,9 +210,9 @@ public class Play extends GameState {
 
     public void render() {
         if (player.getDir() == -1)
-            player.getAnimation().getFrame().flip(player.getAnimation().getFrame().isFlipX() ? false : true,false);
+            player.getAnimation().getFrame().flip(!player.getAnimation().getFrame().isFlipX(), false);
         else
-            player.getAnimation().getFrame().flip(player.getAnimation().getFrame().isFlipX() ? true : false,false);
+            player.getAnimation().getFrame().flip(player.getAnimation().getFrame().isFlipX(), false);
         // clear screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -208,6 +228,7 @@ public class Play extends GameState {
         // draw player
         sb.setProjectionMatrix(cam.combined);
         player.render(sb);
+        enemy.render(sb);
 
         // draw crytals
         for (int i = 0; i < crystals.size; i++) {
@@ -222,7 +243,11 @@ public class Play extends GameState {
         if (debug) {
             b2dr.render(world, b2dCam.combined);
         }
-
+        sr.setProjectionMatrix(b2dCam.combined);
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.line(enemy.getVectors("p1"), enemy.getVectors("p2"));
+        sr.line(enemy.getVectors("c"), enemy.getVectors("n"));
+        sr.end();
     }
 
     @Override
@@ -241,14 +266,14 @@ public class Play extends GameState {
         // bdef.linearVelocity.set(1f, 0);
         Body body = world.createBody(bdef);
 
-        shape.setAsBox(6 / PPM, 10 / PPM, new Vector2(0, -10 / PPM), 0);
+        shape.setAsBox(6 / PPM, 10 / PPM, new Vector2(0, -9 / PPM), 0);
         fdef.shape = shape;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER;
-        fdef.filter.maskBits = B2DVars.BIT_RED | B2DVars.BIT_CYSTAL;
+        fdef.filter.maskBits = B2DVars.BIT_RED | B2DVars.BIT_CYSTAL | B2DVars.BIT_PLAYER;
         body.createFixture(fdef).setUserData("player");
 
         // creat foot sensor
-        shape.setAsBox(12 / PPM, 4 / PPM, new Vector2(0, -20 / PPM), 0);
+        shape.setAsBox(12 / PPM, 4 / PPM, new Vector2(0, -19 / PPM), 0);
         fdef.shape = shape;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER;
         fdef.filter.maskBits = B2DVars.BIT_RED;
@@ -259,6 +284,37 @@ public class Play extends GameState {
         player = new Player(body);
 
         body.setUserData(player);
+    }
+
+    private void createEnemy() {
+        BodyDef bdef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+
+        // create player
+        bdef.position.set(200 / PPM, 800 / PPM);
+        bdef.type = BodyType.DynamicBody;
+        // bdef.linearVelocity.set(1f, 0);
+        Body body = world.createBody(bdef);
+
+        shape.setAsBox(6 / PPM, 10 / PPM, new Vector2(0, -9 / PPM), 0);
+        fdef.shape = shape;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER;
+        fdef.filter.maskBits = B2DVars.BIT_RED | B2DVars.BIT_CYSTAL | B2DVars.BIT_PLAYER;
+        body.createFixture(fdef).setUserData("enemy");
+
+        // creat foot sensor
+        shape.setAsBox(12 / PPM, 4 / PPM, new Vector2(0, -19 / PPM), 0);
+        fdef.shape = shape;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER;
+        fdef.filter.maskBits = B2DVars.BIT_RED;
+        fdef.isSensor = true;
+        body.createFixture(fdef).setUserData("Efoot");
+
+        // create player
+        enemy = new Enemy(body);
+
+        body.setUserData(enemy);
     }
 
     private void createTiles() {
