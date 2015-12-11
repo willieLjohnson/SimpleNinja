@@ -78,7 +78,7 @@ public class Enemy extends B2DSprite {
                 cFix = fixture;
                 collision.set(point);
                 Enemy.this.normal.set(normal).add(point);
-                return -1;
+                return 0;
             }
 
         };
