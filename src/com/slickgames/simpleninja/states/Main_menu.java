@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -21,30 +22,34 @@ import com.slickgames.simpleninja.handlers.MyInput;
 import com.slickgames.simpleninja.handlers.MyInputProcessor;
 import com.slickgames.simpleninja.main.Game;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 /**
  * Created by Administrator on 12/8/2015.
  */
-public  class Main_menu extends ApplicationAdapter {
+public class Main_menu extends GameState {
     private Skin skin;
-    private Stage stage;
+//    private Stage stage;
 
     private Table table;
-    private TextButton startButton;
-    private TextButton quitButton;
-
+    //    private TextButton startButton;
+//    private TextButton quitButton;
+    private Button startButton;
+    private Button quitButton;
     private SpriteBatch batch;
-    private Sprite sprite;;
+    private Sprite sprite;
 
-    public void create () {
-        stage = new Stage(new FitViewport(Game.V_WIDTH,Game.V_HEIGHT));
+    public Main_menu(GameStateManager gsm) {
+        super(gsm);
+//        stage = new Stage(new FitViewport(Game.V_WIDTH,Game.V_HEIGHT));
         table = new Table();
-        table.setWidth(stage.getWidth());
+        table.setWidth(game.stage.getWidth());
         table.align(Align.center | Align.top);
 
-        table.setPosition(0,Gdx.graphics.getHeight());
-        startButton = new TextButton("New Game",skin);
-        quitButton = new TextButton("Quit Game",skin);
-
+        table.setPosition(0, Gdx.graphics.getHeight());
+        startButton = new Button();
+        quitButton = new Button();
+        startButton.setName("Start");
+        quitButton.setName("quit");
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -60,20 +65,25 @@ public  class Main_menu extends ApplicationAdapter {
         table.row();
         table.add(quitButton);
 
-        stage.addActor(table);
+        game.stage.addActor(table);
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture(Gdx.files.internal("res/maps/Main1.gif")));
-        sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        InputMultiplexer im = new InputMultiplexer(stage);
-        Gdx.input.setInputProcessor(im);
-
+        sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        InputMultiplexer im = new InputMultiplexer(game.stage);
+//        Gdx.input.setInputProcessor(im);
 
 
         //assets.load("res/maps/Main1.gif", Texture.class);
-       // assets.load("res/maps/Main2.gif", Texture.class);
+        // assets.load("res/maps/Main2.gif", Texture.class);
     }
 
-    public void resize (int width, int height) {
+    @Override
+    public void handleInput() {
+
+    }
+
+    @Override
+    public void update(float dt) {
 
     }
 
@@ -81,28 +91,16 @@ public  class Main_menu extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.begin();
-        sprite.draw(batch);
-        batch.end();
-
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-    }
-
-
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
+        sb.begin();
+        sprite.draw(sb);
+        sb.end();
+        game.stage.act(Gdx.graphics.getDeltaTime());
+        game.stage.draw();
 
     }
 
 
     public void dispose() {
-        stage.dispose();
-    }}
+        game.stage.dispose();
+    }
+}

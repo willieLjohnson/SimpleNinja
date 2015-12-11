@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInput;
 import com.slickgames.simpleninja.handlers.MyInputProcessor;
@@ -17,7 +19,7 @@ public class Game implements ApplicationListener {
     public static final int V_WIDTH = 1366 / 4;
     public static final int V_HEIGHT = 768/ 4;
     public static final int SCALE = 2;
-
+    public Stage stage;
     public static final float STEP = 1 / 60f;
     public static Game game;
     public AssetManager assets;
@@ -32,10 +34,11 @@ public class Game implements ApplicationListener {
         game = this;
 
         Gdx.input.setInputProcessor(new MyInputProcessor());
-
+        stage=new Stage(new FitViewport(Game.V_WIDTH, Game.V_HEIGHT));
         //load assets
         assets = new AssetManager();
         assets.load("res/images/simple_runAll.png", Texture.class);
+        assets.load("res/maps/Main1.gif", Texture.class);
         assets.load("res/images/simple_attackAll.png", Texture.class);
         assets.load("res/images/simple_idleAll.png", Texture.class);
         assets.load("res/images/enemy_idleAll.png", Texture.class);

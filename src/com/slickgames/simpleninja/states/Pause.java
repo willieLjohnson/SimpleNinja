@@ -29,10 +29,6 @@ public class Pause extends GameState {
 
     @Override
     public void handleInput() {
-        Play = new Button();
-        Exit = new Button();
-        Options = new Button();
-        Load_Game = new Button();
 //        public static final int PLAY = 1;
 //        public static final int Pause =0;
         if ((MyInput.isPressed(MyInput.RESET)  && (gsm.stateStautes==0))){
