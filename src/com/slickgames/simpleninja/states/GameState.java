@@ -19,7 +19,6 @@ public abstract class GameState {
         game = gsm.game();
         sb = game.getSpriteBatch();
         cam = game.getCamera();
-        hudCam = game.getHUDCamera();
     }
 
     public abstract void handleInput();

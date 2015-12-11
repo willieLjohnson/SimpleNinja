@@ -6,9 +6,9 @@ public class B2DVars {
 
     // category bits
     public static final short BIT_PLAYER = 2;
-    public static final short BIT_RED = 4;
-    public static final short BIT_GREEN = 8;
-    public static final short BIT_BLUE = 16;
+    public static final short BIT_GROUND = 4;
+    public static final short BIT_VISIONCONE = 8;
+    public static final short BIT_ENEMY= 16;
     public static final short BIT_CYSTAL = 32;
 
 }

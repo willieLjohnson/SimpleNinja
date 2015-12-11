@@ -8,20 +8,28 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.slickgames.simpleninja.handlers.MyContactListener;
 import com.slickgames.simpleninja.main.Game;
 
 public class Enemy extends B2DSprite {
     private int numCrystals;
     private int totalCrystals;
     public boolean running, idling, jumping, attacking, attacked;
-    public static final float MAX_SPEED = 5f;
+    public int state = 0;
+    public static final float MAX_SPEED = 1.5f;
     TextureRegion[] run, idle, jump, attack;
 
     private boolean enemySpotted;
 
-    Vector2 vision = new Vector2(), target = new Vector2(), collision = new Vector2(), normal = new Vector2();
+    Vector2 target = new Vector2();
+    Vector2 collision = new Vector2();
+    Vector2 normal = new Vector2();
     Fixture cFix;
     ShapeRenderer sr;
+    private float currentTime;
+    private float lastSeen;
+    private float lastSwitch;
 
     public Enemy(Body body) {
         super(body);
@@ -39,55 +47,120 @@ public class Enemy extends B2DSprite {
 
     @Override
     public void update(float dt) {
-
         animation.update(dt);
-    }
+        currentTime = TimeUtils.nanoTime();
 
-    public void seek(Body player, World world) {
-
-        target.set(player.getPosition());
-
-        RayCastCallback callback = (fixture, point, normal1, fraction) -> {
-            cFix = fixture;
-            collision.set(point);
-            Enemy.this.normal.set(normal1).add(point);
-            return -1;
-        };
-
-        world.rayCast(callback, this.body.getPosition(), target);
-
-        if (Math.abs(this.body.getPosition().x - target.x) <= .35f
-                && Math.abs(this.body.getPosition().y - target.y) <= .2f) {
-            if (!attacking)
-                toggleAnimation("attack");
-        } else if (Math.abs(this.body.getLinearVelocity().x) > .05f) {
+        if (dir == -1) {
+            System.out.println("FLIP LEFT");
+            if (!this.getAnimation().getFrame().isFlipX()) {
+                this.getAnimation().getFrame().flip(true, false);
+            }
+        } else {
+            System.out.println("FLIP RIGHT");
+            if (this.getAnimation().getFrame().isFlipX()) {
+                this.getAnimation().getFrame().flip(true, false);
+            }
+        }
+        if (Math.abs(body.getLinearVelocity().x) > 0f) {
             if (!running)
                 toggleAnimation("run");
         } else {
-            if (!idling)
-                toggleAnimation("idle");
+            toggleAnimation("idle");
         }
-        if (Math.abs(this.body.getPosition().x - target.x) <= 1) {
-            enemySpotted = true;
-        } else if (Math.abs(this.body.getPosition().x - target.x) >= 1.2) {
-            enemySpotted = false;
-        }
-        if (enemySpotted) {
-            if (cFix.getBody().equals(player))
-            if (Math.abs(this.body.getLinearVelocity().x) <= 1f) {
-                this.body.applyLinearImpulse(target.x < this.getPosition().x ? -.3f : .3f, 0f, 0, 0, true);
-            }
-            if (this.body.getLinearVelocity().x <= 0f) {
+    }
 
-                if (!this.getAnimation().getFrame().isFlipX()) {
-                    this.getAnimation().getFrame().flip(true, false);
-                }
-            } else {
-                if (this.getAnimation().getFrame().isFlipX()) {
-                    this.getAnimation().getFrame().flip(true, false);
-                }
+    public void seek(Body player, World world, MyContactListener cl) {
+        target.set(player.getPosition());
+        RayCastCallback callback = new RayCastCallback() {
+
+            @Override
+            public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+                cFix = fixture;
+                collision.set(point);
+                Enemy.this.normal.set(normal).add(point);
+                return -1;
+            }
+
+        };
+
+        world.rayCast(callback, this.body.getPosition(), target);
+        System.out.println(state);
+        if (cFix.getBody().equals(player) && cl.isPlayerSpotted(dir)) {
+            state = 1;
+            lastSeen = currentTime;
+        } else if (state == 1) {
+            state = 2;
+
+        } else {
+            if (currentTime - lastSeen > 5000000000f) {
+                state = 0;
             }
         }
+        switch (state) {
+            case 0:
+                if (currentTime - lastSwitch > 10000000000f) {
+                    dir *= -1;
+                    lastSwitch = currentTime;
+                }
+                if (Math.abs(body.getLinearVelocity().x) < .5f) {
+                    body.applyForceToCenter(16f * dir, 0, true);
+                }
+                break;
+            case 1:
+                dir = (target.x < body.getPosition().x ? -1 : 1);
+                if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
+                    body.applyForceToCenter(16f * dir, 0, true);
+                }
+                break;
+            case 2:
+                if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
+                    body.applyForceToCenter(16f * dir, 0, true);
+                }
+        }
+//        if (Math.abs(this.body.getPosition().x - target.x) <= .35f
+//                && Math.abs(this.body.getPosition().y - target.y) <= .2f && cl.isPlayerSpotted(dir)) {
+//            if (!attacking)
+//                toggleAnimation("attack");
+//        } else if (Math.abs(this.body.getLinearVelocity().x) > .05f) {
+//            if (!running)
+//                toggleAnimation("run");
+//        } else {
+//            if (!idling)
+//                toggleAnimation("idle");
+//        }
+//
+//        if (cl.isPlayerSpotted(dir)) {
+//            enemySpotted = true;
+//            lastSeen = currentTime;
+//        } else {
+//            if (currentTime - lastSeen > 10000000000f) {
+//                enemySpotted = false;
+//            }
+//        }
+//        if (enemySpotted) {
+//            dir = (target.x < body.getPosition().x ? -1 : 1);
+//                if (Math.abs(this.body.getLinearVelocity().x) <= 1f) {
+//                    this.body.applyLinearImpulse(.3f * dir, 0f, 0, 0, true);
+//                }
+//        } else {
+//
+//            if (currentTime - lastSwitch > 10000000000f) {
+//                dir *= -1;
+//                lastSwitch = currentTime;
+//            }
+//
+//        }
+//        if (dir == -1) {
+//            System.out.println("FLIP LEFT");
+//            if (!this.getAnimation().getFrame().isFlipX()) {
+//                this.getAnimation().getFrame().flip(true, false);
+//            }
+//        } else {
+//            System.out.println("FLIP RIGHT");
+//            if (this.getAnimation().getFrame().isFlipX()) {
+//                this.getAnimation().getFrame().flip(true, false);
+//            }
+//        }
     }
 
     public void collectCrystal() {
