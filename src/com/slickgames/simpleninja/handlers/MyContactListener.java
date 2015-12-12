@@ -9,6 +9,7 @@ public class MyContactListener implements ContactListener {
 	private Array<Body> bodiesToRemove;
 	private boolean detectRight;
 	private boolean detectLeft;
+	private boolean withinRange;
 
 	public MyContactListener() {
 		super();
@@ -51,6 +52,13 @@ public class MyContactListener implements ContactListener {
 		if (fb.getUserData() != null && fb.getUserData().equals("visionLeft")) {
 			detectLeft = true;
 		}
+		if (fb.getUserData() != null && fb.getUserData().equals("range")) {
+			withinRange = true;
+		}
+		if (fa.getUserData() != null && fa.getUserData().equals("range")) {
+			withinRange = true;
+
+		}
 	}
 
 	// called when two fixtures no longer collide
@@ -80,10 +88,20 @@ public class MyContactListener implements ContactListener {
 		if (fb.getUserData() != null && fb.getUserData().equals("visionLeft")) {
 			detectLeft = false;
 		}
+		if (fb.getUserData() != null && fb.getUserData().equals("range")) {
+			withinRange = false;
+		}
+		if (fa.getUserData() != null && fa.getUserData().equals("range")) {
+			withinRange = false;
+
+		}
 	}
 
 	public boolean isPlayerOnGround() {
 		return numFootContacts > 0;
+	}
+	public boolean isWithinRange() {
+		return withinRange;
 	}
 
 	public boolean isPlayerSpotted(int n) {
