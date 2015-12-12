@@ -18,10 +18,7 @@ import com.slickgames.simpleninja.entities.Crystal;
 import com.slickgames.simpleninja.entities.Enemy;
 import com.slickgames.simpleninja.entities.HUD;
 import com.slickgames.simpleninja.entities.Player;
-import com.slickgames.simpleninja.handlers.B2DVars;
-import com.slickgames.simpleninja.handlers.GameStateManager;
-import com.slickgames.simpleninja.handlers.MyContactListener;
-import com.slickgames.simpleninja.handlers.MyInput;
+import com.slickgames.simpleninja.handlers.*;
 import com.slickgames.simpleninja.main.Game;
 
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
@@ -83,19 +80,20 @@ public class Play extends GameState {
         // set up hud
         hud = new HUD(player);
         sr = new ShapeRenderer();
+        Gdx.input.setInputProcessor(new MyInputProcessor());
     }
 
     @Override
     public void handleInput() {
         // reset gameset
         if (MyInput.isPressed(MyInput.RESET)) {
-            gsm.setState(GameStateManager.Pause);
+            gsm.setState(GameStateManager.PAUSE);
         }
         // player jump
 
         if (MyInput.isPressed(MyInput.JUMP) && doubleJump != 1) {
             doubleJump++;
-            player.getBody().applyLinearImpulse(2*player.getDir(), 3f, 0, 0, true);
+            player.getBody().applyLinearImpulse(2 * player.getDir(), 3f, 0, 0, true);
         } else if (cl.isPlayerOnGround()) {
             doubleJump = 0;
             if (Math.abs(player.getBody().getLinearVelocity().x) > 1 && !player.isRunning()) {

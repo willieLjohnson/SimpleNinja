@@ -1,25 +1,26 @@
 package com.slickgames.simpleninja.handlers;
 
 import com.slickgames.simpleninja.main.Game;
-import com.slickgames.simpleninja.states.*;
+import com.slickgames.simpleninja.states.GameState;
+import com.slickgames.simpleninja.states.MainMenu;
 import com.slickgames.simpleninja.states.Pause;
+import com.slickgames.simpleninja.states.Play;
 
 import java.util.Stack;
 
 public class GameStateManager {
-public int stateStautes ;
+    public int stateStautes;
     public static final int PLAY = 1;
-    public static final int Pause =0;
-    public static final int MainMenu =2;
+    public static final int PAUSE = 0;
+    public static final int MAIN_MENU = 2;
     private Game game;
     private Stack<GameState> gameStates;
-    public static GameState PausePlayState ;
-    Play play;
+    private Play play;
+
     public GameStateManager(Game game) {
         this.game = game;
         gameStates = new Stack<GameState>();
-        play= new Play(this);
-        pushState(MainMenu);
+        pushState(MAIN_MENU);
     }
 
     public Game game() {
@@ -36,14 +37,20 @@ public int stateStautes ;
 
     private GameState getState(int state) {
         if (state == PLAY) {
-            stateStautes=1;
-            return  play;}
-        if (state == Pause) {
-            stateStautes=0;
-            return new Pause(this);}
-        if (state == MainMenu) {
-            stateStautes=2;
-            return new Main_menu(this);}
+            stateStautes = 1;
+            if (play == null) {
+                play = new Play(this);
+            }
+            return play;
+        }
+        if (state == PAUSE) {
+            stateStautes = 0;
+            return new Pause(this);
+        }
+        if (state == MAIN_MENU) {
+            stateStautes = 2;
+            return new MainMenu(this);
+        }
 
         return null;
     }
