@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.slickgames.simpleninja.handlers.GameStateManager;
+import com.slickgames.simpleninja.main.Game;
 
 /**
  * Created by Administrator on 12/8/2015.
@@ -27,11 +29,13 @@ public class MainMenu extends GameState {
 
     private SpriteBatch batch;
     private Sprite sprite;
+    TextureRegion[] MainMenu1S;
 
     public MainMenu(GameStateManager gsm) {
         super(gsm);
 //        stage = new Stage(new FitViewport(Game.V_WIDTH,Game.V_HEIGHT));
         skin = new Skin(Gdx.files.internal("res/maps/uiskin.json"));
+
         table = new Table();
         table.setFillParent(true);
         table.setWidth(game.stage.getWidth());
@@ -55,6 +59,8 @@ public class MainMenu extends GameState {
 
         game.stage.addActor(table);
         batch = new SpriteBatch();
+        Texture Mainmenu1 = Game.game.getAssetManager().get("res/images/simple_idleAll.png");
+        MainMenu1S = TextureRegion.split(Mainmenu1, 54, 42)[0];
         sprite = new Sprite(new Texture(Gdx.files.internal("res/maps/Main1.gif")));
         sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         InputMultiplexer im = new InputMultiplexer(gsm.game().stage);
