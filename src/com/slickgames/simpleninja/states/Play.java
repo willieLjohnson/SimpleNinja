@@ -113,7 +113,7 @@ public class Play extends GameState {
                         player.toggleAnimation("run");
                     }
                 }
-            } else if (!player.isIdle())
+            } else if (!player.isIdle() && !player.isAttacking())
                 player.toggleAnimation("idle");
 
 
@@ -159,7 +159,7 @@ public class Play extends GameState {
         // player jump
         if (cl.wallRun()) {
             if (MyInput.isDown(MyInput.JUMP) && player.getBody().getLinearVelocity().y < .1f) {
-                player.getBody().applyLinearImpulse(2*player.getDir(), 3f - wallRun, 0, 0, true);
+                player.getBody().applyLinearImpulse(2*player.getDir(), 4f - wallRun, 0, 0, true);
                 wallRun += (wallRun >= 1 ? 0 : .05f);
             }
         } else {
@@ -179,7 +179,7 @@ public class Play extends GameState {
         }
         if (MyInput.isPressed(MyInput.JUMP) && jump == 0) {
             if (player.getBody().getLinearVelocity().y == 0) {
-                player.getBody().applyLinearImpulse(0, 3f, 0, 0, true);
+                player.getBody().applyLinearImpulse(0, 3.5f, 0, 0, true);
 
             }
             jump = 1;
