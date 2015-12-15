@@ -30,7 +30,7 @@ public class Pause extends GameState {
         if ((MyInput.isPressed(MyInput.RESET) && (gsm.stateStautes == 0))) {
             gsm.setState(GameStateManager.PLAY);
         } else if ((MyInput.isPressed(MyInput.RESET) && (gsm.stateStautes == 1))) {
-            gsm.setState(GameStateManager.Pause);
+            gsm.setState(GameStateManager.PAUSE);
         }
     }
 

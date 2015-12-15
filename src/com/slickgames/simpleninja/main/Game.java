@@ -32,7 +32,7 @@ public class Game implements ApplicationListener {
     public void create() {
         game = this;
 
-        Gdx.input.setInputProcessor(new MyInputProcessor());
+
         stage=new Stage(new FitViewport(Game.V_WIDTH, Game.V_HEIGHT));
         //load assets
         assets = new AssetManager();
@@ -43,8 +43,8 @@ public class Game implements ApplicationListener {
         assets.load("res/images/enemy_idleAll.png", Texture.class);
         assets.load("res/images/crystal.png", Texture.class);
         assets.load("res/images/hud.png", Texture.class);
-        assets.load("res/maps/test one.png", Texture.class);
-       assets.load("res/music/Mainemenu1.mp3", Music.class);
+//        assets.load("res/maps/test one.png", Texture.class);
+//       assets.load("res/music/Mainemenu1.mp3", Music.class);
 
         while (!assets.update()) {
             System.out.println(assets.getProgress() * 100 + "%");

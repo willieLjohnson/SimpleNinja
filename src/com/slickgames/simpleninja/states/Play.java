@@ -17,10 +17,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.slickgames.simpleninja.entities.Crystal;
 import com.slickgames.simpleninja.entities.Enemy;
 import com.slickgames.simpleninja.entities.Player;
-import com.slickgames.simpleninja.handlers.B2DVars;
-import com.slickgames.simpleninja.handlers.GameStateManager;
-import com.slickgames.simpleninja.handlers.MyContactListener;
-import com.slickgames.simpleninja.handlers.MyInput;
+import com.slickgames.simpleninja.handlers.*;
 import com.slickgames.simpleninja.main.Game;
 
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
@@ -56,7 +53,7 @@ public class Play extends GameState {
 
     public Play(GameStateManager gsm) {
         super(gsm);
-
+        Gdx.input.setInputProcessor(new MyInputProcessor());
         // set up box2d stuff
         world = new World(new Vector2(0, -9.81f), true);
         cl = new MyContactListener();
@@ -88,7 +85,7 @@ public class Play extends GameState {
 
         // pause game
         if (MyInput.isPressed(MyInput.RESET)) {
-            gsm.setState(GameStateManager.Pause);
+            gsm.setState(GameStateManager.PAUSE);
         }
 
 

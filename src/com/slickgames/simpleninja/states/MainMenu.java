@@ -65,15 +65,15 @@ public class MainMenu extends GameState {
         table.row();
         table.add(quitButton);
         //sounds//////////////////////////////////
-        MainMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/Mainemenu1.mp3"));
+//        MainMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/Mainemenu1.mp3"));
         game.stage.addActor(table);
-        //animation//////////////////////////////
-        animation = new Animation();
-        if (mainmenu == 1) {
-            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test one.png");
-            MainMenu1S = TextureRegion.split(Mainmenu1, 500, 475)[0];
-            animation.setFrames(MainMenu1S, 1 / 25f);
-        }
+//        //animation//////////////////////////////
+//        animation = new Animation();
+//        if (mainmenu == 1) {
+//            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test one.png");
+//            MainMenu1S = TextureRegion.split(Mainmenu1, 500, 475)[0];
+//            animation.setFrames(MainMenu1S, 1 / 25f);
+//        }
 // if (mainmenu==1){
 //            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test two.png");
 //            MainMenu1S = TextureRegion.split(Mainmenu1, 375, 354)[0];
@@ -83,7 +83,7 @@ public class MainMenu extends GameState {
         //input///////////////////////////////
         InputMultiplexer im = new InputMultiplexer(gsm.game().stage);
         Gdx.input.setInputProcessor(im);
-        MainMusic.play();
+//        MainMusic.play();
     }
 
     @Override
@@ -93,7 +93,7 @@ public class MainMenu extends GameState {
 
     @Override
     public void update(float dt) {
-        animation.update(dt);
+//        animation.update(dt);
 
     }
 
@@ -102,7 +102,7 @@ public class MainMenu extends GameState {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.begin();
-        sb.draw(animation.getFrame(), 0, 0);
+//        sb.draw(animation.getFrame(), 0, 0);
         sb.end();
         gsm.game().stage.act(Gdx.graphics.getDeltaTime());
         gsm.game().stage.draw();
