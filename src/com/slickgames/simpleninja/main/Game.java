@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -37,13 +38,15 @@ public class Game implements ApplicationListener {
         stage=new Stage(new FitViewport(Game.V_WIDTH, Game.V_HEIGHT));
         //load assets
         assets = new AssetManager();
+
         assets.load("res/images/simple_runAll.png", Texture.class);
-        assets.load("res/maps/Main1.gif", Texture.class);
         assets.load("res/images/simple_attackAll.png", Texture.class);
         assets.load("res/images/simple_idleAll.png", Texture.class);
         assets.load("res/images/enemy_idleAll.png", Texture.class);
         assets.load("res/images/crystal.png", Texture.class);
         assets.load("res/images/hud.png", Texture.class);
+        assets.load("res/maps/test one.png", Texture.class);
+       assets.load("res/music/Mainemenu1.mp3", Music.class);
 
         while (!assets.update()) {
             System.out.println(assets.getProgress()*100 + "%");
@@ -64,7 +67,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
+
 
     }
 

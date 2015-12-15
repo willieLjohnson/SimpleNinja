@@ -2,6 +2,7 @@ package com.slickgames.simpleninja.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,8 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.slickgames.simpleninja.handlers.Animation;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.main.Game;
+
+import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 /**
  * Created by Administrator on 12/8/2015.
@@ -29,10 +33,14 @@ public class MainMenu extends GameState {
 
     private SpriteBatch batch;
     private Sprite sprite;
+    Animation animation;
     TextureRegion[] MainMenu1S;
+    int mainmenu = 1;
+    Music MainMusic;
 
     public MainMenu(GameStateManager gsm) {
         super(gsm);
+        //stage/////////////////////////
 //        stage = new Stage(new FitViewport(Game.V_WIDTH,Game.V_HEIGHT));
         skin = new Skin(Gdx.files.internal("res/maps/uiskin.json"));
 
@@ -56,16 +64,26 @@ public class MainMenu extends GameState {
 
         table.row();
         table.add(quitButton);
-
+        //sounds//////////////////////////////////
+        MainMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/Mainemenu1.mp3"));
         game.stage.addActor(table);
-        batch = new SpriteBatch();
-        Texture Mainmenu1 = Game.game.getAssetManager().get("res/images/simple_idleAll.png");
-        MainMenu1S = TextureRegion.split(Mainmenu1, 54, 42)[0];
-        sprite = new Sprite(new Texture(Gdx.files.internal("res/maps/Main1.gif")));
-        sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //animation//////////////////////////////
+        animation = new Animation();
+        if (mainmenu == 1) {
+            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test one.png");
+            MainMenu1S = TextureRegion.split(Mainmenu1, 500, 475)[0];
+            animation.setFrames(MainMenu1S, 1 / 25f);
+        }
+// if (mainmenu==1){
+//            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test two.png");
+//            MainMenu1S = TextureRegion.split(Mainmenu1, 375, 354)[0];
+//            animation.setFrames(MainMenu1S, 1/1f);
+//        }
+
+        //input///////////////////////////////
         InputMultiplexer im = new InputMultiplexer(gsm.game().stage);
         Gdx.input.setInputProcessor(im);
-
+        MainMusic.play();
     }
 
     @Override
@@ -75,6 +93,7 @@ public class MainMenu extends GameState {
 
     @Override
     public void update(float dt) {
+        animation.update(dt);
 
     }
 
@@ -83,10 +102,11 @@ public class MainMenu extends GameState {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.begin();
-        sprite.draw(sb);
+        sb.draw(animation.getFrame(), 0, 0);
         sb.end();
         gsm.game().stage.act(Gdx.graphics.getDeltaTime());
         gsm.game().stage.draw();
+
 
     }
 
