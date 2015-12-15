@@ -15,7 +15,7 @@ public abstract class B2DSprite {
     protected float width;
     protected float height;
     protected int dir = 1;
-    public float MAX_SPEED = 3f;
+    public float MAX_SPEED = 2f;
 
     public B2DSprite(Body body) {
         this.body = body;

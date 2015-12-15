@@ -13,20 +13,18 @@ import com.slickgames.simpleninja.handlers.MyContactListener;
 import com.slickgames.simpleninja.main.Game;
 
 public class Enemy extends B2DSprite {
-    private int numCrystals;
-    private int totalCrystals;
+    public static final float MAX_SPEED = 1.5f;
     public boolean running, idling, jumping, attacking, attacked;
     public int state = 0;
-    public static final float MAX_SPEED = 1.5f;
     TextureRegion[] run, idle, jump, attack;
-
-    private boolean enemySpotted;
-
     Vector2 target = new Vector2();
     Vector2 collision = new Vector2();
     Vector2 normal = new Vector2();
     Fixture cFix;
     ShapeRenderer sr;
+    private int numCrystals;
+    private int totalCrystals;
+    private boolean enemySpotted;
     private float currentTime;
     private float lastSeen;
     private float lastSwitch;
@@ -62,7 +60,7 @@ public class Enemy extends B2DSprite {
             }
         }
         if (Math.abs(body.getLinearVelocity().x) > 0f) {
-            if (!running)
+            if (!running && !attacking)
                 toggleAnimation("run");
         } else {
             toggleAnimation("idle");
@@ -71,19 +69,14 @@ public class Enemy extends B2DSprite {
 
     public void seek(Body player, World world, MyContactListener cl) {
         target.set(player.getPosition());
-        RayCastCallback callback = new RayCastCallback() {
-
-            @Override
-            public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-                cFix = fixture;
-                collision.set(point);
-                Enemy.this.normal.set(normal).add(point);
-                if (cFix.equals(player))
-                    return 1;
-                else
-                    return .5f;
-            }
-
+        RayCastCallback callback = (fixture, point, normal1, fraction) -> {
+            cFix = fixture;
+            collision.set(point);
+            Enemy.this.normal.set(normal1).add(point);
+            if (cFix.equals(player))
+                return 1;
+            else
+                return .5f;
         };
         world.rayCast(callback, this.body.getPosition(), target);
 
@@ -103,73 +96,33 @@ public class Enemy extends B2DSprite {
         }
         switch (state) {
             case 0:
-                if (currentTime - lastSwitch > 10000000000f) {
+
+                if (currentTime - lastSwitch > 10000000000f || cl.isCollidingWall()) {
                     dir *= -1;
                     lastSwitch = currentTime;
                 }
                 if (Math.abs(body.getLinearVelocity().x) < .5f) {
-                    body.applyForceToCenter(16f * dir, 0, true);
+                    body.applyForceToCenter(32f * dir, 0, true);
                 }
                 break;
             case 1:
                 dir = (target.x < body.getPosition().x ? -1 : 1);
-                if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
-                    body.applyForceToCenter(16f * dir, 0, true);
+                if (Math.abs((target.x + target.y) - (body.getPosition().x + body.getPosition().y)) <= .14f && !attacking) {
+                    toggleAnimation("attack");
                 }
-                if (body.getLinearVelocity().y <= 0 && target.y > body.getPosition().y) {
+                if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) body.applyForceToCenter(16f * dir, 0, true);
+                if (body.getLinearVelocity().y == 0 && target.y > body.getPosition().y) {
                     body.applyLinearImpulse(0, 2, 0, 0, true);
                 }
                 break;
             case 2:
+
                 if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
-                    body.applyForceToCenter(16f * dir, 0, true);
+                    body.applyForceToCenter(32f * dir, 0, true);
                 }
+                if (cl.isCollidingWall())
+                    dir *= -1;
         }
-        // if (Math.abs(this.body.getPosition().x - target.x) <= .35f
-        // && Math.abs(this.body.getPosition().y - target.y) <= .2f &&
-        // cl.isPlayerSpotted(dir)) {
-        // if (!attacking)
-        // toggleAnimation("attack");
-        // } else if (Math.abs(this.body.getLinearVelocity().x) > .05f) {
-        // if (!running)
-        // toggleAnimation("run");
-        // } else {
-        // if (!idling)
-        // toggleAnimation("idle");
-        // }
-        //
-        // if (cl.isPlayerSpotted(dir)) {
-        // enemySpotted = true;
-        // lastSeen = currentTime;
-        // } else {
-        // if (currentTime - lastSeen > 10000000000f) {
-        // enemySpotted = false;
-        // }
-        // }
-        // if (enemySpotted) {
-        // dir = (target.x < body.getPosition().x ? -1 : 1);
-        // if (Math.abs(this.body.getLinearVelocity().x) <= 1f) {
-        // this.body.applyLinearImpulse(.3f * dir, 0f, 0, 0, true);
-        // }
-        // } else {
-        //
-        // if (currentTime - lastSwitch > 10000000000f) {
-        // dir *= -1;
-        // lastSwitch = currentTime;
-        // }
-        //
-        // }
-        // if (dir == -1) {
-        // System.out.println("FLIP LEFT");
-        // if (!this.getAnimation().getFrame().isFlipX()) {
-        // this.getAnimation().getFrame().flip(true, false);
-        // }
-        // } else {
-        // System.out.println("FLIP RIGHT");
-        // if (this.getAnimation().getFrame().isFlipX()) {
-        // this.getAnimation().getFrame().flip(true, false);
-        // }
-        // }
     }
 
     public void collectCrystal() {
@@ -236,12 +189,12 @@ public class Enemy extends B2DSprite {
         return jumping;
     }
 
-    public void setAttacking(boolean b) {
-        attacking = b;
-    }
-
     public boolean isAttacking() {
         return attacking;
+    }
+
+    public void setAttacking(boolean b) {
+        attacking = b;
     }
 
     public int getNumCrystal() {

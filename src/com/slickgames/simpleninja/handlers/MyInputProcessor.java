@@ -25,6 +25,9 @@ public class MyInputProcessor extends InputAdapter {
         if (k == Keys.ESCAPE) {
             MyInput.setKey(MyInput.RESET, true);
         }
+        if (k == Keys.SHIFT_LEFT) {
+            MyInput.setKey(MyInput.WALLRUN, true);
+        }
 
         return true;
     }
@@ -42,6 +45,9 @@ public class MyInputProcessor extends InputAdapter {
         }
         if (k == Keys.ESCAPE) {
             MyInput.setKey(MyInput.RESET, false);
+        }
+        if (k == Keys.SHIFT_LEFT) {
+            MyInput.setKey(MyInput.WALLRUN, false);
         }
         return true;
     }

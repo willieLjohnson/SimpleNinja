@@ -2,7 +2,6 @@ package com.slickgames.simpleninja.main;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,9 +12,9 @@ import com.slickgames.simpleninja.handlers.MyInput;
 import com.slickgames.simpleninja.handlers.MyInputProcessor;
 
 public class Game implements ApplicationListener {
-    public static final String TITLE = "Simple Ninja v0.1 ALPHA";
+    public static final String TITLE = "Simple Ninja v0.0";
     public static final int V_WIDTH = 1366 / 4;
-    public static final int V_HEIGHT = 720/ 4;
+    public static final int V_HEIGHT = 720 / 4;
     public static final int SCALE = 2;
 
     public static final float STEP = 1 / 60f;
@@ -42,9 +41,9 @@ public class Game implements ApplicationListener {
         assets.load("res/images/hud.png", Texture.class);
 
         while (!assets.update()) {
-            System.out.println(assets.getProgress()*100 + "%");
+            System.out.println(assets.getProgress() * 100 + "%");
         }
-        System.out.println(assets.getProgress()*100 + "%");
+        System.out.println(assets.getProgress() * 100 + "%");
         System.out.println(assets.getAssetNames() + " 100% loaded");
 
         sb = new SpriteBatch();
@@ -58,7 +57,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
+
 
     }
 
@@ -77,19 +76,19 @@ public class Game implements ApplicationListener {
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+
 
     }
 

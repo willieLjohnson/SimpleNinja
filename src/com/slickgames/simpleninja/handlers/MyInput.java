@@ -2,14 +2,16 @@ package com.slickgames.simpleninja.handlers;
 
 public class MyInput {
 
-    public static final int NUM_KEYS = 5;
+    public static final int NUM_KEYS = 6;
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     public static final int JUMP = 2;
     public static final int ATTACK = 3;
     public static final int RESET = 4;
+    public static int WALLRUN = 5;
     public static boolean[] keys;
     public static boolean[] pkeys;
+
 
     static {
         keys = new boolean[NUM_KEYS];

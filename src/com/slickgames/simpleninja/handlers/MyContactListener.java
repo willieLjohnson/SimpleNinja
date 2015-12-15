@@ -10,6 +10,8 @@ public class MyContactListener implements ContactListener {
 	private boolean detectRight;
 	private boolean detectLeft;
 	private boolean withinRange;
+	private boolean wallCollision;
+	private boolean wallRun;
 
 	public MyContactListener() {
 		super();
@@ -22,43 +24,41 @@ public class MyContactListener implements ContactListener {
 		Fixture fa = c.getFixtureA();
 		Fixture fb = c.getFixtureB();
 
-		if (fa.getUserData() != null && fa.getUserData().equals("foot")) {
+		/// player senses
+		if (fa.getUserData() != null && fa.getUserData().equals("foot"))
 			numFootContacts++;
-		}
-		if (fb.getUserData() != null && fb.getUserData().equals("foot")) {
+		if (fb.getUserData() != null && fb.getUserData().equals("foot"))
 			numFootContacts++;
-		}
 
-		if (fa.getUserData() != null && fa.getUserData().equals("crystal")) {
+		if (fa.getUserData() != null && fa.getUserData().equals("crystal"))
 			bodiesToRemove.add(fa.getBody());
-		}
-		if (fb.getUserData() != null && fb.getUserData().equals("crystal")) {
+		if (fb.getUserData() != null && fb.getUserData().equals("crystal"))
 			bodiesToRemove.add(fb.getBody());
-		}
 
-		if (fa.getUserData() != null && fa.getUserData().equals("visionRight")) {
+		if (fa.getUserData() != null && fa.getUserData().equals("hand"))
+			wallRun = true;
+		if (fb.getUserData() != null && fb.getUserData().equals("hand"))
+			wallRun = true;
+
+		/// enemy senses
+		if (fa.getUserData() != null && fa.getUserData().equals("visionRight"))
 			detectRight = true;
-
-		}
-		if (fb.getUserData() != null && fb.getUserData().equals("visionRight")) {
+		if (fb.getUserData() != null && fb.getUserData().equals("visionRight"))
 			detectRight = true;
-
-		}
-
-		if (fa.getUserData() != null && fa.getUserData().equals("visionLeft")) {
+		if (fa.getUserData() != null && fa.getUserData().equals("visionLeft"))
+			detectLeft = true;
+		if (fb.getUserData() != null && fb.getUserData().equals("visionLeft"))
 			detectLeft = true;
 
-		}
-		if (fb.getUserData() != null && fb.getUserData().equals("visionLeft")) {
-			detectLeft = true;
-		}
-		if (fb.getUserData() != null && fb.getUserData().equals("range")) {
+		if (fb.getUserData() != null && fb.getUserData().equals("range"))
 			withinRange = true;
-		}
-		if (fa.getUserData() != null && fa.getUserData().equals("range")) {
+		if (fa.getUserData() != null && fa.getUserData().equals("range"))
 			withinRange = true;
 
-		}
+		if (fb.getUserData() != null && fb.getUserData().equals("wallcollision"))
+			wallCollision = true;
+		if (fa.getUserData() != null && fa.getUserData().equals("wallcollision"))
+			wallCollision = true;
 	}
 
 	// called when two fixtures no longer collide
@@ -69,39 +69,48 @@ public class MyContactListener implements ContactListener {
 
 		if (fa == null || fb == null)
 			return;
-		if (fa.getUserData() != null && fa.getUserData().equals("foot")) {
+		// player senses
+		if (fa.getUserData() != null && fa.getUserData().equals("foot"))
 			numFootContacts--;
-		}
-		if (fb.getUserData() != null && fb.getUserData().equals("foot")) {
+		if (fb.getUserData() != null && fb.getUserData().equals("foot"))
 			numFootContacts--;
-		}
-		if (fa.getUserData() != null && fa.getUserData().equals("visionRight")) {
+		if (fa.getUserData() != null && fa.getUserData().equals("hand"))
+			wallRun = false;
+		if (fb.getUserData() != null && fb.getUserData().equals("hand"))
+			wallRun = false;
+
+		// enemy senses
+		if (fa.getUserData() != null && fa.getUserData().equals("visionRight"))
 			detectRight = false;
-		}
-		if (fb.getUserData() != null && fb.getUserData().equals("visionRight")) {
+		if (fb.getUserData() != null && fb.getUserData().equals("visionRight"))
 			detectRight = false;
-		}
-		if (fa.getUserData() != null && fa.getUserData().equals("visionLeft")) {
+		if (fa.getUserData() != null && fa.getUserData().equals("visionLeft"))
+			detectLeft = false;
+		if (fb.getUserData() != null && fb.getUserData().equals("visionLeft"))
 			detectLeft = false;
 
-		}
-		if (fb.getUserData() != null && fb.getUserData().equals("visionLeft")) {
-			detectLeft = false;
-		}
-		if (fb.getUserData() != null && fb.getUserData().equals("range")) {
+		if (fb.getUserData() != null && fb.getUserData().equals("range"))
 			withinRange = false;
-		}
-		if (fa.getUserData() != null && fa.getUserData().equals("range")) {
+		if (fa.getUserData() != null && fa.getUserData().equals("range"))
 			withinRange = false;
 
-		}
+		if (fb.getUserData() != null && fb.getUserData().equals("wallcollision"))
+			wallCollision = false;
+		if (fa.getUserData() != null && fa.getUserData().equals("wallcollision"))
+			wallCollision = false;
+
 	}
 
 	public boolean isPlayerOnGround() {
 		return numFootContacts > 0;
 	}
+
 	public boolean isWithinRange() {
 		return withinRange;
+	}
+
+	public boolean isCollidingWall() {
+		return wallCollision;
 	}
 
 	public boolean isPlayerSpotted(int n) {
@@ -112,10 +121,9 @@ public class MyContactListener implements ContactListener {
 		return bodiesToRemove;
 	}
 
-	// collision detection
-	// presolve
-	// collision handling
-	// postolve
+	public boolean wallRun() {
+		return wallRun;
+	}
 	@Override
 	public void preSolve(Contact c, Manifold m) {
 	}
