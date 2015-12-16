@@ -93,22 +93,23 @@ public class Play extends GameState {
         if (!swinging)
             if (MyInput.isDown(MyInput.LEFT)) {
                 player.setDir(-1);
-                if (cl.isPlayerOnGround()) {
-                    if (Math.abs(player.getBody().getLinearVelocity().x) < player.MAX_SPEED) {
-                        player.getBody().applyForceToCenter(-16f, 0, true);
-                    }
 
+                if (Math.abs(player.getBody().getLinearVelocity().x) < player.MAX_SPEED) {
+                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? -16f : -2f, 0, true);
+                }
+                if (cl.isPlayerOnGround()) {
                     if (!player.isRunning()) {
                         player.toggleAnimation("run");
                     }
                 }
             } else if (MyInput.isDown(MyInput.RIGHT)) {
                 player.setDir(1);
-                if (cl.isPlayerOnGround()) {
-                    if (Math.abs(player.getBody().getLinearVelocity().x) < player.MAX_SPEED) {
 
-                        player.getBody().applyForceToCenter(16f, 0, true);
-                    }
+                if (Math.abs(player.getBody().getLinearVelocity().x) < player.MAX_SPEED) {
+
+                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? 16f : 2f, 0, true);
+                }
+                if (cl.isPlayerOnGround()) {
                     if (!player.isRunning() && cl.isPlayerOnGround()) {
                         player.toggleAnimation("run");
                     }
@@ -118,7 +119,7 @@ public class Play extends GameState {
 
 
         // attack
-        if (MyInput.isPressed(MyInput.ATTACK) && !swinging) {
+        if (MyInput.isPressed(MyInput.ATTACK) && !swinging && cl.isPlayerOnGround()) {
             swinging = true;
 
             if (currentAttack >= 16) {
@@ -158,10 +159,11 @@ public class Play extends GameState {
         }
         // player jump
         if (cl.wallRun()) {
-            if (MyInput.isDown(MyInput.JUMP) && player.getBody().getLinearVelocity().y < .1f) {
-                player.getBody().applyLinearImpulse(2*player.getDir(), 4f - wallRun, 0, 0, true);
-                wallRun += (wallRun >= 1 ? 0 : .05f);
+            if ((MyInput.isDown(MyInput.JUMP) && player.getBody().getLinearVelocity().y < .1f)) {
+                player.getBody().applyLinearImpulse(1.5f * player.getDir(), 4f - wallRun, 0, 0, true);
+                wallRun += (wallRun > 4 ? 0 : .5f);
             }
+
         } else {
             wallRun = 0;
         }
@@ -169,6 +171,7 @@ public class Play extends GameState {
 
         if (cl.isPlayerOnGround()) {
             jump = 0;
+
             if (Math.abs(player.getBody().getLinearVelocity().x) > 1 && !player.isRunning()) {
                 player.getBody().applyForceToCenter(player.getBody().getLinearVelocity().x < 0 ? player.MAX_SPEED * 8 : -player.MAX_SPEED * 8, 0, true);
             }
@@ -177,12 +180,13 @@ public class Play extends GameState {
             if (!player.isJumping())
                 player.toggleAnimation("jump");
         }
-        if (MyInput.isPressed(MyInput.JUMP) && jump == 0) {
-            if (player.getBody().getLinearVelocity().y == 0) {
-                player.getBody().applyLinearImpulse(0, 3.5f, 0, 0, true);
 
-            }
-            jump = 1;
+
+
+
+        if (MyInput.isPressed(MyInput.JUMP) && jump == 0) {
+            player.getBody().applyLinearImpulse(0, 3.5f, 0, 0, true);
+            jump=1;
         }
     }
 
@@ -379,20 +383,26 @@ public class Play extends GameState {
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
         MapLayer layer;
-        layer = tileMap.getLayers().get("walls");
 
+        layer = tileMap.getLayers().get("walls");
         for (MapObject mo : layer.getObjects()) {
             bdef.type = BodyType.StaticBody;
             float x = (float) mo.getProperties().get("x") / PPM;
             float y = (float) mo.getProperties().get("y") / PPM;
-            float width = (float) mo.getProperties().get("width") / 2 / PPM;
-            float height = (float) mo.getProperties().get("height") / 2 / PPM;
+            float width = (float) mo.getProperties().get("width") / PPM;
+            float height = (float) mo.getProperties().get("height") / PPM;
 
-            PolygonShape pshape = new PolygonShape();
+            ChainShape cshape = new ChainShape();
+            Vector2[] v = new Vector2[5];
+            v[0] = new Vector2(0, 0);
+            v[1] = new Vector2(width, 0);
+            v[2] = new Vector2(width, height);
+            v[3] = new Vector2(0, height);
+            v[4] = new Vector2(0, 0);
 
-            pshape.setAsBox(width, height);
-            bdef.position.set(x + width, y + height);
-            fdef.shape = pshape;
+            cshape.createChain(v);
+            bdef.position.set(x, y);
+            fdef.shape = cshape;
             fdef.filter.categoryBits = B2DVars.BIT_WALL;
             fdef.filter.maskBits = B2DVars.BIT_PLAYER | B2DVars.BIT_ENEMY;
             // fdef.friction = 1.5f;
@@ -400,20 +410,26 @@ public class Play extends GameState {
             body.createFixture(fdef).setUserData("wall");
 
         }
-        layer = tileMap.getLayers().get("floors");
 
+
+        layer = tileMap.getLayers().get("floors");
         for (MapObject mo : layer.getObjects()) {
             bdef.type = BodyType.StaticBody;
             float x = (float) mo.getProperties().get("x") / PPM;
             float y = (float) mo.getProperties().get("y") / PPM;
-            float width = (float) mo.getProperties().get("width") / 2 / PPM;
-            float height = (float) mo.getProperties().get("height") / 2 / PPM;
+            float width = (float) mo.getProperties().get("width") / PPM;
+            float height = (float) mo.getProperties().get("height") / PPM;
+            ChainShape cshape = new ChainShape();
+            Vector2[] v = new Vector2[5];
+            v[0] = new Vector2(0, 0);
+            v[1] = new Vector2(width, 0);
+            v[2] = new Vector2(width, height);
+            v[3] = new Vector2(0, height);
+            v[4] = new Vector2(0, 0);
 
-            PolygonShape pshape = new PolygonShape();
-
-            pshape.setAsBox(width, height);
-            bdef.position.set(x + width, y + height);
-            fdef.shape = pshape;
+            cshape.createChain(v);
+            bdef.position.set(x, y);
+            fdef.shape = cshape;
             fdef.filter.categoryBits = B2DVars.BIT_GROUND;
             fdef.filter.maskBits = B2DVars.BIT_PLAYER | B2DVars.BIT_ENEMY;
             // fdef.friction = 1.5f;
@@ -421,20 +437,27 @@ public class Play extends GameState {
             body.createFixture(fdef).setUserData("ground");
 
         }
-        layer = tileMap.getLayers().get("edges");
 
+
+        layer = tileMap.getLayers().get("edges");
         for (MapObject mo : layer.getObjects()) {
             bdef.type = BodyType.StaticBody;
             float x = (float) mo.getProperties().get("x") / PPM;
             float y = (float) mo.getProperties().get("y") / PPM;
-            float width = (float) mo.getProperties().get("width") / 2 / PPM;
-            float height = (float) mo.getProperties().get("height") / 2 / PPM;
+            float width = (float) mo.getProperties().get("width") / PPM;
+            float height = (float) mo.getProperties().get("height") / PPM;
 
-            PolygonShape pshape = new PolygonShape();
+            ChainShape cshape = new ChainShape();
+            Vector2[] v = new Vector2[5];
+            v[0] = new Vector2(0, 0);
+            v[1] = new Vector2(width, 0);
+            v[2] = new Vector2(width, height);
+            v[3] = new Vector2(0, height);
+            v[4] = new Vector2(0, 0);
 
-            pshape.setAsBox(width, height);
-            bdef.position.set(x + width, y + height);
-            fdef.shape = pshape;
+            cshape.createChain(v);
+            bdef.position.set(x, y);
+            fdef.shape = cshape;
             fdef.filter.categoryBits = B2DVars.BIT_EDGE;
             fdef.filter.maskBits = B2DVars.BIT_PLAYER | B2DVars.BIT_ENEMY;
             // fdef.friction = 1.5f;
