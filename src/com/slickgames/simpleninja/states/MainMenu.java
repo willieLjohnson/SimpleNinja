@@ -24,6 +24,7 @@ import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
  * Created by Administrator on 12/8/2015.
  */
 public class MainMenu extends GameState {
+    private  TextureRegion MainMenuSext;
     private TextButton OptionsButton;
     private Skin skin;
 //    private Stage stage;
@@ -73,11 +74,14 @@ public class MainMenu extends GameState {
         game.stage.addActor(table);
 //        //animation//////////////////////////////
         animation = new Animation();
+
         if (mainmenu == 1) {
             MainMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/MainMusic.mp3"));
             Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/Main1.Png");
             MainMenu1S = TextureRegion.split(Mainmenu1, 500, 475)[0];
             animation.setFrames(MainMenu1S, 1 / 25f);
+            Texture Mainmenu1ext = Game.game.getAssetManager().get("res/maps/Main1Ext.jpg");
+            MainMenuSext = new TextureRegion(Mainmenu1ext);
         }
 // if (mainmenu==1){
 //            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test two.png");
@@ -109,6 +113,7 @@ public class MainMenu extends GameState {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.begin();
         sb.draw(animation.getFrame(), 0, 0);
+        sb.draw(MainMenuSext,500,0);
         sb.end();
         gsm.game().stage.act(Gdx.graphics.getDeltaTime());
         gsm.game().stage.draw();
