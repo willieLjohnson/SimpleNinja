@@ -24,6 +24,7 @@ import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
  * Created by Administrator on 12/8/2015.
  */
 public class MainMenu extends GameState {
+    private TextButton OptionsButton;
     private Skin skin;
 //    private Stage stage;
 
@@ -40,6 +41,7 @@ public class MainMenu extends GameState {
 
     public MainMenu(GameStateManager gsm) {
         super(gsm);
+
         //stage/////////////////////////
 //        stage = new Stage(new FitViewport(Game.V_WIDTH,Game.V_HEIGHT));
         skin = new Skin(Gdx.files.internal("res/maps/uiskin.json"));
@@ -47,8 +49,9 @@ public class MainMenu extends GameState {
         table = new Table();
         table.setFillParent(true);
         table.setWidth(game.stage.getWidth());
-        table.align(Align.center | Align.center);
+        table.align(Align.right);
         startButton = new TextButton("Start", skin);
+        OptionsButton = new TextButton("Option", skin);
         quitButton = new TextButton("Quit", skin);
         startButton.addListener(new ClickListener() {
             @Override
@@ -60,20 +63,22 @@ public class MainMenu extends GameState {
 
         table.padTop(30);
 
-        table.add(startButton).padBottom(30);
-
+        table.add(startButton);
+        table.row();
+        table.add(OptionsButton);
         table.row();
         table.add(quitButton);
         //sounds//////////////////////////////////
-//        MainMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/Mainemenu1.mp3"));
+
         game.stage.addActor(table);
 //        //animation//////////////////////////////
-//        animation = new Animation();
-//        if (mainmenu == 1) {
-//            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test one.png");
-//            MainMenu1S = TextureRegion.split(Mainmenu1, 500, 475)[0];
-//            animation.setFrames(MainMenu1S, 1 / 25f);
-//        }
+        animation = new Animation();
+        if (mainmenu == 1) {
+            MainMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/MainMusic.mp3"));
+            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/Main1.Png");
+            MainMenu1S = TextureRegion.split(Mainmenu1, 500, 475)[0];
+            animation.setFrames(MainMenu1S, 1 / 25f);
+        }
 // if (mainmenu==1){
 //            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test two.png");
 //            MainMenu1S = TextureRegion.split(Mainmenu1, 375, 354)[0];
@@ -83,7 +88,8 @@ public class MainMenu extends GameState {
         //input///////////////////////////////
         InputMultiplexer im = new InputMultiplexer(gsm.game().stage);
         Gdx.input.setInputProcessor(im);
-//        MainMusic.play();
+        MainMusic.play();
+        MainMusic.setLooping(true);
     }
 
     @Override
@@ -93,7 +99,7 @@ public class MainMenu extends GameState {
 
     @Override
     public void update(float dt) {
-//        animation.update(dt);
+        animation.update(dt);
 
     }
 
@@ -102,7 +108,7 @@ public class MainMenu extends GameState {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.begin();
-//        sb.draw(animation.getFrame(), 0, 0);
+        sb.draw(animation.getFrame(), 0, 0);
         sb.end();
         gsm.game().stage.act(Gdx.graphics.getDeltaTime());
         gsm.game().stage.draw();
@@ -113,5 +119,6 @@ public class MainMenu extends GameState {
 
     public void dispose() {
         game.stage.dispose();
+        MainMusic.dispose();
     }
 }

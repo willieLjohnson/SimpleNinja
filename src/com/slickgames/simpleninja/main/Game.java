@@ -43,8 +43,8 @@ public class Game implements ApplicationListener {
         assets.load("res/images/enemy_idleAll.png", Texture.class);
         assets.load("res/images/crystal.png", Texture.class);
         assets.load("res/images/hud.png", Texture.class);
-//        assets.load("res/maps/test one.png", Texture.class);
-//       assets.load("res/music/Mainemenu1.mp3", Music.class);
+        assets.load("res/maps/Main1.Png", Texture.class);
+       assets.load("res/music/MainMusic.mp3", Music.class);
 
         while (!assets.update()) {
             System.out.println(assets.getProgress() * 100 + "%");
@@ -62,7 +62,7 @@ public class Game implements ApplicationListener {
     }
 
     @Override
-    public void resize(int width, int height) {
+      public void resize(int width, int height) {
 
 
     }
