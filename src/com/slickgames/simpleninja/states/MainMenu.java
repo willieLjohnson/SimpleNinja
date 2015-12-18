@@ -84,9 +84,9 @@ public class MainMenu extends GameState {
             MainMenuSext = new TextureRegion(Mainmenu1ext);
         }
 // if (mainmenu==1){
-//            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test two.png");
-//            MainMenu1S = TextureRegion.split(Mainmenu1, 375, 354)[0];
-//            animation.setFrames(MainMenu1S, 1/1f);
+//            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/Treebob.png");
+//            MainMenu1S = TextureRegion.split(Mainmenu1, 500, 363)[0];
+//            animation.setFrames(MainMenu1S, 1/5f);
 //        }
 
         //input///////////////////////////////
@@ -113,7 +113,7 @@ public class MainMenu extends GameState {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.begin();
         sb.draw(animation.getFrame(), 0, 0);
-        sb.draw(MainMenuSext,500,0);
+       sb.draw(MainMenuSext,500,0);
         sb.end();
         gsm.game().stage.act(Gdx.graphics.getDeltaTime());
         gsm.game().stage.draw();

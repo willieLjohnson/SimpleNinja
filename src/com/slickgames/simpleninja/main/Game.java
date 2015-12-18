@@ -46,6 +46,7 @@ public class Game implements ApplicationListener {
         assets.load("res/maps/Main1.Png", Texture.class);
        assets.load("res/music/MainMusic.mp3", Music.class);
         assets.load("res/maps/Main1Ext.jpg", Texture.class);
+        assets.load("res/maps/Treebob.png", Texture.class);
 
         while (!assets.update()) {
             System.out.println(assets.getProgress() * 100 + "%");
