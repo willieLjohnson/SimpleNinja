@@ -21,7 +21,7 @@
       <sourceFolder url="file://$MODULE_DIR$/res" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
       <library name="gdx-backend-lwjgl-natives.jar">
         <CLASSES>
@@ -85,6 +85,5 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="gdx-sources" level="project" />
   </component>
 </module>

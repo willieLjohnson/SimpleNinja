@@ -41,17 +41,17 @@ public class MainMenu extends GameState {
 
         //stage/////////////////////////
 //        stage = new Stage(new FitViewport(Game.V_WIDTH,Game.V_HEIGHT));
-        skin = new Skin(Gdx.files.internal("res/maps/uiskin.json") , new TextureAtlas(Gdx.files.internal("res/maps/uiskin.atlas")));
+        skin = new Skin(Gdx.files.internal("res/maps/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/maps/uiskin.atlas")));
 
         BitmapFont bt = new BitmapFont();
         table = new Table();
         table.setFillParent(true);
         table.setWidth(game.stage.getWidth());
         table.align(Align.center);
-        Label.LabelStyle ls = new Label.LabelStyle(bt, Color.WHITE);
+        Label.LabelStyle ls = new Label.LabelStyle(bt, Color.GRAY);
         Label label = new Label("Simple Ninja 1.0", ls);
         startButton = new TextButton("Start", skin);
-        OptionsButton = new TextButton("Option", skin);
+        OptionsButton = new TextButton("Options", skin);
         quitButton = new TextButton("Quit", skin);
         startButton.addListener(new ClickListener() {
             @Override
@@ -61,7 +61,7 @@ public class MainMenu extends GameState {
             }
         });
 
-        table.padTop(30);
+        table.padTop(20);
         table.add(label);
         table.row();
         table.add(startButton);
