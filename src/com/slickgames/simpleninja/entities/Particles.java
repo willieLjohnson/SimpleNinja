@@ -15,7 +15,7 @@ public class Particles extends ApplicationAdapter {
         batch = new SpriteBatch();
 
         pe = new ParticleEffect();
-        pe.load(Gdx.files.internal("res/Particals/Partical Party"),Gdx.files.internal(""));
+        pe.load(Gdx.files.internal("res/Particals/Partical Party"),Gdx.files.internal("res/Particals"));
         pe.getEmitters().first().setPosition(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
         pe.start();
     }
