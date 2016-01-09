@@ -2,6 +2,7 @@ package com.slickgames.simpleninja.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.slickgames.simpleninja.main.Game;
 
@@ -16,9 +17,9 @@ public class Player extends B2DSprite {
     public Player(Body body) {
         super(body);
 
-        Texture runningAnimation = Game.game.getAssetManager().get("res/images/simple_runAll.png");
-        Texture attackingAnimation = Game.game.getAssetManager().get("res/images/simple_attackAll.png");
-        Texture idlingAnimation = Game.game.getAssetManager().get("res/images/simple_idleAll.png");
+        Texture runningAnimation = Game.game.getAssetManager().get("res/images/simple_run.png");
+        Texture attackingAnimation = Game.game.getAssetManager().get("res/images/simple_attack.png");
+        Texture idlingAnimation = Game.game.getAssetManager().get("res/images/simple_idle.png");
         run = TextureRegion.split(runningAnimation, 54, 42)[0];
         idle = TextureRegion.split(idlingAnimation, 54, 42)[0];
         jump = TextureRegion.split(runningAnimation, 54, 42)[0];
@@ -28,6 +29,7 @@ public class Player extends B2DSprite {
 
     @Override
     public void update(float dt) {
+
     }
 
     public void collectCrystal() {
@@ -101,11 +103,24 @@ public class Player extends B2DSprite {
 
     @Override
     public void playerUpdate(float dt, float lastAttack) {
+        if (health <= 0) {
+            kill();
+            System.out.println("player ded");
+        }
         if (attacked) {
             animation.update(dt + (dt - lastAttack));
             attacked =false;
         }
         else
             animation.update(dt);
+    }
+
+    public void kill() {
+        replace();
+        health = MAX_HEALTH;
+    }
+
+    private void replace() {
+        this.body.setTransform(new Vector2(0,6), body.getAngle());
     }
 }

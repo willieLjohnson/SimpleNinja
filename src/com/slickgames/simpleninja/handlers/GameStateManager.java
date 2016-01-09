@@ -1,21 +1,20 @@
 package com.slickgames.simpleninja.handlers;
 
 import com.slickgames.simpleninja.main.Game;
-import com.slickgames.simpleninja.states.GameState;
-import com.slickgames.simpleninja.states.MainMenu;
-import com.slickgames.simpleninja.states.Pause;
-import com.slickgames.simpleninja.states.Play;
+import com.slickgames.simpleninja.states.*;
 
 import java.util.Stack;
 
 public class GameStateManager {
+
+    public boolean debug;
     public int stateStautes;
     public static final int PLAY = 1;
     public static final int PAUSE = 0;
     public static final int MAIN_MENU = 2;
     private Game game;
     private Stack<GameState> gameStates;
-    private Play play;
+    public Play play;
 
     public GameStateManager(Game game) {
         this.game = game;

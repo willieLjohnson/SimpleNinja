@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.slickgames.simpleninja.handlers.B2DVars;
 import com.slickgames.simpleninja.handlers.MyContactListener;
 import com.slickgames.simpleninja.main.Game;
+
+import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 public class Enemy extends B2DSprite {
     public static final float MAX_SPEED = 1.5f;
@@ -32,9 +32,9 @@ public class Enemy extends B2DSprite {
     public Enemy(Body body) {
         super(body);
 
-        Texture runningAnimation = Game.game.getAssetManager().get("res/images/simple_runAll.png");
-        Texture attackingAnimation = Game.game.getAssetManager().get("res/images/simple_attackAll.png");
-        Texture idlingAnimation = Game.game.getAssetManager().get("res/images/enemy_idleAll.png");
+        Texture runningAnimation = Game.game.getAssetManager().get("res/images/enemy_run.png");
+        Texture attackingAnimation = Game.game.getAssetManager().get("res/images/enemy_attack.png");
+        Texture idlingAnimation = Game.game.getAssetManager().get("res/images/enemy_idle.png");
         run = TextureRegion.split(runningAnimation, 54, 42)[0];
         idle = TextureRegion.split(idlingAnimation, 54, 42)[0];
         jump = TextureRegion.split(runningAnimation, 54, 42)[0];
@@ -47,6 +47,10 @@ public class Enemy extends B2DSprite {
     public void update(float dt) {
         animation.update(dt);
         currentTime = TimeUtils.nanoTime();
+        if (health <= 0) {
+            kill();
+            System.out.println("ded");
+        }
 
         if (dir == -1) {
 
@@ -177,39 +181,18 @@ public class Enemy extends B2DSprite {
 
     }
 
-    public boolean isRunning() {
-        return running;
-    }
-
-    public boolean isIdle() {
-        return idling;
-    }
-
-    public boolean isJumping() {
-        return jumping;
-    }
-
-    public boolean isAttacking() {
-        return attacking;
-    }
-
-    public void setAttacking(boolean b) {
-        attacking = b;
-    }
-
-    public int getNumCrystal() {
-        return numCrystals;
-    }
-
-    public int getTotalCrystals() {
-        return totalCrystals;
-    }
-
-    public void setTotalCrystals(int i) {
-        totalCrystals = i;
-    }
 
     @Override
     public void playerUpdate(float dt, float lastAttack) {
+    }
+
+    @Override
+    public void kill() {
+        replace();
+        health = MAX_HEALTH;
+    }
+
+    private void replace() {
+        this.body.setTransform(new Vector2(5,8), body.getAngle());
     }
 }

@@ -15,7 +15,9 @@ public abstract class B2DSprite {
     protected float width;
     protected float height;
     protected int dir = 1;
-    public float MAX_SPEED = 2f;
+    protected float MAX_SPEED = 2f;
+    protected int MAX_HEALTH = 20;
+    public int health = MAX_HEALTH;
 
     public B2DSprite(Body body) {
         this.body = body;
@@ -30,7 +32,9 @@ public abstract class B2DSprite {
     }
 
     public abstract void update(float dt);
+
     public abstract void playerUpdate(float dt, float lastAttack);
+
     public void render(SpriteBatch sb) {
         sb.begin();
         sb.draw(animation.getFrame(), body.getPosition().x * PPM - width / 2,
@@ -41,6 +45,7 @@ public abstract class B2DSprite {
     public Animation getAnimation() {
         return animation;
     }
+
     public Body getBody() {
         return body;
     }
@@ -60,7 +65,18 @@ public abstract class B2DSprite {
     public void setDir(int x) {
         dir = x;
     }
+
     public int getDir() {
         return dir;
     }
+
+    public float getMaxSpeed() {
+        return MAX_SPEED;
+    }
+
+    public void damage(int dmg) {
+        health -= dmg;
+        System.out.println(health);
+    }
+    public abstract void kill();
 }

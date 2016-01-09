@@ -12,6 +12,7 @@ public class MyContactListener implements ContactListener {
 	private boolean withinRange;
 	private boolean wallCollision;
 	private boolean wallRun;
+	private boolean enemyHit;
 
 	public MyContactListener() {
 		super();
@@ -39,6 +40,11 @@ public class MyContactListener implements ContactListener {
 			wallRun = true;
 		if (fb.getUserData() != null && fb.getUserData().equals("hand"))
 			wallRun = true;
+
+		if (fa.getUserData() != null && fa.getUserData().equals("attackRange"))
+			enemyHit = true;
+		if (fb.getUserData() != null && fb.getUserData().equals("attackRange"))
+			enemyHit = true;
 
 		/// enemy senses
 		if (fa.getUserData() != null && fa.getUserData().equals("visionRight"))
@@ -78,6 +84,10 @@ public class MyContactListener implements ContactListener {
 			wallRun = false;
 		if (fb.getUserData() != null && fb.getUserData().equals("hand"))
 			wallRun = false;
+		if (fa.getUserData() != null && fa.getUserData().equals("attackRange"))
+			enemyHit = false;
+		if (fb.getUserData() != null && fb.getUserData().equals("attackRange"))
+			enemyHit = false;
 
 		// enemy senses
 		if (fa.getUserData() != null && fa.getUserData().equals("visionRight"))
@@ -130,6 +140,10 @@ public class MyContactListener implements ContactListener {
 
 	@Override
 	public void postSolve(Contact c, ContactImpulse m) {
+	}
+
+	public boolean isEnemyHit() {
+		return enemyHit;
 	}
 
 }

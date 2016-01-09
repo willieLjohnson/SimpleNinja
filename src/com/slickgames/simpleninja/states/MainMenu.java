@@ -5,7 +5,10 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -17,31 +20,24 @@ import com.slickgames.simpleninja.handlers.Animation;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.main.Game;
 
-/**
- * Created by Administrator on 12/8/2015.
- */
 public class MainMenu extends GameState {
     private TextButton OptionsButton;
     private Skin skin;
-//    private Stage stage;
 
     private Table table;
     private TextButton startButton;
     private TextButton quitButton;
 
-    private SpriteBatch batch;
-    private Sprite waterfall;
-    Animation animation;
-    TextureRegion[] MainMenu1S;
-    int mainmenu = 1;
-    Music MainMusic;
+    private Sprite animationSprite;
+    Animation menuAnimation;
+    TextureRegion[] menuTexReg;
+    int menuVariant = 1;
+    Music mainMenuMusic;
 
     public MainMenu(GameStateManager gsm) {
         super(gsm);
 
-        //stage/////////////////////////
-//        stage = new Stage(new FitViewport(Game.V_WIDTH,Game.V_HEIGHT));
-        skin = new Skin(Gdx.files.internal("res/maps/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/maps/uiskin.atlas")));
+        skin = new Skin(Gdx.files.internal("res/font/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/font/uiskin.atlas")));
 
         BitmapFont bt = new BitmapFont();
         table = new Table();
@@ -69,31 +65,33 @@ public class MainMenu extends GameState {
         table.add(OptionsButton);
         table.row();
         table.add(quitButton);
-        //sounds//////////////////////////////////
 
         game.stage.addActor(table);
-//        //animation//////////////////////////////
-        animation = new Animation();
-        if (mainmenu == 1) {
-            MainMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/MainMusic.mp3"));
 
-            MainMenu1S = TextureRegion.split(Game.game.getAssetManager().get("res/maps/Main1.Png"), 500, 475)[0];
-            animation.setFrames(MainMenu1S, 1 / 25f);
-            waterfall = new Sprite(animation.getFrame());
-            waterfall.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // animations
+        menuAnimation = new Animation();
+        if (menuVariant == 1) {
+            mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/waterfall_music.mp3"));
 
+            menuTexReg = TextureRegion.split(Game.game.getAssetManager().get("res/menu/waterfall_animation.Png"), 500, 475)[0];
+            menuAnimation.setFrames(menuTexReg, 1 / 25f);
         }
-// if (mainmenu==1){
-//            Texture Mainmenu1 = Game.game.getAssetManager().get("res/maps/test two.png");
-//            MainMenu1S = TextureRegion.split(Mainmenu1, 375, 354)[0];
-//            animation.setFrames(MainMenu1S, 1/1f);
-//        }
+        if (menuVariant == 2) {
+            //mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/treeBob_music.mp3"));
 
-        //input///////////////////////////////
+            menuTexReg = TextureRegion.split(Game.game.getAssetManager().get("res/menu/Treebob.Png"), 500, 475)[0];
+            menuAnimation.setFrames(menuTexReg, 1 / 1f);
+        }
+        animationSprite = new Sprite(menuAnimation.getFrame());
+        animationSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        // handle input
         InputMultiplexer im = new InputMultiplexer(gsm.game().stage);
         Gdx.input.setInputProcessor(im);
-        MainMusic.play();
-        MainMusic.setLooping(true);
+
+        // sfx
+        mainMenuMusic.play();
+        mainMenuMusic.setLooping(true);
     }
 
     @Override
@@ -103,9 +101,10 @@ public class MainMenu extends GameState {
 
     @Override
     public void update(float dt) {
-        animation.update(dt);
-        waterfall = new Sprite(animation.getFrame());
-        waterfall.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        menuAnimation.update(dt);
+        animationSprite = new Sprite(menuAnimation.getFrame());
+        animationSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        animationSprite.flip(true, false);
     }
 
     @Override
@@ -113,7 +112,7 @@ public class MainMenu extends GameState {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.begin();
-        waterfall.draw(sb);
+        animationSprite.draw(sb);
         sb.end();
         gsm.game().stage.act(Gdx.graphics.getDeltaTime());
         gsm.game().stage.draw();
@@ -123,6 +122,6 @@ public class MainMenu extends GameState {
     @Override
     public void dispose() {
         game.stage.dispose();
-        MainMusic.dispose();
+        mainMenuMusic.dispose();
     }
 }

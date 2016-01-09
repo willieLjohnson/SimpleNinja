@@ -24,4 +24,9 @@ public class Crystal extends B2DSprite {
     public void playerUpdate(float dt, float lastAttack) {
         // n/a
     }
+
+    @Override
+    public void kill() {
+
+    }
 }

@@ -3,6 +3,7 @@ package com.slickgames.simpleninja.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.slickgames.simpleninja.entities.Crystal;
 import com.slickgames.simpleninja.entities.Enemy;
@@ -21,12 +23,14 @@ import com.slickgames.simpleninja.entities.Player;
 import com.slickgames.simpleninja.handlers.*;
 import com.slickgames.simpleninja.main.Game;
 
+import java.util.Random;
+
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 public class Play extends GameState {
 
-    private boolean debug = false;
 
+    public Pixmap backgroundForPause;
     private World world;
     private Box2DDebugRenderer b2dr;
 
@@ -52,12 +56,17 @@ public class Play extends GameState {
 
     private ShapeRenderer sr;
 
-    ParticleEffect runningDust;
+    ParticleEffect runningDust, bloodSplat;
     private boolean ran;
+    private boolean attacked;
+    private int rotTick;
+    private Array<Enemy> enemies;
+    private Array<ParticleEffect> bloodParts;
 
     public Play(GameStateManager gsm) {
         super(gsm);
         Gdx.input.setInputProcessor(new MyInputProcessor());
+
         // set up box2d stuff
         world = new World(new Vector2(0, -9.81f), true);
         cl = new MyContactListener();
@@ -68,7 +77,8 @@ public class Play extends GameState {
         createPlayer();
 
         // create enemy
-        createEnemy();
+        enemies = new Array<Enemy>();
+        createEnemy(2);
 
         // create tiles
         createTiles();
@@ -85,9 +95,12 @@ public class Play extends GameState {
 
         // set up particles
         runningDust = new ParticleEffect();
-        runningDust.load(Gdx.files.internal("res/Particals/running_dust"), Gdx.files.internal("res/Particals"));
-
+        runningDust.load(Gdx.files.internal("res/particles/running_dust"), Gdx.files.internal("res/particles"));
         runningDust.start();
+        bloodSplat = new ParticleEffect();
+        bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
+        bloodSplat.start();
+        bloodParts = new Array<ParticleEffect>();
     }
 
     @Override
@@ -103,7 +116,7 @@ public class Play extends GameState {
             if (MyInput.isDown(MyInput.LEFT)) {
                 player.setDir(-1);
 
-                if (Math.abs(player.getBody().getLinearVelocity().x) < player.MAX_SPEED) {
+                if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
                     player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? -16f : -2f, 0, true);
                 }
                 if (cl.isPlayerOnGround()) {
@@ -114,7 +127,7 @@ public class Play extends GameState {
             } else if (MyInput.isDown(MyInput.RIGHT)) {
                 player.setDir(1);
 
-                if (Math.abs(player.getBody().getLinearVelocity().x) < player.MAX_SPEED) {
+                if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
 
                     player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? 16f : 2f, 0, true);
                 }
@@ -130,9 +143,12 @@ public class Play extends GameState {
         if (MyInput.isPressed(MyInput.ATTACK) && !swinging && cl.isPlayerOnGround()) {
             swinging = true;
 
+
             if (currentAttack >= 16) {
                 currentAttack = 0;
                 player.setAttacking(false);
+                player.damage(player.health / 2);
+                attacked = true;
             }
             if (currentAttack >= 4) {
                 currentAttack += 4;
@@ -148,9 +164,24 @@ public class Play extends GameState {
             }
             player.getBody().applyLinearImpulse(
                     Math.abs(player.getBody().getLinearVelocity().x) > 1 ? 0f : player.getDir() * 6f, 0f, 0f, 0f, true);
-
+            if (cl.isEnemyHit()) {
+                enemy.damage(currentAttack / 2);
+                if (bloodParts.size < 3) {
+                    bloodSplat = new ParticleEffect();
+                    bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
+                    bloodSplat.start();
+                    bloodParts.add(bloodSplat);
+                }
+            }
         }
-        if ((player.getAnimation().getCurrentFrame() == currentAttack) && player.isAttacking()) {
+
+        if ((player.getAnimation().
+
+                getCurrentFrame()
+
+                == currentAttack) && player.isAttacking())
+
+        {
             player.getAnimation().setSpeed(0f);
             if (swinging) {
                 lastAttack = TimeUtils.nanoTime();
@@ -165,36 +196,46 @@ public class Play extends GameState {
 
         }
         // player jump
-        if (cl.wallRun() && jump >= 1) {
+        if (cl.wallRun() && jump >= 1)
+
+        {
             if (MyInput.isDown(MyInput.JUMP) && (player.getBody().getLinearVelocity().y < .1f || wallRun == 0)) {
                 player.getBody().applyLinearImpulse(1.5f * player.getDir(), wallRun == 0 ? 4.5f - player.getBody().getLinearVelocity().y : 4.5f - wallRun, 0, 0,
                         true);
                 wallRun += (wallRun >= 4.5 ? 0 : .5f);
-
             }
-        } else {
+        } else
+
+        {
             wallRun = 0;
         }
 
-        if (cl.isPlayerOnGround()) {
+        if (cl.isPlayerOnGround())
+
+        {
             if (player.getBody().getLinearVelocity().y == 0) {
                 jump = 0;
             }
             if (Math.abs(player.getBody().getLinearVelocity().x) > 1 && !player.isRunning()) {
                 player.getBody().applyForceToCenter(
-                        player.getBody().getLinearVelocity().x < 0 ? player.MAX_SPEED * 8 : -player.MAX_SPEED * 8, 0,
+                        player.getBody().getLinearVelocity().x < 0 ? player.getMaxSpeed() * 8 : -player.getMaxSpeed() * 8, 0,
                         true);
             }
-        } else {
+        } else
+
+        {
             swinging = false;
             if (!player.isJumping())
                 player.toggleAnimation("jump");
         }
 
-        if (MyInput.isPressed(MyInput.JUMP) && jump < 1) {
+        if (MyInput.isPressed(MyInput.JUMP) && jump < 1)
+
+        {
             player.getBody().applyLinearImpulse(0, 3.5f - player.getBody().getLinearVelocity().y, 0, 0, true);
             jump += 1;
         }
+
     }
 
     @Override
@@ -204,9 +245,12 @@ public class Play extends GameState {
         handleInput();
 
         // handle enemies
+//        for (Enemy e : enemies) {
+//            e.update(dt);
+//            e.seek(player.getBody(), world, cl);
+//        }
         enemy.update(dt);
         enemy.seek(player.getBody(), world, cl);
-
         // update box2d
         world.step(dt, 6, 2);
 
@@ -224,9 +268,15 @@ public class Play extends GameState {
         for (int i = 0; i < crystals.size; i++) {
             crystals.get(i).update(dt);
         }
+        Random rand;
+        rand = new Random();
         if (cl.isPlayerOnGround())
-            runningDust.getEmitters().first().setPosition(player.getPosition().x * PPM - player.getWidth() / 10, player.getPosition().y * PPM - player.getHeight() / 2);
+            runningDust.getEmitters().first().setPosition(player.getPosition().x * PPM - player.getWidth() / 10, player.getPosition().y * PPM - player.getHeight() / 2 + rand.nextInt(5));
         runningDust.update(Gdx.graphics.getDeltaTime());
+        for (ParticleEffect p : bloodParts) {
+            p.getEmitters().first().setPosition(enemy.getPosition().x * PPM - enemy.getWidth() / 10, enemy.getPosition().y * PPM - enemy.getHeight() / 4);
+            p.update(Gdx.graphics.getDeltaTime());
+        }
     }
 
     public void render() {
@@ -239,26 +289,42 @@ public class Play extends GameState {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // set cam to follow player
-        cam.position.set(player.getPosition().x * PPM + Game.V_WIDTH / 4, player.getPosition().y * PPM, 0);
+        cam.position.set((player.getPosition().x * PPM + Game.V_WIDTH / 4) + player.getBody().getLinearVelocity().x, (player.getPosition().y * PPM) + player.getBody().getLinearVelocity().y, 0);
+
+        // Screen shake (probalby going to be used for devastating attacks)
+        if (attacked && rotTick < 2) {
+            cam.translate(1f, 1.5f);
+            rotTick++;
+        } else if (rotTick > 0) {
+//            cam.translate(2f,0);
+            rotTick--;
+            attacked = false;
+        }
+
         b2dCam.position.set(cam.position.x / PPM, cam.position.y / PPM, 0);
         cam.update();
         b2dCam.update();
+
         // draw tile map
         tmr.setView(cam);
         tmr.render();
 
-        // draw player
+        // draw entities
         sb.setProjectionMatrix(cam.combined);
         player.render(sb);
+//        for (Enemy e : enemies) {
+//            e.render(sb);
+//        }
         enemy.render(sb);
-        if (runningDust.isComplete() && player.isRunning())
-            runningDust.reset();
+
+
         // draw crytals
         for (int i = 0; i < crystals.size; i++) {
             crystals.get(i).render(sb);
         }
 
-        if (debug) {
+
+        if (gsm.debug) {
             b2dr.render(world, b2dCam.combined);
             sr.setProjectionMatrix(b2dCam.combined);
             sr.begin(ShapeRenderer.ShapeType.Line);
@@ -266,14 +332,26 @@ public class Play extends GameState {
             sr.line(enemy.getVectors("c"), enemy.getVectors("n"));
             sr.end();
         }
+
+        //particles
         sb.begin();
         if (player.isRunning()) {
+            if (runningDust.isComplete() && player.isRunning())
+                runningDust.reset();
             runningDust.draw(sb);
             ran = true;
-        } else if (ran) {
+        } else if (ran && Math.abs(player.getBody().getLinearVelocity().x) >= .5) {
             runningDust.draw(sb);
             if (runningDust.isComplete()) {
                 ran = false;
+            }
+        }
+        for (ParticleEffect p : bloodParts) {
+            if (p.isComplete()) {
+                p.dispose();
+                bloodParts.removeValue(p, true);
+            } else {
+                p.draw(sb);
             }
         }
         sb.end();
@@ -317,19 +395,29 @@ public class Play extends GameState {
         fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL;
         fdef.isSensor = true;
         body.createFixture(fdef).setUserData("hand");
+
+        // create attack range
+        shape.setAsBox(30 / PPM, 8 / PPM, new Vector2(0, -5 / PPM), 0);
+        fdef.shape = shape;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER;
+        fdef.filter.maskBits = B2DVars.BIT_ENEMY;
+        fdef.isSensor = true;
+        body.createFixture(fdef).setUserData("attackRange");
+
         // create player
         player = new Player(body);
 
         body.setUserData(player);
     }
 
-    private void createEnemy() {
+    private void createEnemy(int numOfEnems) {
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
 
+//        for (int i = 0; i < numOfEnems; i++) {
         // create enemy
-        bdef.position.set(1200 / PPM, 800 / PPM);
+        bdef.position.set(500 / PPM, 800 / PPM);
         bdef.type = BodyType.DynamicBody;
         // bdef.linearVelocity.set(1f, 0);
         Body body = world.createBody(bdef);
@@ -396,7 +484,10 @@ public class Play extends GameState {
         // create enemy
         enemy = new Enemy(body);
 
+
         body.setUserData(enemy);
+        enemies.add(enemy);
+//        }
     }
 
     private void createTiles() {
@@ -518,9 +609,5 @@ public class Play extends GameState {
 
             body.setUserData(c);
         }
-    }
-
-    public MyContactListener getCl() {
-        return cl;
     }
 }
