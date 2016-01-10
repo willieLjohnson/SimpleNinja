@@ -27,6 +27,7 @@ public class Pause extends GameState {
     BitmapFont font = new BitmapFont();
     Skin skin;
     Table table;
+    InputMultiplexer im;
 
 
     public Pause(GameStateManager gsm) {
@@ -84,19 +85,16 @@ public class Pause extends GameState {
         game.stage.addActor(table);
 
         // handle input
-        InputMultiplexer im = new InputMultiplexer(gsm.game().stage);
-        Gdx.input.setInputProcessor(im);
+
+        Gdx.input.setInputProcessor(gsm.game().stage);
     }
 
     @Override
     public void handleInput() {
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (gsm.stateStautes == 0) {
-                gsm.setState(GameStateManager.PLAY);
-                Gdx.input.setInputProcessor(new MyInputProcessor());
-            } else if (gsm.stateStautes == 1) {
-                gsm.setState(GameStateManager.PAUSE);
-            }
+            gsm.setState(GameStateManager.PLAY);
+            Gdx.input.setInputProcessor(new MyInputProcessor());
         }
     }
 

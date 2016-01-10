@@ -8,13 +8,13 @@ import java.util.Stack;
 public class GameStateManager {
 
     public boolean debug;
-    public int stateStautes;
     public static final int PLAY = 1;
     public static final int PAUSE = 0;
     public static final int MAIN_MENU = 2;
     private Game game;
     private Stack<GameState> gameStates;
     public Play play;
+
 
     public GameStateManager(Game game) {
         this.game = game;
@@ -36,18 +36,15 @@ public class GameStateManager {
 
     private GameState getState(int state) {
         if (state == PLAY) {
-            stateStautes = 1;
             if (play == null) {
                 play = new Play(this);
             }
             return play;
         }
         if (state == PAUSE) {
-            stateStautes = 0;
             return new Pause(this);
         }
         if (state == MAIN_MENU) {
-            stateStautes = 2;
             return new MainMenu(this);
         }
 

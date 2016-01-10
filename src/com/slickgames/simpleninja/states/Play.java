@@ -62,6 +62,7 @@ public class Play extends GameState {
     private int rotTick;
     private Array<Enemy> enemies;
     private Array<ParticleEffect> bloodParts;
+    private boolean pauseOnUpdate;
 
     public Play(GameStateManager gsm) {
         super(gsm);
@@ -108,7 +109,7 @@ public class Play extends GameState {
 
         // pause game
         if (MyInput.isPressed(MyInput.RESET)) {
-            gsm.setState(GameStateManager.PAUSE);
+            pauseOnUpdate = true;
         }
 
         // player movement
@@ -240,7 +241,10 @@ public class Play extends GameState {
 
     @Override
     public void update(float dt) {
-
+        if (pauseOnUpdate) {
+            gsm.setState(GameStateManager.PAUSE);
+            pauseOnUpdate = false;
+        }
         // check input
         handleInput();
 
