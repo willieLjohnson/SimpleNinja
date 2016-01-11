@@ -57,6 +57,13 @@ public class MainMenu extends GameState {
             }
         });
 
+        OptionsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gsm.setState(GameStateManager.Option);
+                event.stop();
+            }
+        });
         table.padTop(20);
         table.add(label);
         table.row();

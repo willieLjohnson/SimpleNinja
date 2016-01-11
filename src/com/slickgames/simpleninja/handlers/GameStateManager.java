@@ -11,6 +11,7 @@ public class GameStateManager {
     public static final int PLAY = 1;
     public static final int PAUSE = 0;
     public static final int MAIN_MENU = 2;
+    public static final int Option=3;
     private Game game;
     private Stack<GameState> gameStates;
     public Play play;
@@ -46,6 +47,9 @@ public class GameStateManager {
         }
         if (state == MAIN_MENU) {
             return new MainMenu(this);
+        }
+        if (state == Option){
+            return new Options(this);
         }
 
         return null;
