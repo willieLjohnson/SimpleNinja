@@ -11,17 +11,17 @@ public class Particles extends ApplicationAdapter {
     ParticleEffect pe;
 
     @Override
-    public void create () {
+    public void create() {
         batch = new SpriteBatch();
 
         pe = new ParticleEffect();
-        pe.load(Gdx.files.internal("res/particles/running_dust"),Gdx.files.internal("res/particles"));
-        pe.getEmitters().first().setPosition(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        pe.load(Gdx.files.internal("res/particles/running_dust"), Gdx.files.internal("res/particles"));
+        pe.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         pe.start();
     }
 
     @Override
-    public void render () {
+    public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

@@ -15,7 +15,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.slickgames.simpleninja.entities.Crystal;
 import com.slickgames.simpleninja.entities.Enemy;
@@ -31,20 +30,16 @@ public class Play extends GameState {
 
 
     public Pixmap backgroundForPause;
+    public Player player;
+    public boolean enemyAi = true;
+    ParticleEffect runningDust, bloodSplat;
     private World world;
     private Box2DDebugRenderer b2dr;
-
     private OrthographicCamera b2dCam;
-
     private MyContactListener cl;
-
     private TiledMap tileMap;
-
     private OrthogonalTiledMapRenderer tmr;
-
-    private Player player;
     private Array<Crystal> crystals;
-
     private int currentAttack;
     private long lastAttack;
     private boolean swinging;
@@ -53,10 +48,7 @@ public class Play extends GameState {
     private int swingSpeed;
     private float tileSize;
     private Enemy enemy;
-
     private ShapeRenderer sr;
-
-    ParticleEffect runningDust, bloodSplat;
     private boolean ran;
     private boolean attacked;
     private int rotTick;
@@ -149,7 +141,7 @@ public class Play extends GameState {
                 currentAttack = 0;
                 player.setAttacking(false);
                 player.damage(player.health / 2);
-                attacked = true;
+
             }
             if (currentAttack >= 4) {
                 currentAttack += 4;
@@ -166,6 +158,7 @@ public class Play extends GameState {
             player.getBody().applyLinearImpulse(
                     Math.abs(player.getBody().getLinearVelocity().x) > 1 ? 0f : player.getDir() * 6f, 0f, 0f, 0f, true);
             if (cl.isEnemyHit()) {
+                attacked = true;
                 enemy.damage(currentAttack / 2);
                 if (bloodParts.size < 3) {
                     bloodSplat = new ParticleEffect();
@@ -254,7 +247,8 @@ public class Play extends GameState {
 //            e.seek(player.getBody(), world, cl);
 //        }
         enemy.update(dt);
-        enemy.seek(player.getBody(), world, cl);
+        if (enemyAi)
+            enemy.seek(player.getBody(), world, cl);
         // update box2d
         world.step(dt, 6, 2);
 
@@ -614,4 +608,5 @@ public class Play extends GameState {
             body.setUserData(c);
         }
     }
+
 }

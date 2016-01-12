@@ -1,10 +1,8 @@
 package com.slickgames.simpleninja.handlers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import org.lwjgl.input.Mouse;
 
 public class MyInputProcessor extends InputAdapter {
 
@@ -55,16 +53,14 @@ public class MyInputProcessor extends InputAdapter {
     /////////// Mouse Inputs
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT)
-        {
+        if (button == Input.Buttons.LEFT) {
             MyInput.setKey(MyInput.ATTACK, true);
         }
         return true;
     }
 
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT)
-        {
+        if (button == Input.Buttons.LEFT) {
             MyInput.setKey(MyInput.ATTACK, false);
         }
         return true;

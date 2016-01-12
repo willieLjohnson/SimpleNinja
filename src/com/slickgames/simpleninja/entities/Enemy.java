@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.slickgames.simpleninja.handlers.B2DVars;
 import com.slickgames.simpleninja.handlers.MyContactListener;
 import com.slickgames.simpleninja.main.Game;
-
-import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 public class Enemy extends B2DSprite {
     public static final float MAX_SPEED = 1.5f;
@@ -193,6 +193,7 @@ public class Enemy extends B2DSprite {
     }
 
     private void replace() {
-        this.body.setTransform(new Vector2(5,8), body.getAngle());
+        this.body.setTransform(new Vector2(5, 8), body.getAngle());
+        state = 0;
     }
 }

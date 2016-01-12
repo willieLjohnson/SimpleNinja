@@ -7,11 +7,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.slickgames.simpleninja.main.Game;
 
 public class Player extends B2DSprite {
-    private int numCrystals;
-    private int totalCrystals;
     public boolean running, idling, jumping, attacking, attacked;
     TextureRegion[] run, idle, jump, attack;
-
+    private int numCrystals;
+    private int totalCrystals;
 
 
     public Player(Body body) {
@@ -81,12 +80,12 @@ public class Player extends B2DSprite {
         return jumping;
     }
 
-    public void setAttacking(boolean b) {
-        attacking = b;
-    }
-
     public boolean isAttacking() {
         return attacking;
+    }
+
+    public void setAttacking(boolean b) {
+        attacking = b;
     }
 
     public int getNumCrystal() {
@@ -109,9 +108,8 @@ public class Player extends B2DSprite {
         }
         if (attacked) {
             animation.update(dt + (dt - lastAttack));
-            attacked =false;
-        }
-        else
+            attacked = false;
+        } else
             animation.update(dt);
     }
 
@@ -121,6 +119,6 @@ public class Player extends B2DSprite {
     }
 
     private void replace() {
-        this.body.setTransform(new Vector2(0,6), body.getAngle());
+        this.body.setTransform(new Vector2(0, 6), body.getAngle());
     }
 }

@@ -62,12 +62,12 @@ public abstract class B2DSprite {
         return height;
     }
 
-    public void setDir(int x) {
-        dir = x;
-    }
-
     public int getDir() {
         return dir;
+    }
+
+    public void setDir(int x) {
+        dir = x;
     }
 
     public float getMaxSpeed() {
@@ -78,5 +78,6 @@ public abstract class B2DSprite {
         health -= dmg;
         System.out.println(health);
     }
+
     public abstract void kill();
 }

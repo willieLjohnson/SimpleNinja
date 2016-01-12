@@ -2,7 +2,6 @@ package com.slickgames.simpleninja.main;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.slickgames.simpleninja.entities.Particles;
 
 public class Launcher {
     public static void main(String[] args) {
