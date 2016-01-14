@@ -121,7 +121,7 @@ public class Pause extends GameState {
                     gsm.play.enemyAi = !gsm.play.enemyAi;
                     break;
                 case "fling":
-                    gsm.play.player.getBody().applyLinearImpulse(111, 0, 0, 0, true);
+                    gsm.play.player.getBody().applyLinearImpulse(121, 0, 0, 0, true);
                     break;
                 default:
                     cmd.setText("Error");

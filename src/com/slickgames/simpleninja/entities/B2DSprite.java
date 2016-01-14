@@ -74,14 +74,14 @@ public abstract class B2DSprite {
         return MAX_SPEED;
     }
 
-    public void setMaxSpeed(float sp) {
-        MAX_SPEED = sp;
-    }
-
     public void damage(int dmg) {
         health -= dmg;
         System.out.println(health);
     }
 
     public abstract void kill();
+
+    public void setMaxSpeed(float maxSpeed) {
+        this.MAX_SPEED = maxSpeed;
+    }
 }

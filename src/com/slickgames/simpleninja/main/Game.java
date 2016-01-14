@@ -12,15 +12,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInput;
+import com.slickgames.simpleninja.handlers.MyInputProcessor;
 
 public class Game implements ApplicationListener {
     public static final String TITLE = "Simple Ninja v2.0";
     public static final int V_WIDTH = 1366 / 4;
     public static final int V_HEIGHT = 720 / 4;
     public static final int SCALE = 2;
+    public Stage stage;
     public static final float STEP = 1 / 60f;
     public static Game game;
-    public Stage stage;
     public AssetManager assets;
     private float accum;
     private SpriteBatch sb;
@@ -107,7 +108,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose() {
-        assets.clear();
+
 
     }
 

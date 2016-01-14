@@ -132,7 +132,7 @@ public class Play extends GameState {
             } else if (!player.isIdle() && !player.isAttacking())
                 player.toggleAnimation("idle");
 
-        // attack
+        // atttack
         if (MyInput.isPressed(MyInput.ATTACK) && !swinging && cl.isPlayerOnGround()) {
             swinging = true;
 

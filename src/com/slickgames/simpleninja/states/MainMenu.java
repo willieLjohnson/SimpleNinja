@@ -21,16 +21,18 @@ import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.main.Game;
 
 public class MainMenu extends GameState {
+    private TextButton OptionsButton;
+    private Skin skin;
+
+    private Table table;
+    private TextButton startButton;
+    private TextButton quitButton;
+
+    private Sprite animationSprite;
     Animation menuAnimation;
     TextureRegion[] menuTexReg;
     int menuVariant = 1;
     Music mainMenuMusic;
-    private TextButton OptionsButton;
-    private Skin skin;
-    private Table table;
-    private TextButton startButton;
-    private TextButton quitButton;
-    private Sprite animationSprite;
 
     public MainMenu(GameStateManager gsm) {
         super(gsm);
