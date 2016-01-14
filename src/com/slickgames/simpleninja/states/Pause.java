@@ -17,6 +17,9 @@ import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInputProcessor;
 import com.slickgames.simpleninja.main.Game;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Pause extends GameState {
 
 
@@ -91,14 +94,28 @@ public class Pause extends GameState {
             Gdx.input.setInputProcessor(new MyInputProcessor());
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+//            String[] c = cmd.getText().split("(?<=[a-zA-Z])(?=[1])|(?<=\\d)(?=\\D)");
             String c = cmd.getText();
+            Pattern p = Pattern.compile(" *([a-zA-Z]+) ?([0-9]+(\\.[0-9]+)?)?");
+
+            Matcher m = p.matcher(c);
+
+            String param1 = "";
+            String param2 = "";
+            if (m.find()) {
+                param1 = m.group(1);
+                if (m.groupCount() > 1)
+                    param2 = m.group(2);
+            }
             cmd.setText("");
-            switch (c) {
+            switch (param1) {
                 case "tdb":
                     gsm.debug = !gsm.debug;
                     break;
-                case "1":
-                    gsm.debug = !gsm.debug;
+                case "setSpeed":
+
+                    gsm.play.player.setMaxSpeed(Float.parseFloat(param2));
+
                     break;
                 case "tai":
                     gsm.play.enemyAi = !gsm.play.enemyAi;
@@ -123,7 +140,6 @@ public class Pause extends GameState {
         gsm.play.render();
         gsm.game().stage.act(Gdx.graphics.getDeltaTime());
         gsm.game().stage.draw();
-
     }
 
     @Override

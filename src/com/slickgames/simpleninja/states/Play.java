@@ -110,7 +110,7 @@ public class Play extends GameState {
                 player.setDir(-1);
 
                 if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
-                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? -16f : -2f, 0, true);
+                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? -player.getMaxSpeed()*8 : -player.getMaxSpeed(), 0, true);
                 }
                 if (cl.isPlayerOnGround()) {
                     if (!player.isRunning()) {
@@ -122,7 +122,7 @@ public class Play extends GameState {
 
                 if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
 
-                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? 16f : 2f, 0, true);
+                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? player.getMaxSpeed()*8 : player.getMaxSpeed(), 0, true);
                 }
                 if (cl.isPlayerOnGround()) {
                     if (!player.isRunning() && cl.isPlayerOnGround()) {
