@@ -26,6 +26,9 @@ public class MyInputProcessor extends InputAdapter {
         if (k == Keys.SHIFT_LEFT) {
             MyInput.setKey(MyInput.WALLRUN, true);
         }
+        if (k ==Keys.P){
+            MyInput.setKey(MyInput.Parti, true);
+        }
 
         return true;
     }
@@ -46,6 +49,9 @@ public class MyInputProcessor extends InputAdapter {
         }
         if (k == Keys.SHIFT_LEFT) {
             MyInput.setKey(MyInput.WALLRUN, false);
+        }
+        if (k ==Keys.P){
+            MyInput.setKey(MyInput.Parti, false);
         }
         return true;
     }
