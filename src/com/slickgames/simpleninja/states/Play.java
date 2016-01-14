@@ -286,9 +286,6 @@ public class Play extends GameState {
         // clear screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // set cam to follow player
-        cam.position.set((player.getPosition().x * PPM + Game.V_WIDTH / 4) + player.getBody().getLinearVelocity().x, (player.getPosition().y * PPM) + player.getBody().getLinearVelocity().y, 0);
-
         // Screen shake (probalby going to be used for devastating attacks)
         if (attacked && rotTick < 2) {
             cam.translate(1f, 1.5f);
@@ -299,6 +296,8 @@ public class Play extends GameState {
             attacked = false;
         }
 
+        // set cam to follow player
+        cam.position.set((player.getPosition().x * PPM + Game.V_WIDTH / 4) + player.getBody().getLinearVelocity().x, (player.getPosition().y * PPM) + player.getBody().getLinearVelocity().y, 0);
         b2dCam.position.set(cam.position.x / PPM, cam.position.y / PPM, 0);
         cam.update();
         b2dCam.update();

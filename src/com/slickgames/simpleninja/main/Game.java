@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInput;
-import com.slickgames.simpleninja.handlers.MyInputProcessor;
+
 
 public class Game implements ApplicationListener {
     public static final String TITLE = "Simple Ninja v2.0";
@@ -27,13 +29,13 @@ public class Game implements ApplicationListener {
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private GameStateManager gsm;
+    public Viewport viewPort;
 
     @Override
     public void create() {
         game = this;
 
 
-        stage = new Stage(new FitViewport(Game.V_WIDTH, Game.V_HEIGHT));
         //load assets
         assets = new AssetManager();
 
@@ -71,14 +73,17 @@ public class Game implements ApplicationListener {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
+        viewPort = new ExtendViewport(Game.V_WIDTH, Game.V_HEIGHT, cam);
+        stage = new Stage(viewPort);
+        viewPort.apply();
+
         gsm = new GameStateManager(this);
 
     }
 
     @Override
     public void resize(int width, int height) {
-
-
+        viewPort.update(width, height);
     }
 
     @Override
