@@ -12,10 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInputProcessor;
 import com.slickgames.simpleninja.main.Game;
+import com.sun.prism.image.ViewPort;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,13 +32,14 @@ public class Pause extends GameState {
     Skin skin;
     Table table;
     InputMultiplexer im;
-
+    private ExtendViewport viewPort;
 
     public Pause(GameStateManager gsm) {
         super(gsm);
         cam = new OrthographicCamera();
         cam.setToOrtho(false, Game.V_WIDTH, Game.V_HEIGHT);
-        game.stage = new Stage(new FitViewport(Game.V_WIDTH, Game.V_HEIGHT));
+        game.viewPort.setCamera(cam);
+        game.stage = new Stage(game.viewPort);
         skin = new Skin(Gdx.files.internal("res/font/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/font/uiskin.atlas")));
 
         cmd = new TextField("", skin);
@@ -92,6 +96,7 @@ public class Pause extends GameState {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             gsm.setState(GameStateManager.PLAY);
             Gdx.input.setInputProcessor(new MyInputProcessor());
+            game.viewPort.setCamera(game.getCamera());
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 //            String[] c = cmd.getText().split("(?<=[a-zA-Z])(?=[1])|(?<=\\d)(?=\\D)");
@@ -113,15 +118,16 @@ public class Pause extends GameState {
                     gsm.debug = !gsm.debug;
                     break;
                 case "setSpeed":
-
                     gsm.play.player.setMaxSpeed(Float.parseFloat(param2));
-
                     break;
                 case "tai":
                     gsm.play.enemyAi = !gsm.play.enemyAi;
                     break;
                 case "fling":
                     gsm.play.player.getBody().applyLinearImpulse(121, 0, 0, 0, true);
+                    break;
+                case "tip":
+                    gsm.play.ignorePlayer = !gsm.play.ignorePlayer;
                     break;
                 default:
                     cmd.setText("Error");

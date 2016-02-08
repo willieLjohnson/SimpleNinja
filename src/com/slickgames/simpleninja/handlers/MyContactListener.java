@@ -2,21 +2,28 @@ package com.slickgames.simpleninja.handlers;
 
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.slickgames.simpleninja.entities.Enemy;
+import com.slickgames.simpleninja.states.Play;
 
 public class MyContactListener implements ContactListener {
 
     private int numFootContacts;
     private Array<Body> bodiesToRemove;
+    public Array<Enemy> enemiesHit;
     private boolean detectRight;
     private boolean detectLeft;
     private boolean withinRange;
     private boolean wallCollision;
     private boolean wallRun;
     private boolean enemyHit;
+    private Play play;
 
-    public MyContactListener() {
+
+    public MyContactListener(Play aPlay) {
         super();
+        play = aPlay;
         bodiesToRemove = new Array<Body>();
+        enemiesHit = new Array<Enemy>();
     }
 
     // called when two fixtures start collide
@@ -41,30 +48,37 @@ public class MyContactListener implements ContactListener {
         if (fb.getUserData() != null && fb.getUserData().equals("hand"))
             wallRun = true;
 
-        if (fa.getUserData() != null && fa.getUserData().equals("attackRange"))
-            enemyHit = true;
-        if (fb.getUserData() != null && fb.getUserData().equals("attackRange"))
-            enemyHit = true;
-
         /// enemy senses
-        if (fa.getUserData() != null && fa.getUserData().equals("visionRight"))
-            detectRight = true;
-        if (fb.getUserData() != null && fb.getUserData().equals("visionRight"))
-            detectRight = true;
-        if (fa.getUserData() != null && fa.getUserData().equals("visionLeft"))
-            detectLeft = true;
-        if (fb.getUserData() != null && fb.getUserData().equals("visionLeft"))
-            detectLeft = true;
+        for (Enemy e : play.enemies) {
+            if (fa.getUserData() != null && fa.getUserData().equals("visionRight" + e.id))
+                detectRight = true;
+            if (fb.getUserData() != null && fb.getUserData().equals("visionRight" + e.id))
+                detectRight = true;
+            if (fa.getUserData() != null && fa.getUserData().equals("visionLeft" + e.id))
+                detectLeft = true;
+            if (fb.getUserData() != null && fb.getUserData().equals("visionLeft" + e.id))
+                detectLeft = true;
 
-        if (fb.getUserData() != null && fb.getUserData().equals("range"))
-            withinRange = true;
-        if (fa.getUserData() != null && fa.getUserData().equals("range"))
-            withinRange = true;
+            if (fb.getUserData() != null && fb.getUserData().equals("range" + e.id))
+                withinRange = true;
+            if (fa.getUserData() != null && fa.getUserData().equals("range" + e.id))
+                withinRange = true;
 
-        if (fb.getUserData() != null && fb.getUserData().equals("wallcollision"))
-            wallCollision = true;
-        if (fa.getUserData() != null && fa.getUserData().equals("wallcollision"))
-            wallCollision = true;
+            if (fb.getUserData() != null && fb.getUserData().equals("wallcollision" + e.id))
+                wallCollision = true;
+            if (fa.getUserData() != null && fa.getUserData().equals("wallcollision" + e.id))
+                wallCollision = true;
+
+            if (fa.getUserData() != null && fa.getUserData().equals("enemyHitBox" + e.id)) {
+                enemiesHit.add(e);
+
+            }
+            if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id)) {
+                enemiesHit.add(e);
+
+            }
+
+        }
     }
 
     // called when two fixtures no longer collide
@@ -84,30 +98,37 @@ public class MyContactListener implements ContactListener {
             wallRun = false;
         if (fb.getUserData() != null && fb.getUserData().equals("hand"))
             wallRun = false;
-        if (fa.getUserData() != null && fa.getUserData().equals("attackRange"))
-            enemyHit = false;
-        if (fb.getUserData() != null && fb.getUserData().equals("attackRange"))
-            enemyHit = false;
 
         // enemy senses
-        if (fa.getUserData() != null && fa.getUserData().equals("visionRight"))
-            detectRight = false;
-        if (fb.getUserData() != null && fb.getUserData().equals("visionRight"))
-            detectRight = false;
-        if (fa.getUserData() != null && fa.getUserData().equals("visionLeft"))
-            detectLeft = false;
-        if (fb.getUserData() != null && fb.getUserData().equals("visionLeft"))
-            detectLeft = false;
+        for (Enemy e : play.enemies) {
+            if (fa.getUserData() != null && fa.getUserData().equals("visionRight" + e.id))
+                detectRight = false;
+            if (fb.getUserData() != null && fb.getUserData().equals("visionRight" + e.id))
+                detectRight = false;
+            if (fa.getUserData() != null && fa.getUserData().equals("visionLeft" + e.id))
+                detectLeft = false;
+            if (fb.getUserData() != null && fb.getUserData().equals("visionLeft" + e.id))
+                detectLeft = false;
 
-        if (fb.getUserData() != null && fb.getUserData().equals("range"))
-            withinRange = false;
-        if (fa.getUserData() != null && fa.getUserData().equals("range"))
-            withinRange = false;
+            if (fb.getUserData() != null && fb.getUserData().equals("range" + e.id))
+                withinRange = false;
+            if (fa.getUserData() != null && fa.getUserData().equals("range" + e.id))
+                withinRange = false;
 
-        if (fb.getUserData() != null && fb.getUserData().equals("wallcollision"))
-            wallCollision = false;
-        if (fa.getUserData() != null && fa.getUserData().equals("wallcollision"))
-            wallCollision = false;
+            if (fb.getUserData() != null && fb.getUserData().equals("wallcollision" + e.id))
+                wallCollision = false;
+            if (fa.getUserData() != null && fa.getUserData().equals("wallcollision" + e.id))
+                wallCollision = false;
+
+            if (fa.getUserData() != null && fa.getUserData().equals("enemyHitBox" + e.id)) {
+                enemiesHit.removeIndex(enemiesHit.indexOf(e,true));
+
+            }
+            if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id)) {
+                enemiesHit.removeIndex(enemiesHit.indexOf(e,true));
+
+            }
+        }
 
     }
 
@@ -131,6 +152,10 @@ public class MyContactListener implements ContactListener {
         return bodiesToRemove;
     }
 
+    public Array<Enemy> getEnemiesHit() {
+        return enemiesHit;
+    }
+
     public boolean wallRun() {
         return wallRun;
     }
@@ -143,7 +168,7 @@ public class MyContactListener implements ContactListener {
     public void postSolve(Contact c, ContactImpulse m) {
     }
 
-    public boolean isEnemyHit() {
+    public boolean isEnemyHit(int id) {
         return enemyHit;
     }
 

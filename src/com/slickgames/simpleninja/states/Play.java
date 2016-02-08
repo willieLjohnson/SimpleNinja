@@ -3,7 +3,6 @@ package com.slickgames.simpleninja.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
@@ -28,41 +27,45 @@ import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 public class Play extends GameState {
 
-
-    public Pixmap backgroundForPause;
     public Player player;
     public boolean enemyAi = true;
     ParticleEffect runningDust, bloodSplat;
-    private World world;
+    public World world;
     private Box2DDebugRenderer b2dr;
     private OrthographicCamera b2dCam;
-    private MyContactListener cl;
+    public MyContactListener cl;
     private TiledMap tileMap;
     private OrthogonalTiledMapRenderer tmr;
     private Array<Crystal> crystals;
     private int currentAttack;
-    private long lastAttack;
+    private float lastAttack;
     private boolean swinging;
     private int jump;
     private float wallRun = 0;
     private int swingSpeed;
     private float tileSize;
-    private Enemy enemy;
+    public Array<Enemy> enemies;
+    public boolean ignorePlayer = false;
     private ShapeRenderer sr;
     private boolean ran;
     private boolean attacked;
     private int rotTick;
-    private Array<Enemy> enemies;
+
     private Array<ParticleEffect> bloodParts;
     private boolean pauseOnUpdate;
+    private Enemy enemy;
+    public boolean updateEnemy;
+    public float currentTime = TimeUtils.nanoTime();
+
 
     public Play(GameStateManager gsm) {
         super(gsm);
         Gdx.input.setInputProcessor(new MyInputProcessor());
 
+
         // set up box2d stuff
         world = new World(new Vector2(0, -9.81f), true);
-        cl = new MyContactListener();
+        cl = new MyContactListener(this);
         world.setContactListener(cl);
         b2dr = new Box2DDebugRenderer();
 
@@ -71,7 +74,8 @@ public class Play extends GameState {
 
         // create enemy
         enemies = new Array<Enemy>();
-        createEnemy(2);
+        createEnemy(3);
+
 
         // create tiles
         createTiles();
@@ -110,7 +114,7 @@ public class Play extends GameState {
                 player.setDir(-1);
 
                 if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
-                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? -player.getMaxSpeed()*8 : -player.getMaxSpeed(), 0, true);
+                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? -player.getMaxSpeed() * 8 : -player.getMaxSpeed(), 0, true);
                 }
                 if (cl.isPlayerOnGround()) {
                     if (!player.isRunning()) {
@@ -122,7 +126,7 @@ public class Play extends GameState {
 
                 if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
 
-                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? player.getMaxSpeed()*8 : player.getMaxSpeed(), 0, true);
+                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? player.getMaxSpeed() * 8 : player.getMaxSpeed(), 0, true);
                 }
                 if (cl.isPlayerOnGround()) {
                     if (!player.isRunning() && cl.isPlayerOnGround()) {
@@ -135,7 +139,6 @@ public class Play extends GameState {
         // atttack
         if (MyInput.isPressed(MyInput.ATTACK) && !swinging && cl.isPlayerOnGround()) {
             swinging = true;
-
 
             if (currentAttack >= 16) {
                 currentAttack = 0;
@@ -157,9 +160,9 @@ public class Play extends GameState {
             }
             player.getBody().applyLinearImpulse(
                     Math.abs(player.getBody().getLinearVelocity().x) > 1 ? 0f : player.getDir() * 6f, 0f, 0f, 0f, true);
-            if (cl.isEnemyHit()) {
+            for (Enemy e : cl.enemiesHit) {
                 attacked = true;
-                enemy.damage(currentAttack / 2);
+                e.damage(currentAttack / 2);
                 if (bloodParts.size < 3) {
                     bloodSplat = new ParticleEffect();
                     bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
@@ -167,6 +170,7 @@ public class Play extends GameState {
                     bloodParts.add(bloodSplat);
                 }
             }
+
         }
 
         if ((player.getAnimation().
@@ -178,11 +182,11 @@ public class Play extends GameState {
         {
             player.getAnimation().setSpeed(0f);
             if (swinging) {
-                lastAttack = TimeUtils.nanoTime();
+                lastAttack = currentTime ;
                 swinging = false;
             }
             player.attacked = true;
-            if (TimeUtils.nanoTime() - lastAttack > 250000000f) {
+            if (currentTime - lastAttack > 250000000f) {
                 player.setAttacking(false);
                 currentAttack = 0;
                 swingSpeed = 0;
@@ -242,13 +246,12 @@ public class Play extends GameState {
         handleInput();
 
         // handle enemies
-//        for (Enemy e : enemies) {
-//            e.update(dt);
-//            e.seek(player.getBody(), world, cl);
-//        }
-        enemy.update(dt);
-        if (enemyAi)
-            enemy.seek(player.getBody(), world, cl);
+        for (Enemy e : enemies) {
+            e.update(dt);
+            if (enemyAi)
+                e.seek(player.getBody(), world, cl);
+        }
+
         // update box2d
         world.step(dt, 6, 2);
 
@@ -259,6 +262,7 @@ public class Play extends GameState {
             world.destroyBody(b);
             player.collectCrystal();
         }
+        bodies.clear();
         bodies.clear();
 
         player.playerUpdate(dt, lastAttack);
@@ -271,10 +275,11 @@ public class Play extends GameState {
         if (cl.isPlayerOnGround())
             runningDust.getEmitters().first().setPosition(player.getPosition().x * PPM - player.getWidth() / 10, player.getPosition().y * PPM - player.getHeight() / 2 + rand.nextInt(5));
         runningDust.update(Gdx.graphics.getDeltaTime());
-        for (ParticleEffect p : bloodParts) {
-            p.getEmitters().first().setPosition(enemy.getPosition().x * PPM - enemy.getWidth() / 10, enemy.getPosition().y * PPM - enemy.getHeight() / 4);
-            p.update(Gdx.graphics.getDeltaTime());
-        }
+//        for (ParticleEffect p : bloodParts) {
+//            p.getEmitters().first().setPosition(enemy.getPosition().x * PPM - enemy.getWidth() / 10, enemy.getPosition().y * PPM - enemy.getHeight() / 4);
+//            p.update(Gdx.graphics.getDeltaTime());
+//        }
+        currentTime = dt;
     }
 
     public void render() {
@@ -309,10 +314,9 @@ public class Play extends GameState {
         // draw entities
         sb.setProjectionMatrix(cam.combined);
         player.render(sb);
-//        for (Enemy e : enemies) {
-//            e.render(sb);
-//        }
-        enemy.render(sb);
+        for (Enemy e : enemies) {
+            e.render(sb);
+        }
 
 
         // draw crytals
@@ -325,8 +329,10 @@ public class Play extends GameState {
             b2dr.render(world, b2dCam.combined);
             sr.setProjectionMatrix(b2dCam.combined);
             sr.begin(ShapeRenderer.ShapeType.Line);
-            sr.line(enemy.getVectors("p1"), enemy.getVectors("p2"));
-            sr.line(enemy.getVectors("c"), enemy.getVectors("n"));
+            for (Enemy e : enemies) {
+                sr.line(e.getVectors("p1"), e.getVectors("p2"));
+                sr.line(e.getVectors("c"), e.getVectors("n"));
+            }
             sr.end();
         }
 
@@ -396,7 +402,7 @@ public class Play extends GameState {
         // create attack range
         shape.setAsBox(30 / PPM, 8 / PPM, new Vector2(0, -5 / PPM), 0);
         fdef.shape = shape;
-        fdef.filter.categoryBits = B2DVars.BIT_PLAYER;
+        fdef.filter.categoryBits = B2DVars.BIT_ATTACK_RANGE;
         fdef.filter.maskBits = B2DVars.BIT_ENEMY;
         fdef.isSensor = true;
         body.createFixture(fdef).setUserData("attackRange");
@@ -408,83 +414,88 @@ public class Play extends GameState {
     }
 
     private void createEnemy(int numOfEnems) {
-        BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
 
-//        for (int i = 0; i < numOfEnems; i++) {
-        // create enemy
-        bdef.position.set(500 / PPM, 800 / PPM);
-        bdef.type = BodyType.DynamicBody;
-        // bdef.linearVelocity.set(1f, 0);
-        Body body = world.createBody(bdef);
+        for (int i = 0; i < numOfEnems; i++) {
+            BodyDef bdef = new BodyDef();
+            FixtureDef fdef = new FixtureDef();
+            PolygonShape shape = new PolygonShape();
 
-        shape.setAsBox(6 / PPM, 10 / PPM, new Vector2(0, -9 / PPM), 0);
-        fdef.shape = shape;
-        fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
-        fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL | B2DVars.BIT_GROUND | B2DVars.BIT_CYSTAL
-                | B2DVars.BIT_PLAYER;
-        body.createFixture(fdef).setUserData("enemy");
+            // create enemy
+            bdef.position.set((80 + (i*10)) / PPM, 500 / PPM);
+            bdef.type = BodyType.DynamicBody;
+            // bdef.linearVelocity.set(1f, 0);
+            Body body = world.createBody(bdef);
 
-        // creat foot sensor
-        shape.setAsBox(12 / PPM, 4 / PPM, new Vector2(0, -19 / PPM), 0);
-        fdef.shape = shape;
-        fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
-        fdef.filter.maskBits = B2DVars.BIT_GROUND | B2DVars.BIT_EDGE;
-        fdef.isSensor = true;
-        body.createFixture(fdef).setUserData("Efoot");
+            shape.setAsBox(6 / PPM, 10 / PPM, new Vector2(0, -9 / PPM), 0);
+            fdef.shape = shape;
+            fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
+            fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL | B2DVars.BIT_GROUND | B2DVars.BIT_CYSTAL
+                    | B2DVars.BIT_PLAYER;
+            body.createFixture(fdef).setUserData("enemy" + i);
 
-        // creat vision sensors
-        PolygonShape cs = new PolygonShape();
-        Vector2[] v = new Vector2[4];
-        v[0] = new Vector2(0 / PPM, 0 / PPM);
-        v[1] = new Vector2(200 / PPM, 100 / PPM);
-        v[2] = new Vector2(0 / PPM, 0 / PPM);
-        v[3] = new Vector2(200 / PPM, -100 / PPM);
-        cs.set(v);
+            // create enemy Hitboxs
+            shape.setAsBox(12 / PPM, 20 / PPM, new Vector2(0, -9 / PPM), 0);
+            fdef.shape = shape;
+            fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
+            fdef.filter.maskBits = B2DVars.BIT_ATTACK_RANGE;
+            fdef.isSensor = true;
+            body.createFixture(fdef).setUserData("enemyHitBox" + i);
 
-        fdef.friction = 0;
-        fdef.shape = cs;
-        fdef.filter.categoryBits = B2DVars.BIT_VISIONCONE;
-        fdef.filter.maskBits = B2DVars.BIT_PLAYER;
-        fdef.isSensor = true;
-        body.createFixture(fdef).setUserData("visionRight");
-        v[0] = new Vector2(0 / PPM, 0 / PPM);
-        v[1] = new Vector2(-200 / PPM, 100 / PPM);
-        v[2] = new Vector2(0 / PPM, 0 / PPM);
-        v[3] = new Vector2(-200 / PPM, -100 / PPM);
-        cs.set(v);
-        fdef.friction = 0;
-        fdef.shape = cs;
-        fdef.filter.categoryBits = B2DVars.BIT_VISIONCONE;
-        fdef.filter.maskBits = B2DVars.BIT_PLAYER;
-        fdef.isSensor = true;
-        body.createFixture(fdef).setUserData("visionLeft");
+            // creat foot sensor
 
-        // create range of activity
-        CircleShape r = new CircleShape();
-        r.setRadius(150 / PPM);
-        fdef.shape = r;
-        fdef.filter.categoryBits = B2DVars.BIT_VISIONCONE;
-        fdef.filter.maskBits = B2DVars.BIT_PLAYER;
-        fdef.isSensor = true;
-        body.createFixture(fdef).setUserData("range");
+            shape.setAsBox(12 / PPM, 4 / PPM, new Vector2(0, -19 / PPM), 0);
+            fdef.shape = shape;
+            fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
+            fdef.filter.maskBits = B2DVars.BIT_GROUND | B2DVars.BIT_EDGE;
+            fdef.isSensor = true;
+            body.createFixture(fdef).setUserData("Efoot" + i);
 
-        // create wall/player collision sensor
-        shape.setAsBox(7 / PPM, 8 / PPM, new Vector2(0, -9 / PPM), 0);
-        fdef.shape = shape;
-        fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
-        fdef.isSensor = true;
-        fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL | B2DVars.BIT_GROUND | B2DVars.BIT_PLAYER;
-        body.createFixture(fdef).setUserData("wallcollision");
+            // creat vision sensors
+            PolygonShape cs = new PolygonShape();
+            Vector2[] v = new Vector2[4];
+            v[0] = new Vector2(0 / PPM, 0 / PPM);
+            v[1] = new Vector2(200 / PPM, 100 / PPM);
+            v[2] = new Vector2(0 / PPM, 0 / PPM);
+            v[3] = new Vector2(200 / PPM, -100 / PPM);
+            cs.set(v);
 
-        // create enemy
-        enemy = new Enemy(body);
+            fdef.friction = 0;
+            fdef.shape = cs;
+            fdef.filter.categoryBits = B2DVars.BIT_VISIONCONE;
+            fdef.filter.maskBits = B2DVars.BIT_PLAYER;
+            fdef.isSensor = true;
+            body.createFixture(fdef).setUserData("visionRight" + i);
+            v[0] = new Vector2(0 / PPM, 0 / PPM);
+            v[1] = new Vector2(-200 / PPM, 100 / PPM);
+            v[2] = new Vector2(0 / PPM, 0 / PPM);
+            v[3] = new Vector2(-200 / PPM, -100 / PPM);
+            cs.set(v);
+            fdef.friction = 0;
+            fdef.shape = cs;
+            fdef.filter.categoryBits = B2DVars.BIT_VISIONCONE;
+            fdef.filter.maskBits = B2DVars.BIT_PLAYER;
+            fdef.isSensor = true;
+            body.createFixture(fdef).setUserData("visionLeft" + i);
 
+            // create range of activity
+            CircleShape r = new CircleShape();
+            r.setRadius(150 / PPM);
+            fdef.shape = r;
+            fdef.filter.categoryBits = B2DVars.BIT_VISIONCONE;
+            fdef.filter.maskBits = B2DVars.BIT_PLAYER;
+            fdef.isSensor = true;
+            body.createFixture(fdef).setUserData("range" + i);
 
-        body.setUserData(enemy);
-        enemies.add(enemy);
-//        }
+            // create wall/player collision sensor
+            shape.setAsBox(7 / PPM, 8 / PPM, new Vector2(0, -9 / PPM), 0);
+            fdef.shape = shape;
+            fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
+            fdef.isSensor = true;
+            fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL | B2DVars.BIT_GROUND | B2DVars.BIT_PLAYER;
+            body.createFixture(fdef).setUserData("wallcollision" + i);
+
+            new Enemy(body, this, i);
+        }
     }
 
     private void createTiles() {

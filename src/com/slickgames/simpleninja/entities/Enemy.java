@@ -11,11 +11,15 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.slickgames.simpleninja.handlers.MyContactListener;
 import com.slickgames.simpleninja.main.Game;
+import com.slickgames.simpleninja.states.Play;
 
 public class Enemy extends B2DSprite {
     public static final float MAX_SPEED = 1.5f;
-    public boolean running, idling, jumping, attacking, attacked;
+    public boolean running, idling, jumping, attacking, attacked, ignorePlayer;
     public int state = 0;
+    private final int GUARD = 0;
+    private final int CHASE = 1;
+    private final int FIND = 2;
     TextureRegion[] run, idle, jump, attack;
     Vector2 target = new Vector2();
     Vector2 collision = new Vector2();
@@ -28,9 +32,16 @@ public class Enemy extends B2DSprite {
     private float currentTime;
     private float lastSeen;
     private float lastSwitch;
+    private boolean bounced;
+    public int id;
+    Play play;
 
-    public Enemy(Body body) {
+    public Enemy(Body body, Play aPlay, int aId) {
         super(body);
+        id = aId;
+        play = aPlay;
+        body.setUserData(this);
+        play.enemies.add(this);
 
         Texture runningAnimation = Game.game.getAssetManager().get("res/images/enemy_run.png");
         Texture attackingAnimation = Game.game.getAssetManager().get("res/images/enemy_attack.png");
@@ -85,7 +96,7 @@ public class Enemy extends B2DSprite {
         world.rayCast(callback, this.body.getPosition(), target);
 
 
-        if (cFix.getBody().equals(player) && cl.isPlayerSpotted(dir)) {
+        if (cFix.getBody().equals(player) && cl.isPlayerSpotted(dir) && !play.ignorePlayer) {
             state = 1;
             lastSeen = currentTime;
         } else if (state == 1 && (!cl.isWithinRange() && !cFix.getBody().equals(player))) {
@@ -99,17 +110,25 @@ public class Enemy extends B2DSprite {
             }
         }
         switch (state) {
-            case 0:
-
-                if (currentTime - lastSwitch > 10000000000f || cl.isCollidingWall()) {
-                    dir *= -1;
+            case GUARD:
+                if (currentTime - lastSwitch < 3000000000f) {
+                    if (cl.isCollidingWall() && !bounced) {
+                        bounced = true;
+                        dir *= -1;
+                        lastSwitch = currentTime;
+                    }
+                    if (currentTime - lastSwitch > 1000000000f)
+                        bounced = false;
+                    if (Math.abs(body.getLinearVelocity().x) < .5f)
+                        body.applyForceToCenter(32f * dir, 0, true);
+                } else if (currentTime - lastSwitch < 7500000000f)
+                    body.applyForceToCenter(0, 0, true);
+                else {
                     lastSwitch = currentTime;
                 }
-                if (Math.abs(body.getLinearVelocity().x) < .5f) {
-                    body.applyForceToCenter(32f * dir, 0, true);
-                }
                 break;
-            case 1:
+
+            case CHASE:
                 dir = (target.x < body.getPosition().x ? -1 : 1);
                 if (Math.abs((target.x + target.y) - (body.getPosition().x + body.getPosition().y)) <= .14f && !attacking) {
                     toggleAnimation("attack");
@@ -119,14 +138,15 @@ public class Enemy extends B2DSprite {
                     body.applyLinearImpulse(0, 2, 0, 0, true);
                 }
                 break;
-            case 2:
 
+            case FIND:
                 if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
                     body.applyForceToCenter(32f * dir, 0, true);
                 }
                 if (cl.isCollidingWall())
                     dir *= -1;
         }
+
     }
 
     public void collectCrystal() {

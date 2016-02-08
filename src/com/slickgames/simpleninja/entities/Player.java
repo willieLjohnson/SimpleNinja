@@ -104,7 +104,6 @@ public class Player extends B2DSprite {
     public void playerUpdate(float dt, float lastAttack) {
         if (health <= 0) {
             kill();
-            System.out.println("player ded");
         }
         if (attacked) {
             animation.update(dt + (dt - lastAttack));
