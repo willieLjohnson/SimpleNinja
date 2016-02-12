@@ -94,9 +94,6 @@ public class Play extends GameState {
         runningDust = new ParticleEffect();
         runningDust.load(Gdx.files.internal("res/particles/running_dust"), Gdx.files.internal("res/particles"));
         runningDust.start();
-        bloodSplat = new ParticleEffect();
-        bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
-        bloodSplat.start();
         bloodParts = new Array<ParticleEffect>();
     }
 
@@ -164,10 +161,13 @@ public class Play extends GameState {
                 attacked = true;
                 e.damage(currentAttack / 2);
                 if (bloodParts.size < 3) {
+
                     bloodSplat = new ParticleEffect();
                     bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
+                    bloodSplat.setPosition(e.getPosition().x * PPM - e.getWidth() / 10, e.getPosition().y * PPM - e.getHeight() / 4);
                     bloodSplat.start();
                     bloodParts.add(bloodSplat);
+
                 }
             }
 
@@ -182,7 +182,7 @@ public class Play extends GameState {
         {
             player.getAnimation().setSpeed(0f);
             if (swinging) {
-                lastAttack = currentTime ;
+                lastAttack = currentTime;
                 swinging = false;
             }
             player.attacked = true;
@@ -275,10 +275,9 @@ public class Play extends GameState {
         if (cl.isPlayerOnGround())
             runningDust.getEmitters().first().setPosition(player.getPosition().x * PPM - player.getWidth() / 10, player.getPosition().y * PPM - player.getHeight() / 2 + rand.nextInt(5));
         runningDust.update(Gdx.graphics.getDeltaTime());
-//        for (ParticleEffect p : bloodParts) {
-//            p.getEmitters().first().setPosition(enemy.getPosition().x * PPM - enemy.getWidth() / 10, enemy.getPosition().y * PPM - enemy.getHeight() / 4);
-//            p.update(Gdx.graphics.getDeltaTime());
-//        }
+        for (ParticleEffect p : bloodParts) {
+            p.update(Gdx.graphics.getDeltaTime());
+        }
         currentTime = dt;
     }
 
@@ -421,7 +420,7 @@ public class Play extends GameState {
             PolygonShape shape = new PolygonShape();
 
             // create enemy
-            bdef.position.set((80 + (i*10)) / PPM, 500 / PPM);
+            bdef.position.set((80 + (i * 10)) / PPM, 500 / PPM);
             bdef.type = BodyType.DynamicBody;
             // bdef.linearVelocity.set(1f, 0);
             Body body = world.createBody(bdef);

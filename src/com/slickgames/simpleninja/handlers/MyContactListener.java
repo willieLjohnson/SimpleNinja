@@ -71,11 +71,9 @@ public class MyContactListener implements ContactListener {
 
             if (fa.getUserData() != null && fa.getUserData().equals("enemyHitBox" + e.id)) {
                 enemiesHit.add(e);
-
             }
             if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id)) {
                 enemiesHit.add(e);
-
             }
 
         }
@@ -122,11 +120,9 @@ public class MyContactListener implements ContactListener {
 
             if (fa.getUserData() != null && fa.getUserData().equals("enemyHitBox" + e.id)) {
                 enemiesHit.removeIndex(enemiesHit.indexOf(e,true));
-
             }
             if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id)) {
                 enemiesHit.removeIndex(enemiesHit.indexOf(e,true));
-
             }
         }
 

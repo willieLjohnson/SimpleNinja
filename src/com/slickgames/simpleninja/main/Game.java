@@ -61,6 +61,7 @@ public class Game implements ApplicationListener {
         //Options
         assets.load("res/Style/Knode.png", Texture.class);
         assets.load("res/Style/onAndoff Slider.jpg", Texture.class);
+
         // reports progress for loading all assets
         while (!assets.update()) {
             System.out.println(assets.getProgress() * 100 + "%");
