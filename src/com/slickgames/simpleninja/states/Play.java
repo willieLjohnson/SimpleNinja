@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.slickgames.simpleninja.entities.Crystal;
 import com.slickgames.simpleninja.entities.Enemy;
 import com.slickgames.simpleninja.entities.Player;
+import com.slickgames.simpleninja.entities.Projectile;
 import com.slickgames.simpleninja.handlers.*;
 import com.slickgames.simpleninja.main.Game;
 
@@ -28,6 +29,7 @@ import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 public class Play extends GameState {
 
     public Player player;
+    public Projectile projectile;
     public boolean enemyAi = true;
     ParticleEffect runningDust, bloodSplat;
     public World world;
@@ -45,6 +47,7 @@ public class Play extends GameState {
     private int swingSpeed;
     private float tileSize;
     public Array<Enemy> enemies;
+    public Array<Projectile> projectiles;
     public boolean ignorePlayer = false;
     private ShapeRenderer sr;
     private boolean ran;
@@ -104,7 +107,10 @@ public class Play extends GameState {
         if (MyInput.isPressed(MyInput.RESET)) {
             pauseOnUpdate = true;
         }
-
+        if(MyInput.isPressed(MyInput.SHOOT)){
+            createProjectile();
+            gsm.play.projectile.getBody().applyLinearImpulse(121, 0, 0, 0, true);
+        }
         // player movement
         if (!swinging)
             if (MyInput.isDown(MyInput.LEFT)) {
@@ -322,7 +328,9 @@ public class Play extends GameState {
         for (int i = 0; i < crystals.size; i++) {
             crystals.get(i).render(sb);
         }
-
+         for (int i = 0; i < projectiles.size; i++) {
+            projectiles.get(i).render(sb);
+        }
 
         if (gsm.debug) {
             b2dr.render(world, b2dCam.combined);
@@ -585,6 +593,34 @@ public class Play extends GameState {
             body.createFixture(fdef).setUserData("edge");
 
         }
+    }
+    private void createProjectile() {
+        projectiles = new Array<>();
+
+        BodyDef bdef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+
+
+            bdef.type = BodyType.DynamicBody;
+
+            bdef.position.set(player.getPosition().x, player.getPosition().y);
+            PolygonShape Trishape = new PolygonShape();
+            bdef.linearVelocity.set(1f, 0);
+
+
+            fdef.shape = Trishape;
+            fdef.isSensor = true;
+            fdef.filter.categoryBits = B2DVars.BIT_CYSTAL;
+            fdef.filter.maskBits = B2DVars.BIT_PLAYER;
+
+            Body body = world.createBody(bdef);
+            body.createFixture(fdef).setUserData("crystal");
+
+            Projectile proj = new Projectile(body);
+            projectiles.add(proj);
+
+            body.setUserData(proj);
+
     }
 
     private void createCrystals() {

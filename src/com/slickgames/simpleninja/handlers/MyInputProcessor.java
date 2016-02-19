@@ -15,6 +15,8 @@ public class MyInputProcessor extends InputAdapter {
     public boolean keyDown(int k) {
         if (k == Keys.A) {
             MyInput.setKey(MyInput.LEFT, true);
+        } if (k == Keys.P) {
+            MyInput.setKey(MyInput.SHOOT, true);
         }
         if (k == Keys.D) {
             MyInput.setKey(MyInput.RIGHT, true);
@@ -28,9 +30,7 @@ public class MyInputProcessor extends InputAdapter {
         if (k == Keys.SHIFT_LEFT) {
             MyInput.setKey(MyInput.WALLRUN, true);
         }
-        if (k ==Keys.P){
-            MyInput.setKey(MyInput.Parti, true);
-        }
+
 
         return true;
     }
@@ -53,7 +53,7 @@ public class MyInputProcessor extends InputAdapter {
             MyInput.setKey(MyInput.WALLRUN, false);
         }
         if (k ==Keys.P){
-            MyInput.setKey(MyInput.Parti, false);
+            MyInput.setKey(MyInput.SHOOT, false);
         }
         return true;
     }
