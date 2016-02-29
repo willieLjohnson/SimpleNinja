@@ -98,6 +98,10 @@ public class Play extends GameState {
         runningDust.load(Gdx.files.internal("res/particles/running_dust"), Gdx.files.internal("res/particles"));
         runningDust.start();
         bloodParts = new Array<ParticleEffect>();
+
+        //projectiles
+        projectiles = new Array<>();
+
     }
 
     @Override
@@ -109,7 +113,7 @@ public class Play extends GameState {
         }
         if(MyInput.isPressed(MyInput.SHOOT)){
             createProjectile();
-            gsm.play.projectile.getBody().applyLinearImpulse(121, 0, 0, 0, true);
+            System.out.println("mf");
         }
         // player movement
         if (!swinging)
@@ -276,6 +280,12 @@ public class Play extends GameState {
         for (int i = 0; i < crystals.size; i++) {
             crystals.get(i).update(dt);
         }
+        for (int i = 0; i < projectiles.size; i++) {
+
+            projectiles.get(i).update(dt);
+            if (projectiles.get(i).getBody().getLinearVelocity().x < 1)
+            projectiles.get(i).getBody().applyLinearImpulse(1000,0,0,0,false);
+        }
         Random rand;
         rand = new Random();
         if (cl.isPlayerOnGround())
@@ -328,8 +338,10 @@ public class Play extends GameState {
         for (int i = 0; i < crystals.size; i++) {
             crystals.get(i).render(sb);
         }
-         for (int i = 0; i < projectiles.size; i++) {
+
+        for (int i = 0; i < projectiles.size; i++) {
             projectiles.get(i).render(sb);
+
         }
 
         if (gsm.debug) {
@@ -365,6 +377,8 @@ public class Play extends GameState {
             }
         }
         sb.end();
+
+
     }
 
     @Override
@@ -595,34 +609,28 @@ public class Play extends GameState {
         }
     }
     private void createProjectile() {
-        projectiles = new Array<>();
-
-        BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
-
-
-            bdef.type = BodyType.DynamicBody;
-
-            bdef.position.set(player.getPosition().x, player.getPosition().y);
+            BodyDef bdef = new BodyDef();
+            FixtureDef fdef = new FixtureDef();
             PolygonShape Trishape = new PolygonShape();
-            bdef.linearVelocity.set(1f, 0);
 
+             bdef.position.set(player.getPosition().x, player.getPosition().y);
+            bdef.type = BodyType.DynamicBody;
+            Trishape.setAsBox(6 / PPM, 10 / PPM, new Vector2(0, -9 / PPM), 0);
+//            bdef.linearVelocity.set(1f, 0);
+        Body body = world.createBody(bdef);
 
             fdef.shape = Trishape;
-            fdef.isSensor = true;
+//            fdef.isSensor = true;
             fdef.filter.categoryBits = B2DVars.BIT_CYSTAL;
-            fdef.filter.maskBits = B2DVars.BIT_PLAYER;
+            fdef.filter.maskBits = B2DVars.BIT_PLAYER|B2DVars.BIT_ENEMY;
 
-            Body body = world.createBody(bdef);
-            body.createFixture(fdef).setUserData("crystal");
 
-            Projectile proj = new Projectile(body);
-            projectiles.add(proj);
+            body.createFixture(fdef).setUserData("project");
 
-            body.setUserData(proj);
+           new Projectile(body,this);
+            System.out.println(projectiles.size);
 
     }
-
     private void createCrystals() {
         crystals = new Array<>();
 
@@ -653,5 +661,4 @@ public class Play extends GameState {
             body.setUserData(c);
         }
     }
-
 }
