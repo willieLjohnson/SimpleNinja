@@ -1,15 +1,18 @@
 package com.slickgames.simpleninja.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -18,7 +21,14 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.slickgames.simpleninja.entities.Crystal;
 import com.slickgames.simpleninja.entities.Enemy;
 import com.slickgames.simpleninja.entities.Player;
+import com.slickgames.simpleninja.entities.Projectile;
 import com.slickgames.simpleninja.handlers.*;
+import com.slickgames.simpleninja.handlers.postprocessing.PostProcessor;
+import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
+import com.slickgames.simpleninja.handlers.postprocessing.effects.Bloom;
+import com.slickgames.simpleninja.handlers.postprocessing.effects.Curvature;
+import com.slickgames.simpleninja.handlers.postprocessing.effects.MotionBlur;
+import com.slickgames.simpleninja.handlers.postprocessing.effects.Vignette;
 import com.slickgames.simpleninja.main.Game;
 
 import java.util.Random;
@@ -27,6 +37,7 @@ import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 public class Play extends GameState {
 
+	public final PostProcessor postProcessor;
     public Player player;
     public boolean enemyAi = true;
     ParticleEffect runningDust, bloodSplat;
@@ -44,26 +55,32 @@ public class Play extends GameState {
     private float wallRun = 0;
     private int swingSpeed;
     private float tileSize;
+    public Bloom bloom;
+    public Bloom sword;
     public Array<Enemy> enemies;
     public boolean ignorePlayer = false;
     private ShapeRenderer sr;
     private boolean ran;
     private boolean attacked;
     private int rotTick;
-
+    public Array<Projectile> projectiles;
     private Array<ParticleEffect> bloodParts;
     private boolean pauseOnUpdate;
     private Enemy enemy;
     public boolean updateEnemy;
     public float currentTime = TimeUtils.nanoTime();
 
+    public ShaderProgram shader;
+
+    //sfx
+    Sound hita = game.getAssetManager().get("res/sfx/hit/hit3.wav");
 
     public Play(GameStateManager gsm) {
         super(gsm);
         Gdx.input.setInputProcessor(new MyInputProcessor());
 
-
         // set up box2d stuff
+
         world = new World(new Vector2(0, -9.81f), true);
         cl = new MyContactListener(this);
         world.setContactListener(cl);
@@ -87,15 +104,35 @@ public class Play extends GameState {
         b2dCam = new OrthographicCamera();
         b2dCam.setToOrtho(false, Game.V_WIDTH / PPM, Game.V_HEIGHT / PPM);
 
-        // set up hud
+        // set up hud & debug
         sr = new ShapeRenderer();
+        sr.setAutoShapeType(true);
 
         // set up particles
         runningDust = new ParticleEffect();
         runningDust.load(Gdx.files.internal("res/particles/running_dust"), Gdx.files.internal("res/particles"));
         runningDust.start();
         bloodParts = new Array<ParticleEffect>();
+
+        // shaders
+        ShaderLoader.BasePath = "res/shaders/";
+        postProcessor = new PostProcessor(false, false, true);
+        postProcessor.setClearColor(40/255f, 38/255f, 33/255f, 1f);
+        bloom = new Bloom((int) (Gdx.graphics.getWidth() * .05f), (int) (Gdx.graphics.getHeight() * .05f));
+        sword = new Bloom((int) (Gdx.graphics.getWidth() * .5f), (int) (Gdx.graphics.getHeight() * .5f));
+
+        // makes the swords glow their actual color(ie. not white)
+        bloom.setBloomIntesity(2f);
+        bloom.setThreshold(.85f);
+        sword.setThreshold(.85f);
+
+        postProcessor.addEffect(bloom);
+        postProcessor.addEffect(sword);
+
+        //projectiles
+        projectiles = new Array<>();
     }
+
 
     @Override
     public void handleInput() {
@@ -103,6 +140,11 @@ public class Play extends GameState {
         // pause game
         if (MyInput.isPressed(MyInput.RESET)) {
             pauseOnUpdate = true;
+        }
+
+	if(MyInput.isPressed(MyInput.SHOOT)){
+            createProjectile();
+            System.out.println("mf");
         }
 
         // player movement
@@ -135,6 +177,7 @@ public class Play extends GameState {
 
         // atttack
         if (MyInput.isPressed(MyInput.ATTACK) && !swinging && cl.isPlayerOnGround()) {
+            hita.play();
             swinging = true;
 
             if (currentAttack >= 16) {
@@ -160,26 +203,19 @@ public class Play extends GameState {
             for (Enemy e : cl.enemiesHit) {
                 attacked = true;
                 e.damage(currentAttack / 2);
-                if (bloodParts.size < 3) {
 
-                    bloodSplat = new ParticleEffect();
-                    bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
-                    bloodSplat.setPosition(e.getPosition().x * PPM - e.getWidth() / 10, e.getPosition().y * PPM - e.getHeight() / 4);
-                    bloodSplat.start();
-                    bloodParts.add(bloodSplat);
+                bloodSplat = new ParticleEffect();
+                bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
+                bloodSplat.setPosition(e.getPosition().x * PPM - e.getWidth() / 10, e.getPosition().y * PPM - e.getHeight() / 4);
+                bloodSplat.start();
+                bloodParts.add(bloodSplat);
 
-                }
+
             }
 
         }
 
-        if ((player.getAnimation().
-
-                getCurrentFrame()
-
-                == currentAttack) && player.isAttacking())
-
-        {
+        if ((player.getAnimation().getCurrentFrame() == currentAttack) && player.isAttacking()) {
             player.getAnimation().setSpeed(0f);
             if (swinging) {
                 lastAttack = currentTime;
@@ -208,9 +244,7 @@ public class Play extends GameState {
             wallRun = 0;
         }
 
-        if (cl.isPlayerOnGround())
-
-        {
+        if (cl.isPlayerOnGround()) {
             if (player.getBody().getLinearVelocity().y == 0) {
                 jump = 0;
             }
@@ -219,9 +253,7 @@ public class Play extends GameState {
                         player.getBody().getLinearVelocity().x < 0 ? player.getMaxSpeed() * 8 : -player.getMaxSpeed() * 8, 0,
                         true);
             }
-        } else
-
-        {
+        } else {
             swinging = false;
             if (!player.isJumping())
                 player.toggleAnimation("jump");
@@ -270,6 +302,15 @@ public class Play extends GameState {
         for (int i = 0; i < crystals.size; i++) {
             crystals.get(i).update(dt);
         }
+
+	//projectile creation
+
+        for (int i = 0; i < projectiles.size; i++) {
+            projectiles.get(i).update(dt);
+            if (projectiles.get(i).getBody().getLinearVelocity().x < 1)
+            projectiles.get(i).getBody().applyLinearImpulse(10,0,0,0,false);
+        }
+
         Random rand;
         rand = new Random();
         if (cl.isPlayerOnGround())
@@ -278,19 +319,23 @@ public class Play extends GameState {
         for (ParticleEffect p : bloodParts) {
             p.update(Gdx.graphics.getDeltaTime());
         }
-        currentTime = dt;
+        currentTime = TimeUtils.nanoTime();
     }
 
+
     public void render() {
+        // clear screen
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(40 / 255f, 38 / 255f, 33 / 255f, 1f);
+
+        // flip player if dir is changed
         if (player.getDir() == -1)
             player.getAnimation().getFrame().flip(!player.getAnimation().getFrame().isFlipX(), false);
         else
             player.getAnimation().getFrame().flip(player.getAnimation().getFrame().isFlipX(), false);
 
-        // clear screen
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Screen shake (probalby going to be used for devastating attacks)
+        /* Screen shake */
         if (attacked && rotTick < 2) {
             cam.translate(1f, 1.5f);
             rotTick++;
@@ -300,12 +345,15 @@ public class Play extends GameState {
             attacked = false;
         }
 
-        // set cam to follow player
+        /* set cam and debug cam to follow player */
         cam.position.set((player.getPosition().x * PPM + Game.V_WIDTH / 4) + player.getBody().getLinearVelocity().x, (player.getPosition().y * PPM) + player.getBody().getLinearVelocity().y, 0);
         b2dCam.position.set(cam.position.x / PPM, cam.position.y / PPM, 0);
+
         cam.update();
         b2dCam.update();
 
+        /*   render  */
+        postProcessor.capture(); // begin postProcessor
         // draw tile map
         tmr.setView(cam);
         tmr.render();
@@ -324,18 +372,11 @@ public class Play extends GameState {
         }
 
 
-        if (gsm.debug) {
-            b2dr.render(world, b2dCam.combined);
-            sr.setProjectionMatrix(b2dCam.combined);
-            sr.begin(ShapeRenderer.ShapeType.Line);
-            for (Enemy e : enemies) {
-                sr.line(e.getVectors("p1"), e.getVectors("p2"));
-                sr.line(e.getVectors("c"), e.getVectors("n"));
-            }
-            sr.end();
-        }
+        for (int i = 0; i < projectiles.size; i++) {
+            projectiles.get(i).render(sb);
 
-        //particles
+        }
+        // particles
         sb.begin();
         if (player.isRunning()) {
             if (runningDust.isComplete() && player.isRunning())
@@ -357,11 +398,43 @@ public class Play extends GameState {
             }
         }
         sb.end();
+        postProcessor.render(); // end postProcessor
+
+        /*  Hud & debug */
+        sr.setProjectionMatrix(b2dCam.combined);
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+
+        // gray health
+        sr.setColor(.09f,.09f,.09f,.2f);
+        sr.box(b2dCam.position.x-1.66f,b2dCam.position.y+.83f,0, .05f*player.getMaxHealth(),.025f,0);
+
+        // player health
+        sr.setColor(1f,.2f,0f,1f);
+        sr.box(b2dCam.position.x-1.66f,b2dCam.position.y+.83f,0, .05f*player.health,.025f,0);
+
+        // enemy health
+        sr.setColor(1f,0f,0f,1f);
+        for (Enemy e: enemies) {
+            if (e.health < e.getMaxHealth())
+            sr.box(e.getPosition().x-.08f,e.getPosition().y-.25f,0, .01f*e.health,.015f,0);
+        }
+
+        sr.set(ShapeRenderer.ShapeType.Line);
+        if (gsm.debug) {
+            b2dr.render(world, b2dCam.combined);
+            for (Enemy e : enemies) {
+                sr.line(e.getVectors("p1"), e.getVectors("p2"));
+                sr.line(e.getVectors("c"), e.getVectors("n"));
+            }
+
+        }
+        sr.end();
+
     }
 
     @Override
     public void dispose() {
-
+        postProcessor.dispose();
     }
 
     private void createPlayer() {
@@ -412,7 +485,11 @@ public class Play extends GameState {
         body.setUserData(player);
     }
 
-    private void createEnemy(int numOfEnems) {
+//    private void createHealhtBar(Player p) {
+//        sr.
+//    }
+    
+    public void createEnemy(int numOfEnems) {
 
         for (int i = 0; i < numOfEnems; i++) {
             BodyDef bdef = new BodyDef();
@@ -429,14 +506,14 @@ public class Play extends GameState {
             fdef.shape = shape;
             fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
             fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL | B2DVars.BIT_GROUND | B2DVars.BIT_CYSTAL
-                    | B2DVars.BIT_PLAYER;
+                    | B2DVars.BIT_PLAYER | B2DVars.BIT_Projectile;
             body.createFixture(fdef).setUserData("enemy" + i);
 
             // create enemy Hitboxs
             shape.setAsBox(12 / PPM, 20 / PPM, new Vector2(0, -9 / PPM), 0);
             fdef.shape = shape;
             fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
-            fdef.filter.maskBits = B2DVars.BIT_ATTACK_RANGE;
+            fdef.filter.maskBits = B2DVars.BIT_ATTACK_RANGE | B2DVars.BIT_Projectile;
             fdef.isSensor = true;
             body.createFixture(fdef).setUserData("enemyHitBox" + i);
 
@@ -587,6 +664,29 @@ public class Play extends GameState {
         }
     }
 
+private void createProjectile() {
+            BodyDef bdef = new BodyDef();
+            FixtureDef fdef = new FixtureDef();
+            PolygonShape Trishape = new PolygonShape();
+
+             bdef.position.set(player.getPosition().x, player.getPosition().y);
+            bdef.type = BodyType.DynamicBody;
+            Trishape.setAsBox(8 / PPM, 10 / PPM, new Vector2(0, -9 / PPM), 0);
+//            bdef.linearVelocity.set(1f, 0);
+        Body body = world.createBody(bdef);
+
+            fdef.shape = Trishape;
+         //  fdef.isSensor = true;
+            fdef.filter.categoryBits = B2DVars.BIT_Projectile;
+            fdef.filter.maskBits =B2DVars.BIT_ENEMY;
+
+
+            body.createFixture(fdef).setUserData("project");
+
+           new Projectile(body,this);
+            System.out.println(projectiles.size);
+
+    }
     private void createCrystals() {
         crystals = new Array<>();
 

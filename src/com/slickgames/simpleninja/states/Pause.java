@@ -88,6 +88,7 @@ public class Pause extends GameState {
         // handle input
 
         Gdx.input.setInputProcessor(gsm.game().stage);
+        
     }
 
     @Override
@@ -129,6 +130,9 @@ public class Pause extends GameState {
                 case "tip":
                     gsm.play.ignorePlayer = !gsm.play.ignorePlayer;
                     break;
+                case "addEnemy":
+                	gsm.play.createEnemy(Integer.parseInt(param2));
+                	break;
                 default:
                     cmd.setText("Error");
             }
@@ -138,7 +142,6 @@ public class Pause extends GameState {
     @Override
     public void update(float dt) {
         handleInput();
-
     }
 
     @Override

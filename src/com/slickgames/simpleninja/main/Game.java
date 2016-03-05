@@ -3,7 +3,10 @@ package com.slickgames.simpleninja.main;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.backends.lwjgl.audio.Wav;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -57,6 +60,12 @@ public class Game implements ApplicationListener {
         assets.load("res/menu/waterfall_animation.Png", Texture.class);
         assets.load("res/music/waterfall_music.mp3", Music.class);
         assets.load("res/menu/treeBob_animation.png", Texture.class);
+
+
+        //sfx
+        assets.load("res/sfx/hit/hita .wav", Sound.class);
+        assets.load("res/sfx/hit/hit2.wav", Sound.class);
+        assets.load("res/sfx/hit/hit3.wav", Sound.class);
 
         //Options
         assets.load("res/Style/Knode.png", Texture.class);

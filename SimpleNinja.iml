@@ -13,7 +13,7 @@
       <src_folder value="file://$MODULE_DIR$/res" expected_position="1" />
     </src_description>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/bin" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -22,67 +22,17 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="module-library">
-      <library name="gdx-backend-lwjgl-natives.jar">
+    <orderEntry type="module-library" exported="">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx-backend-lwjgl-natives.jar!/" />
+          <root url="file://$MODULE_DIR$/libs" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gdx-backend-lwjgl.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx-backend-lwjgl.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gdx-box2d-natives.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx-box2d-natives.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gdx-box2d.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx-box2d.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gdx-natives.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx-natives.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gdx-sources.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx-sources.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gdx.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/libs" />
+        </SOURCES>
+        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
   </component>

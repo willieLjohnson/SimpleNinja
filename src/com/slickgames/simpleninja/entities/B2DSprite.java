@@ -84,4 +84,8 @@ public abstract class B2DSprite {
     public void setMaxSpeed(float maxSpeed) {
         this.MAX_SPEED = maxSpeed;
     }
+
+    public int getMaxHealth() {
+        return MAX_HEALTH;
+    }
 }
