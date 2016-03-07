@@ -98,15 +98,13 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
-        accum += Gdx.graphics.getDeltaTime();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(40 / 255f, 38 / 255f, 33 / 255f, 1f);
-        while (accum >= STEP) {
-            accum -= STEP;
-            gsm.update(STEP);
-            gsm.render();
-            MyInput.update();
-        }
+
+        gsm.update(STEP);
+        gsm.render();
+        MyInput.update();
+
     }
 
     @Override
