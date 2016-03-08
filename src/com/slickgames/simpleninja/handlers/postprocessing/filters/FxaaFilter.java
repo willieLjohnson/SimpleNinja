@@ -1,11 +1,10 @@
 /*******************************************************************************
- * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,99 +20,99 @@ import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
 /** Fast approximate anti-aliasing filter.
  * @author Toni Sagrista */
 public final class FxaaFilter extends Filter<FxaaFilter> {
-	private Vector2 viewportInverse;
-	private float FXAA_REDUCE_MIN;
-	private float FXAA_REDUCE_MUL;
-	private float FXAA_SPAN_MAX;
+    private Vector2 viewportInverse;
+    private float FXAA_REDUCE_MIN;
+    private float FXAA_REDUCE_MUL;
+    private float FXAA_SPAN_MAX;
 
-	public enum Param implements Parameter {
-		// @formatter:off
-		Texture("u_texture0", 0), ViewportInverse("u_viewportInverse", 2), FxaaReduceMin("FXAA_REDUCE_MIN", 0), FxaaReduceMul(
-			"FXAA_REDUCE_MUL", 0), FxaaSpanMax("FXAA_SPAN_MAX", 0), ;
-		// @formatter:on
+    public FxaaFilter(int viewportWidth, int viewportHeight) {
+        this(new Vector2(viewportWidth, viewportHeight), 1f / 128f, 1f / 8f, 8f);
+    }
 
-		private String mnemonic;
-		private int elementSize;
+    public FxaaFilter(int viewportWidth, int viewportHeight, float fxaa_reduce_min, float fxaa_reduce_mul, float fxaa_span_max) {
+        this(new Vector2(viewportWidth, viewportHeight), fxaa_reduce_min, fxaa_reduce_mul, fxaa_span_max);
+    }
 
-		Param(String mnemonic, int arrayElementSize) {
-			this.mnemonic = mnemonic;
-			this.elementSize = arrayElementSize;
-		}
+    public FxaaFilter(Vector2 viewportSize, float fxaa_reduce_min, float fxaa_reduce_mul, float fxaa_span_max) {
+        super(ShaderLoader.fromFile("screenspace", "fxaa"));
+        this.viewportInverse = viewportSize;
+        this.viewportInverse.x = 1f / this.viewportInverse.x;
+        this.viewportInverse.y = 1f / this.viewportInverse.y;
 
-		@Override
-		public String mnemonic () {
-			return this.mnemonic;
-		}
+        this.FXAA_REDUCE_MIN = fxaa_reduce_min;
+        this.FXAA_REDUCE_MUL = fxaa_reduce_mul;
+        this.FXAA_SPAN_MAX = fxaa_span_max;
+        rebind();
+    }
 
-		@Override
-		public int arrayElementSize () {
-			return this.elementSize;
-		}
-	}
+    public void setViewportSize(float width, float height) {
+        this.viewportInverse.set(1f / width, 1f / height);
+        setParam(Param.ViewportInverse, this.viewportInverse);
+    }
 
-	public FxaaFilter (int viewportWidth, int viewportHeight) {
-		this(new Vector2(viewportWidth, viewportHeight), 1f / 128f, 1f / 8f, 8f);
-	}
+    /** Sets the parameter. The default value is 1/128.
+     * @param value */
+    public void setFxaaReduceMin(float value) {
+        this.FXAA_REDUCE_MIN = value;
+        setParam(Param.FxaaReduceMin, this.FXAA_REDUCE_MIN);
+    }
 
-	public FxaaFilter (int viewportWidth, int viewportHeight, float fxaa_reduce_min, float fxaa_reduce_mul, float fxaa_span_max) {
-		this(new Vector2(viewportWidth, viewportHeight), fxaa_reduce_min, fxaa_reduce_mul, fxaa_span_max);
-	}
+    /** Sets the parameter. The default value is 1/8.
+     * @param value */
+    public void setFxaaReduceMul(float value) {
+        this.FXAA_REDUCE_MUL = value;
+        setParam(Param.FxaaReduceMul, this.FXAA_REDUCE_MUL);
+    }
 
-	public FxaaFilter (Vector2 viewportSize, float fxaa_reduce_min, float fxaa_reduce_mul, float fxaa_span_max) {
-		super(ShaderLoader.fromFile("screenspace", "fxaa"));
-		this.viewportInverse = viewportSize;
-		this.viewportInverse.x = 1f / this.viewportInverse.x;
-		this.viewportInverse.y = 1f / this.viewportInverse.y;
+    /** Sets the parameter. The default value is 8;
+     * @param value */
+    public void setFxaaSpanMax(float value) {
+        this.FXAA_SPAN_MAX = value;
+        setParam(Param.FxaaSpanMax, this.FXAA_SPAN_MAX);
+    }
 
-		this.FXAA_REDUCE_MIN = fxaa_reduce_min;
-		this.FXAA_REDUCE_MUL = fxaa_reduce_mul;
-		this.FXAA_SPAN_MAX = fxaa_span_max;
-		rebind();
-	}
+    public Vector2 getViewportSize() {
+        return viewportInverse;
+    }
 
-	public void setViewportSize (float width, float height) {
-		this.viewportInverse.set(1f / width, 1f / height);
-		setParam(Param.ViewportInverse, this.viewportInverse);
-	}
+    @Override
+    public void rebind() {
+        // reimplement super to batch every parameter
+        setParams(Param.Texture, u_texture0);
+        setParams(Param.ViewportInverse, viewportInverse);
+        setParams(Param.FxaaReduceMin, FXAA_REDUCE_MIN);
+        setParams(Param.FxaaReduceMul, FXAA_REDUCE_MUL);
+        setParams(Param.FxaaSpanMax, FXAA_SPAN_MAX);
+        endParams();
+    }
 
-	/** Sets the parameter. The default value is 1/128.
-	 * @param value */
-	public void setFxaaReduceMin (float value) {
-		this.FXAA_REDUCE_MIN = value;
-		setParam(Param.FxaaReduceMin, this.FXAA_REDUCE_MIN);
-	}
+    @Override
+    protected void onBeforeRender() {
+        inputTexture.bind(u_texture0);
+    }
 
-	/** Sets the parameter. The default value is 1/8.
-	 * @param value */
-	public void setFxaaReduceMul (float value) {
-		this.FXAA_REDUCE_MUL = value;
-		setParam(Param.FxaaReduceMul, this.FXAA_REDUCE_MUL);
-	}
+    public enum Param implements Parameter {
+        // @formatter:off
+        Texture("u_texture0", 0), ViewportInverse("u_viewportInverse", 2), FxaaReduceMin("FXAA_REDUCE_MIN", 0), FxaaReduceMul(
+                "FXAA_REDUCE_MUL", 0), FxaaSpanMax("FXAA_SPAN_MAX", 0),;
+        // @formatter:on
 
-	/** Sets the parameter. The default value is 8;
-	 * @param value */
-	public void setFxaaSpanMax (float value) {
-		this.FXAA_SPAN_MAX = value;
-		setParam(Param.FxaaSpanMax, this.FXAA_SPAN_MAX);
-	}
+        private String mnemonic;
+        private int elementSize;
 
-	public Vector2 getViewportSize () {
-		return viewportInverse;
-	}
+        Param(String mnemonic, int arrayElementSize) {
+            this.mnemonic = mnemonic;
+            this.elementSize = arrayElementSize;
+        }
 
-	@Override
-	public void rebind () {
-		// reimplement super to batch every parameter
-		setParams(Param.Texture, u_texture0);
-		setParams(Param.ViewportInverse, viewportInverse);
-		setParams(Param.FxaaReduceMin, FXAA_REDUCE_MIN);
-		setParams(Param.FxaaReduceMul, FXAA_REDUCE_MUL);
-		setParams(Param.FxaaSpanMax, FXAA_SPAN_MAX);
-		endParams();
-	}
+        @Override
+        public String mnemonic() {
+            return this.mnemonic;
+        }
 
-	@Override
-	protected void onBeforeRender () {
-		inputTexture.bind(u_texture0);
-	}
+        @Override
+        public int arrayElementSize() {
+            return this.elementSize;
+        }
+    }
 }

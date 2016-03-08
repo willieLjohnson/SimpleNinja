@@ -3,17 +3,14 @@ package com.slickgames.simpleninja.main;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.backends.lwjgl.audio.Wav;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInput;
@@ -24,15 +21,15 @@ public class Game implements ApplicationListener {
     public static final int V_WIDTH = 1366 / 4;
     public static final int V_HEIGHT = 720 / 4;
     public static final int SCALE = 2;
-    public Stage stage;
     public static final float STEP = 1 / 60f;
     public static Game game;
+    public Stage stage;
     public AssetManager assets;
+    public Viewport viewPort;
     private float accum;
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private GameStateManager gsm;
-    public Viewport viewPort;
 
     @Override
     public void create() {
@@ -104,7 +101,6 @@ public class Game implements ApplicationListener {
         gsm.update(STEP);
         gsm.render();
         MyInput.update();
-
     }
 
     @Override

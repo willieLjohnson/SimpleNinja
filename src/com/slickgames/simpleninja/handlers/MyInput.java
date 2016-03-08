@@ -12,8 +12,6 @@ public class MyInput {
     public static int WALLRUN = 5;
     public static boolean[] keys;
     public static boolean[] pkeys;
-    public static int Parti=6;
-
 
     static {
         keys = new boolean[NUM_KEYS];

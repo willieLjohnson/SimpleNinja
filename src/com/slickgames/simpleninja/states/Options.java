@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,24 +16,25 @@ import com.slickgames.simpleninja.handlers.GameStateManager;
  * Created by Administrator on 1/11/2016.
  */
 public class Options extends GameState {
-    private  TextButton ResizeButton;
-    private Slider Resize;
     Skin skin;
+    Animation menuAnimation;
+    private TextButton ResizeButton;
+    private Slider Resize;
     private Table table;
     private Sprite animationSprite;
-    Animation menuAnimation;
+
     public Options(GameStateManager gsm) {
         super(gsm);
-      //  skin = new Skin(Gdx.files.internal("res/font/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/font/uiskin.atlas")));
-     //  skin=new Skin("konbs",new Texture(Gdx.files.internal("")));
-        skin= new Skin();
+        //  skin = new Skin(Gdx.files.internal("res/font/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/font/uiskin.atlas")));
+        //  skin=new Skin("konbs",new Texture(Gdx.files.internal("")));
+        skin = new Skin();
         table = new Table();
         table.setFillParent(true);
         table.setWidth(game.stage.getWidth());
         table.align(Align.center);
 //      ResizeButton = new TextButton("Resize", skin);
 //      Resize = new Slider(0,1,1,false,SliderTesture);
-      // skin = new Skin();
+        // skin = new Skin();
         skin.add("knob", new Texture(Gdx.files.internal("res/Style/Knode.png")));
         skin.add("bgs", new Texture(Gdx.files.internal("res/Style/onAndoff Slider.jpg")));
         Slider.SliderStyle ResizeStyle = new Slider.SliderStyle();

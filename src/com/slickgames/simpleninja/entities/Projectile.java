@@ -17,7 +17,7 @@ public class Projectile extends B2DSprite {
         TextureRegion[] sprites = TextureRegion.split(tex, 16, 16)[0];
 
         setAnimation(sprites, 1 / 12f);
-        body.setUserData("proj"+play.projectiles.size);
+        body.setUserData("proj" + play.projectiles.size);
         play.projectiles.add(this);
     }
 

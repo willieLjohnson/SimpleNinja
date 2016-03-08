@@ -7,14 +7,14 @@ import java.util.Stack;
 
 public class GameStateManager {
 
-    public boolean debug;
     public static final int PLAY = 1;
     public static final int PAUSE = 0;
     public static final int MAIN_MENU = 2;
-    public static final int Option=3;
+    public static final int Option = 3;
+    public boolean debug;
+    public Play play;
     private Game game;
     private Stack<GameState> gameStates;
-    public Play play;
 
 
     public GameStateManager(Game game) {
@@ -48,7 +48,7 @@ public class GameStateManager {
         if (state == MAIN_MENU) {
             return new MainMenu(this);
         }
-        if (state == Option){
+        if (state == Option) {
             return new Options(this);
         }
 

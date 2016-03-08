@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2012 bmanuel
- * 
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,96 +22,96 @@ import com.badlogic.gdx.math.Vector2;
 import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
 
 /** FIXME this effect is INCOMPLETE!
- * 
+ *
  * @author bmanuel */
 public final class CameraBlur extends Filter<CameraBlur> {
 
-	private Texture normaldepth = null;
-	private Vector2 viewport = new Vector2();
+    private Texture normaldepth = null;
+    private Vector2 viewport = new Vector2();
 
-	public enum Param implements Parameter {
-		// @formatter:off
-		InputScene("u_texture0", 0), DepthMap("u_texture1", 0), CurrentToPrevious("ctp", 0), Near("near", 0), Far("far", 0), BlurPasses(
-			"blur_passes", 0), BlurScale("blur_scale", 0), DepthScale("depth_scale", 0), InvProj("inv_proj", 0), Viewport(
-			"viewport", 0);
-		// @formatter:on
+    public CameraBlur() {
+        super(ShaderLoader.fromFile("screenspace", "camerablur"));
+        rebind();
+        // dolut = false;
+    }
 
-		private final String mnemonic;
-		private int elementSize;
+    public void setNormalDepthMap(Texture texture) {
+        this.normaldepth = texture;
+    }
 
-		Param(String m, int elementSize) {
-			this.mnemonic = m;
-			this.elementSize = elementSize;
-		}
+    public void setCurrentToPrevious(Matrix4 ctp) {
+        setParams(Param.CurrentToPrevious, ctp);
+        endParams();
+    }
 
-		@Override
-		public String mnemonic () {
-			return this.mnemonic;
-		}
+    public void setInverseProj(Matrix4 invProj) {
+        setParams(Param.InvProj, invProj);
+        endParams();
+    }
 
-		@Override
-		public int arrayElementSize () {
-			return this.elementSize;
-		}
-	}
+    public void setBlurPasses(int passes) {
+        setParams(Param.BlurPasses, passes);
+        endParams();
+    }
 
-	public CameraBlur () {
-		super(ShaderLoader.fromFile("screenspace", "camerablur"));
-		rebind();
-		// dolut = false;
-	}
+    public void setBlurScale(float blurScale) {
+        setParams(Param.BlurScale, blurScale);
+        endParams();
+    }
 
-	public void setNormalDepthMap (Texture texture) {
-		this.normaldepth = texture;
-	}
+    public void setNearFarPlanes(float near, float far) {
+        setParams(Param.Near, near);
+        setParams(Param.Far, far);
+        endParams();
+    }
 
-	public void setCurrentToPrevious (Matrix4 ctp) {
-		setParams(Param.CurrentToPrevious, ctp);
-		endParams();
-	}
+    public void setViewport(float width, float height) {
+        viewport.set(width, height);
+        setParams(Param.Viewport, viewport);
+    }
 
-	public void setInverseProj (Matrix4 invProj) {
-		setParams(Param.InvProj, invProj);
-		endParams();
-	}
+    public void setDepthScale(float scale) {
+        setParams(Param.DepthScale, scale);
+        endParams();
+    }
 
-	public void setBlurPasses (int passes) {
-		setParams(Param.BlurPasses, passes);
-		endParams();
-	}
+    @Override
+    public void rebind() {
+        setParams(Param.InputScene, u_texture0);
+        setParams(Param.DepthMap, u_texture1);
+        endParams();
+    }
 
-	public void setBlurScale (float blurScale) {
-		setParams(Param.BlurScale, blurScale);
-		endParams();
-	}
+    @Override
+    protected void onBeforeRender() {
+        rebind();
+        inputTexture.bind(u_texture0);
+        normaldepth.bind(u_texture1);
+    }
 
-	public void setNearFarPlanes (float near, float far) {
-		setParams(Param.Near, near);
-		setParams(Param.Far, far);
-		endParams();
-	}
+    public enum Param implements Parameter {
+        // @formatter:off
+        InputScene("u_texture0", 0), DepthMap("u_texture1", 0), CurrentToPrevious("ctp", 0), Near("near", 0), Far("far", 0), BlurPasses(
+                "blur_passes", 0), BlurScale("blur_scale", 0), DepthScale("depth_scale", 0), InvProj("inv_proj", 0), Viewport(
+                "viewport", 0);
+        // @formatter:on
 
-	public void setViewport (float width, float height) {
-		viewport.set(width, height);
-		setParams(Param.Viewport, viewport);
-	}
+        private final String mnemonic;
+        private int elementSize;
 
-	public void setDepthScale (float scale) {
-		setParams(Param.DepthScale, scale);
-		endParams();
-	}
+        Param(String m, int elementSize) {
+            this.mnemonic = m;
+            this.elementSize = elementSize;
+        }
 
-	@Override
-	public void rebind () {
-		setParams(Param.InputScene, u_texture0);
-		setParams(Param.DepthMap, u_texture1);
-		endParams();
-	}
+        @Override
+        public String mnemonic() {
+            return this.mnemonic;
+        }
 
-	@Override
-	protected void onBeforeRender () {
-		rebind();
-		inputTexture.bind(u_texture0);
-		normaldepth.bind(u_texture1);
-	}
+        @Override
+        public int arrayElementSize() {
+            return this.elementSize;
+        }
+    }
 }

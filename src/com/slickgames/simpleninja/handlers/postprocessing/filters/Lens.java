@@ -1,11 +1,10 @@
 /*******************************************************************************
- * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,94 +21,94 @@ import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
 /** Lens flare effect.
  * @author Toni Sagrista **/
 public final class Lens extends Filter<Lens> {
-	private Vector2 lightPosition = new Vector2();
-	private float intensity;
-	private Vector3 color = new Vector3();
-	private Vector2 viewport = new Vector2();
+    private Vector2 lightPosition = new Vector2();
+    private float intensity;
+    private Vector3 color = new Vector3();
+    private Vector2 viewport = new Vector2();
 
-	public enum Param implements Parameter {
-		// @formatter:off
-		Texture("u_texture0", 0), LightPosition("u_lightPosition", 2), Intensity("u_intensity", 0), Color("u_color", 3), Viewport(
-			"u_viewport", 2);
-		// @formatter:on
+    public Lens(float width, float height) {
+        super(ShaderLoader.fromFile("screenspace", "lensflare"));
+        viewport.set(width, height);
+        rebind();
+    }
 
-		private String mnemonic;
-		private int elementSize;
+    /** Sets the light position in screen coordinates [-1..1].
+     * @param x
+     * @param y */
+    public void setLightPosition(float x, float y) {
+        lightPosition.set(x, y);
+        setParam(Param.LightPosition, this.lightPosition);
+    }
 
-		Param(String mnemonic, int arrayElementSize) {
-			this.mnemonic = mnemonic;
-			this.elementSize = arrayElementSize;
-		}
+    public Vector2 getLightPosition() {
+        return lightPosition;
+    }
 
-		@Override
-		public String mnemonic () {
-			return this.mnemonic;
-		}
+    public void setLightPosition(Vector2 lightPosition) {
+        setLightPosition(lightPosition.x, lightPosition.y);
+    }
 
-		@Override
-		public int arrayElementSize () {
-			return this.elementSize;
-		}
-	}
+    public float getIntensity() {
+        return intensity;
+    }
 
-	public Lens (float width, float height) {
-		super(ShaderLoader.fromFile("screenspace", "lensflare"));
-		viewport.set(width, height);
-		rebind();
-	}
+    public void setIntensity(float intensity) {
+        this.intensity = intensity;
+        setParam(Param.Intensity, intensity);
+    }
 
-	/** Sets the light position in screen coordinates [-1..1].
-	 * @param x
-	 * @param y */
-	public void setLightPosition (float x, float y) {
-		lightPosition.set(x, y);
-		setParam(Param.LightPosition, this.lightPosition);
-	}
+    public Vector3 getColor() {
+        return color;
+    }
 
-	public Vector2 getLightPosition () {
-		return lightPosition;
-	}
+    public void setColor(float r, float g, float b) {
+        color.set(r, g, b);
+        setParam(Param.Color, color);
+    }
 
-	public void setLightPosition (Vector2 lightPosition) {
-		setLightPosition(lightPosition.x, lightPosition.y);
-	}
+    public void setViewport(float width, float height) {
+        viewport.set(width, height);
+        setParams(Param.Viewport, viewport);
+    }
 
-	public float getIntensity () {
-		return intensity;
-	}
+    @Override
+    public void rebind() {
+        // Re-implement super to batch every parameter
+        setParams(Param.Texture, u_texture0);
+        setParams(Param.LightPosition, lightPosition);
+        setParams(Param.Intensity, intensity);
+        setParams(Param.Color, color);
+        setParams(Param.Viewport, viewport);
+        endParams();
+    }
 
-	public void setIntensity (float intensity) {
-		this.intensity = intensity;
-		setParam(Param.Intensity, intensity);
-	}
+    @Override
+    protected void onBeforeRender() {
+        inputTexture.bind(u_texture0);
+    }
 
-	public Vector3 getColor () {
-		return color;
-	}
+    public enum Param implements Parameter {
+        // @formatter:off
+        Texture("u_texture0", 0), LightPosition("u_lightPosition", 2), Intensity("u_intensity", 0), Color("u_color", 3), Viewport(
+                "u_viewport", 2);
+        // @formatter:on
 
-	public void setColor (float r, float g, float b) {
-		color.set(r, g, b);
-		setParam(Param.Color, color);
-	}
+        private String mnemonic;
+        private int elementSize;
 
-	public void setViewport (float width, float height) {
-		viewport.set(width, height);
-		setParams(Param.Viewport, viewport);
-	}
+        Param(String mnemonic, int arrayElementSize) {
+            this.mnemonic = mnemonic;
+            this.elementSize = arrayElementSize;
+        }
 
-	@Override
-	public void rebind () {
-		// Re-implement super to batch every parameter
-		setParams(Param.Texture, u_texture0);
-		setParams(Param.LightPosition, lightPosition);
-		setParams(Param.Intensity, intensity);
-		setParams(Param.Color, color);
-		setParams(Param.Viewport, viewport);
-		endParams();
-	}
+        @Override
+        public String mnemonic() {
+            return this.mnemonic;
+        }
 
-	@Override
-	protected void onBeforeRender () {
-		inputTexture.bind(u_texture0);
-	}
+        @Override
+        public int arrayElementSize() {
+            return this.elementSize;
+        }
+    }
 }

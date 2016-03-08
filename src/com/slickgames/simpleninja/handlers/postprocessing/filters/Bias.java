@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2012 tsagrista
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,54 +23,54 @@ import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
  *      href="http://john-chapman-graphics.blogspot.co.uk/2013/02/pseudo-lens-flare.html">http://john-chapman-graphics.blogspot.co.uk/2013/02/pseudo-lens-flare.html</a>
  * @author Toni Sagrista */
 public final class Bias extends Filter<Bias> {
-	private float bias;
+    private float bias;
 
-	public enum Param implements Parameter {
-		// @formatter:off
-		Texture("u_texture0", 0), Bias("u_bias", 0);
-		// @formatter:on
+    public Bias() {
+        super(ShaderLoader.fromFile("screenspace", "bias"));
+        rebind();
+    }
 
-		private String mnemonic;
-		private int elementSize;
+    public float getBias() {
+        return bias;
+    }
 
-		Param(String mnemonic, int elementSize) {
-			this.mnemonic = mnemonic;
-			this.elementSize = elementSize;
-		}
+    public void setBias(float bias) {
+        this.bias = bias;
+        setParam(Param.Bias, this.bias);
+    }
 
-		@Override
-		public String mnemonic () {
-			return this.mnemonic;
-		}
+    @Override
+    protected void onBeforeRender() {
+        inputTexture.bind(u_texture0);
+    }
 
-		@Override
-		public int arrayElementSize () {
-			return this.elementSize;
-		}
-	}
+    @Override
+    public void rebind() {
+        setParams(Param.Texture, u_texture0);
+        setBias(this.bias);
+    }
 
-	public Bias () {
-		super(ShaderLoader.fromFile("screenspace", "bias"));
-		rebind();
-	}
+    public enum Param implements Parameter {
+        // @formatter:off
+        Texture("u_texture0", 0), Bias("u_bias", 0);
+        // @formatter:on
 
-	public void setBias (float bias) {
-		this.bias = bias;
-		setParam(Param.Bias, this.bias);
-	}
+        private String mnemonic;
+        private int elementSize;
 
-	public float getBias () {
-		return bias;
-	}
+        Param(String mnemonic, int elementSize) {
+            this.mnemonic = mnemonic;
+            this.elementSize = elementSize;
+        }
 
-	@Override
-	protected void onBeforeRender () {
-		inputTexture.bind(u_texture0);
-	}
+        @Override
+        public String mnemonic() {
+            return this.mnemonic;
+        }
 
-	@Override
-	public void rebind () {
-		setParams(Param.Texture, u_texture0);
-		setBias(this.bias);
-	}
+        @Override
+        public int arrayElementSize() {
+            return this.elementSize;
+        }
+    }
 }

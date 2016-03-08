@@ -1,67 +1,69 @@
-
 package com.slickgames.simpleninja.handlers.postprocessing.filters;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
 
-/** Motion blur filter that draws the last frame (motion filter included) with a lower opacity.
- * @author Toni Sagrista */
+/**
+ * Motion blur filter that draws the last frame (motion filter included) with a lower opacity.
+ *
+ * @author Toni Sagrista
+ */
 public class MotionFilter extends Filter<MotionFilter> {
 
-	private float blurOpacity = 0.5f;
-	private Texture lastFrameTex;
+    private float blurOpacity = 0.5f;
+    private Texture lastFrameTex;
 
-	public enum Param implements Parameter {
-		// @formatter:off
-		Texture("u_texture0", 0), LastFrame("u_texture1", 0), BlurOpacity("u_blurOpacity", 0);
-		// @formatter:on
+    public MotionFilter() {
+        super(ShaderLoader.fromFile("screenspace", "motionblur"));
+        rebind();
+    }
 
-		private String mnemonic;
-		private int elementSize;
+    public void setBlurOpacity(float blurOpacity) {
+        this.blurOpacity = blurOpacity;
+        setParam(Param.BlurOpacity, this.blurOpacity);
+    }
 
-		Param(String mnemonic, int arrayElementSize) {
-			this.mnemonic = mnemonic;
-			this.elementSize = arrayElementSize;
-		}
+    public void setLastFrameTexture(Texture tex) {
+        this.lastFrameTex = tex;
+        if (lastFrameTex != null) setParam(Param.LastFrame, u_texture1);
+    }
 
-		@Override
-		public String mnemonic () {
-			return this.mnemonic;
-		}
+    @Override
+    public void rebind() {
+        setParams(Param.Texture, u_texture0);
+        if (lastFrameTex != null) setParams(Param.LastFrame, u_texture1);
+        setParams(Param.BlurOpacity, this.blurOpacity);
+        endParams();
+    }
 
-		@Override
-		public int arrayElementSize () {
-			return this.elementSize;
-		}
-	}
+    @Override
+    protected void onBeforeRender() {
+        inputTexture.bind(u_texture0);
+        if (lastFrameTex != null) lastFrameTex.bind(u_texture1);
+    }
 
-	public MotionFilter () {
-		super(ShaderLoader.fromFile("screenspace", "motionblur"));
-		rebind();
-	}
+    public enum Param implements Parameter {
+        // @formatter:off
+        Texture("u_texture0", 0), LastFrame("u_texture1", 0), BlurOpacity("u_blurOpacity", 0);
+        // @formatter:on
 
-	public void setBlurOpacity (float blurOpacity) {
-		this.blurOpacity = blurOpacity;
-		setParam(Param.BlurOpacity, this.blurOpacity);
-	}
+        private String mnemonic;
+        private int elementSize;
 
-	public void setLastFrameTexture (Texture tex) {
-		this.lastFrameTex = tex;
-		if (lastFrameTex != null) setParam(Param.LastFrame, u_texture1);
-	}
+        Param(String mnemonic, int arrayElementSize) {
+            this.mnemonic = mnemonic;
+            this.elementSize = arrayElementSize;
+        }
 
-	@Override
-	public void rebind () {
-		setParams(Param.Texture, u_texture0);
-		if (lastFrameTex != null) setParams(Param.LastFrame, u_texture1);
-		setParams(Param.BlurOpacity, this.blurOpacity);
-		endParams();
-	}
+        @Override
+        public String mnemonic() {
+            return this.mnemonic;
+        }
 
-	@Override
-	protected void onBeforeRender () {
-		inputTexture.bind(u_texture0);
-		if (lastFrameTex != null) lastFrameTex.bind(u_texture1);
-	}
+        @Override
+        public int arrayElementSize() {
+            return this.elementSize;
+        }
+    }
 
 }

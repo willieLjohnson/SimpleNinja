@@ -1,11 +1,10 @@
 /*******************************************************************************
- * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,84 +24,84 @@ import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
  *      href="http://john-chapman-graphics.blogspot.co.uk/2013/02/pseudo-lens-flare.html">http://john-chapman-graphics.blogspot.co.uk/2013/02/pseudo-lens-flare.html</a>
  * @author Toni Sagrista **/
 public final class Lens2 extends Filter<Lens2> {
-	private Vector2 viewportInverse;
-	private int ghosts;
-	private float haloWidth;
-	private Texture lensColorTexture;
+    private Vector2 viewportInverse;
+    private int ghosts;
+    private float haloWidth;
+    private Texture lensColorTexture;
 
-	public enum Param implements Parameter {
-		// @formatter:off
-		Texture("u_texture0", 0), LensColor("u_texture1", 0), ViewportInverse("u_viewportInverse", 2), Ghosts("u_ghosts", 0), HaloWidth(
-			"u_haloWidth", 0);
-		// @formatter:on
+    public Lens2(int width, int height) {
+        super(ShaderLoader.fromFile("screenspace", "lensflare2"));
+        viewportInverse = new Vector2(1f / width, 1f / height);
+        rebind();
+    }
 
-		private String mnemonic;
-		private int elementSize;
+    public void setViewportSize(float width, float height) {
+        this.viewportInverse.set(1f / width, 1f / height);
+        setParam(Param.ViewportInverse, this.viewportInverse);
+    }
 
-		Param(String mnemonic, int arrayElementSize) {
-			this.mnemonic = mnemonic;
-			this.elementSize = arrayElementSize;
-		}
+    public int getGhosts() {
+        return ghosts;
+    }
 
-		@Override
-		public String mnemonic () {
-			return this.mnemonic;
-		}
+    public void setGhosts(int ghosts) {
+        this.ghosts = ghosts;
+        setParam(Param.Ghosts, ghosts);
+    }
 
-		@Override
-		public int arrayElementSize () {
-			return this.elementSize;
-		}
-	}
+    public float getHaloWidth() {
+        return haloWidth;
+    }
 
-	public Lens2 (int width, int height) {
-		super(ShaderLoader.fromFile("screenspace", "lensflare2"));
-		viewportInverse = new Vector2(1f / width, 1f / height);
-		rebind();
-	}
+    public void setHaloWidth(float haloWidth) {
+        this.haloWidth = haloWidth;
+        setParam(Param.HaloWidth, haloWidth);
+    }
 
-	public void setViewportSize (float width, float height) {
-		this.viewportInverse.set(1f / width, 1f / height);
-		setParam(Param.ViewportInverse, this.viewportInverse);
-	}
+    public void setLensColorTexture(Texture tex) {
+        this.lensColorTexture = tex;
+        setParam(Param.LensColor, u_texture1);
+    }
 
-	public int getGhosts () {
-		return ghosts;
-	}
+    @Override
+    public void rebind() {
+        // Re-implement super to batch every parameter
+        setParams(Param.Texture, u_texture0);
+        setParams(Param.LensColor, u_texture1);
+        setParams(Param.ViewportInverse, viewportInverse);
+        setParams(Param.Ghosts, ghosts);
+        setParams(Param.HaloWidth, haloWidth);
+        endParams();
+    }
 
-	public void setGhosts (int ghosts) {
-		this.ghosts = ghosts;
-		setParam(Param.Ghosts, ghosts);
-	}
+    @Override
+    protected void onBeforeRender() {
+        inputTexture.bind(u_texture0);
+        lensColorTexture.bind(u_texture1);
+    }
 
-	public float getHaloWidth () {
-		return haloWidth;
-	}
+    public enum Param implements Parameter {
+        // @formatter:off
+        Texture("u_texture0", 0), LensColor("u_texture1", 0), ViewportInverse("u_viewportInverse", 2), Ghosts("u_ghosts", 0), HaloWidth(
+                "u_haloWidth", 0);
+        // @formatter:on
 
-	public void setHaloWidth (float haloWidth) {
-		this.haloWidth = haloWidth;
-		setParam(Param.HaloWidth, haloWidth);
-	}
+        private String mnemonic;
+        private int elementSize;
 
-	public void setLensColorTexture (Texture tex) {
-		this.lensColorTexture = tex;
-		setParam(Param.LensColor, u_texture1);
-	}
+        Param(String mnemonic, int arrayElementSize) {
+            this.mnemonic = mnemonic;
+            this.elementSize = arrayElementSize;
+        }
 
-	@Override
-	public void rebind () {
-		// Re-implement super to batch every parameter
-		setParams(Param.Texture, u_texture0);
-		setParams(Param.LensColor, u_texture1);
-		setParams(Param.ViewportInverse, viewportInverse);
-		setParams(Param.Ghosts, ghosts);
-		setParams(Param.HaloWidth, haloWidth);
-		endParams();
-	}
+        @Override
+        public String mnemonic() {
+            return this.mnemonic;
+        }
 
-	@Override
-	protected void onBeforeRender () {
-		inputTexture.bind(u_texture0);
-		lensColorTexture.bind(u_texture1);
-	}
+        @Override
+        public int arrayElementSize() {
+            return this.elementSize;
+        }
+    }
 }

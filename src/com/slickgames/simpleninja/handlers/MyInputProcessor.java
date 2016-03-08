@@ -1,15 +1,10 @@
 package com.slickgames.simpleninja.handlers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import org.lwjgl.input.Mouse;
 
 public class MyInputProcessor extends InputAdapter {
-
-
-    /////////// Keyboard Inputs
 
     @Override
     public boolean keyDown(int k) {
@@ -28,7 +23,7 @@ public class MyInputProcessor extends InputAdapter {
         if (k == Keys.SHIFT_LEFT) {
             MyInput.setKey(MyInput.WALLRUN, true);
         }
-        if (k ==Keys.P){
+        if (k == Keys.P) {
             MyInput.setKey(MyInput.SHOOT, true);
         }
 
@@ -52,25 +47,21 @@ public class MyInputProcessor extends InputAdapter {
         if (k == Keys.SHIFT_LEFT) {
             MyInput.setKey(MyInput.WALLRUN, false);
         }
-        if (k ==Keys.P){
+        if (k == Keys.P) {
             MyInput.setKey(MyInput.SHOOT, false);
         }
         return true;
     }
 
-    /////////// Mouse Inputs
-
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT)
-        {
+        if (button == Input.Buttons.LEFT) {
             MyInput.setKey(MyInput.ATTACK, true);
         }
         return true;
     }
 
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT)
-        {
+        if (button == Input.Buttons.LEFT) {
             MyInput.setKey(MyInput.ATTACK, false);
         }
         return true;

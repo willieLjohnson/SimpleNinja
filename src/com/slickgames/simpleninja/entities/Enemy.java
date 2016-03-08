@@ -15,17 +15,19 @@ import com.slickgames.simpleninja.states.Play;
 
 public class Enemy extends B2DSprite {
     public static final float MAX_SPEED = 1.5f;
-    public boolean running, idling, jumping, attacking, attacked, ignorePlayer;
-    public int state = 0;
     private final int GUARD = 0;
     private final int CHASE = 1;
     private final int FIND = 2;
+    public boolean running, idling, jumping, attacking, attacked, ignorePlayer;
+    public int state = 0;
+    public int id;
     TextureRegion[] run, idle, jump, attack;
     Vector2 target = new Vector2();
     Vector2 collision = new Vector2();
     Vector2 normal = new Vector2();
     Fixture cFix;
     ShapeRenderer sr;
+    Play play;
     private int numCrystals;
     private int totalCrystals;
     private boolean enemySpotted;
@@ -33,8 +35,6 @@ public class Enemy extends B2DSprite {
     private float lastSeen;
     private float lastSwitch;
     private boolean bounced;
-    public int id;
-    Play play;
 
     public Enemy(Body body, Play aPlay, int aId) {
         super(body);
