@@ -45,7 +45,7 @@ public class Pause extends GameState {
 
         cmd = new TextField("", skin);
         cmd.setMessageText(";)");
-
+        
         BitmapFont bt = new BitmapFont();
         table = new Table();
         table.setFillParent(true);

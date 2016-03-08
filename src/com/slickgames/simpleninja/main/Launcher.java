@@ -13,3 +13,4 @@ public class Launcher {
         new LwjglApplication(new Game(), cfg);
     }
 }
+ 
