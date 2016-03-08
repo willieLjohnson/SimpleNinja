@@ -46,8 +46,6 @@ public class Options extends GameState {
         table.row();
         game.stage.addActor(table);
 
-
-
     }
 
     @Override

@@ -29,7 +29,7 @@ public class MyInputProcessor extends InputAdapter {
             MyInput.setKey(MyInput.WALLRUN, true);
         }
         if (k ==Keys.P){
-            MyInput.setKey(MyInput.Parti, true);
+            MyInput.setKey(MyInput.SHOOT, true);
         }
 
         return true;
@@ -53,7 +53,7 @@ public class MyInputProcessor extends InputAdapter {
             MyInput.setKey(MyInput.WALLRUN, false);
         }
         if (k ==Keys.P){
-            MyInput.setKey(MyInput.Parti, false);
+            MyInput.setKey(MyInput.SHOOT, false);
         }
         return true;
     }

@@ -10,6 +10,6 @@
 	<classpathentry kind="lib" path="libs/gdx.jar"/>
 	<classpathentry kind="lib" path="libs/runnable-2D-particles.jar"/>
 	<classpathentry kind="lib" path="libs/runnable-texturepacker.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Java"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
