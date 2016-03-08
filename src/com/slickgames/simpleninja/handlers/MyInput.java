@@ -10,9 +10,10 @@ public class MyInput {
     public static final int RESET = 4;
     public static final int SHOOT = 6;
     public static int WALLRUN = 5;
+    public static final int SHOOT= 6;
     public static boolean[] keys;
     public static boolean[] pkeys;
-    public static int Parti=6;
+
 
 
     static {
