@@ -7,9 +7,9 @@ import com.slickgames.simpleninja.states.Play;
 
 public class MyContactListener implements ContactListener {
 
+    public Array<Enemy> enemiesHit;
     private int numFootContacts;
     private Array<Body> bodiesToRemove;
-    public Array<Enemy> enemiesHit;
     private boolean detectRight;
     private boolean detectLeft;
     private boolean withinRange;
@@ -119,10 +119,10 @@ public class MyContactListener implements ContactListener {
                 wallCollision = false;
 
             if (fa.getUserData() != null && fa.getUserData().equals("enemyHitBox" + e.id)) {
-                enemiesHit.removeIndex(enemiesHit.indexOf(e,true));
+                enemiesHit.removeIndex(enemiesHit.indexOf(e, true));
             }
             if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id)) {
-                enemiesHit.removeIndex(enemiesHit.indexOf(e,true));
+                enemiesHit.removeIndex(enemiesHit.indexOf(e, true));
             }
         }
 

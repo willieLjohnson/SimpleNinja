@@ -1,8 +1,5 @@
 package com.slickgames.simpleninja.states;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -12,17 +9,16 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInputProcessor;
 import com.slickgames.simpleninja.main.Game;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Pause extends GameState {
 
@@ -45,7 +41,7 @@ public class Pause extends GameState {
 
         cmd = new TextField("", skin);
         cmd.setMessageText(";)");
-        
+
         BitmapFont bt = new BitmapFont();
         table = new Table();
         table.setFillParent(true);
@@ -89,7 +85,7 @@ public class Pause extends GameState {
         // handle input
 
         Gdx.input.setInputProcessor(gsm.game().stage);
-        
+
     }
 
     @Override
@@ -132,8 +128,8 @@ public class Pause extends GameState {
                     gsm.play.ignorePlayer = !gsm.play.ignorePlayer;
                     break;
                 case "addEnemy":
-                	gsm.play.createEnemy(Integer.parseInt(param2));
-                	break;
+                    gsm.play.createEnemy(Integer.parseInt(param2));
+                    break;
                 default:
                     cmd.setText("Error");
             }

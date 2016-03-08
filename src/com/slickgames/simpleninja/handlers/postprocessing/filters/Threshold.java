@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2012 bmanuel
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,55 +20,55 @@ import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
 
 public final class Threshold extends Filter<Threshold> {
 
-	public enum Param implements Parameter {
-		// @formatter:off
-		Texture("u_texture0", 0), Threshold("treshold", 0), ThresholdInvTx("tresholdInvTx", 0);
-		// @formatter:on
+    private float gamma = 0;
 
-		private String mnemonic;
-		private int elementSize;
+    public Threshold() {
+        super(ShaderLoader.fromFile("screenspace", "threshold"));
+        rebind();
+    }
 
-		Param(String mnemonic, int elementSize) {
-			this.mnemonic = mnemonic;
-			this.elementSize = elementSize;
-		}
+    public void setTreshold(float gamma) {
+        this.gamma = gamma;
+        setParams(Param.Threshold, gamma);
+        setParams(Param.ThresholdInvTx, 1f / (1 - gamma)).endParams();
+    }
 
-		@Override
-		public String mnemonic () {
-			return this.mnemonic;
-		}
+    public float getThreshold() {
+        return gamma;
+    }
 
-		@Override
-		public int arrayElementSize () {
-			return this.elementSize;
-		}
-	}
+    @Override
+    protected void onBeforeRender() {
+        inputTexture.bind(u_texture0);
+    }
 
-	public Threshold () {
-		super(ShaderLoader.fromFile("screenspace", "threshold"));
-		rebind();
-	}
+    @Override
+    public void rebind() {
+        setParams(Param.Texture, u_texture0);
+        setTreshold(this.gamma);
+    }
 
-	private float gamma = 0;
+    public enum Param implements Parameter {
+        // @formatter:off
+        Texture("u_texture0", 0), Threshold("treshold", 0), ThresholdInvTx("tresholdInvTx", 0);
+        // @formatter:on
 
-	public void setTreshold (float gamma) {
-		this.gamma = gamma;
-		setParams(Param.Threshold, gamma);
-		setParams(Param.ThresholdInvTx, 1f / (1 - gamma)).endParams();
-	}
+        private String mnemonic;
+        private int elementSize;
 
-	public float getThreshold () {
-		return gamma;
-	}
+        Param(String mnemonic, int elementSize) {
+            this.mnemonic = mnemonic;
+            this.elementSize = elementSize;
+        }
 
-	@Override
-	protected void onBeforeRender () {
-		inputTexture.bind(u_texture0);
-	}
+        @Override
+        public String mnemonic() {
+            return this.mnemonic;
+        }
 
-	@Override
-	public void rebind () {
-		setParams(Param.Texture, u_texture0);
-		setTreshold(this.gamma);
-	}
+        @Override
+        public int arrayElementSize() {
+            return this.elementSize;
+        }
+    }
 }

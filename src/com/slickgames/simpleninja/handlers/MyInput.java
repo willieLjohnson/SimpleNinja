@@ -8,13 +8,10 @@ public class MyInput {
     public static final int JUMP = 2;
     public static final int ATTACK = 3;
     public static final int RESET = 4;
-    public static final int SHOOT = 6;
     public static int WALLRUN = 5;
     public static final int SHOOT= 6;
     public static boolean[] keys;
     public static boolean[] pkeys;
-
-
 
     static {
         keys = new boolean[NUM_KEYS];
