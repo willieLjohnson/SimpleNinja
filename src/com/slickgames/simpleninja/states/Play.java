@@ -130,7 +130,6 @@ public class Play extends GameState {
 
         if (MyInput.isPressed(MyInput.SHOOT)) {
             createProjectile();
-            System.out.println("mf");
         }
 
         // player movement

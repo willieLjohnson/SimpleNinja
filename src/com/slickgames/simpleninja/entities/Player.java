@@ -70,15 +70,6 @@ public class Player extends B2DSprite {
                 attacking = true;
                 shooting=false;
                 setAnimation(attack, 1 / 32f);
-            case "projectile":
-                shooting = true;
-                running = false;
-                idling = false;
-                jumping = false;
-                attacking = false;
-
-                setAnimation(shoot,1/5f);
-
         }
 
     }
