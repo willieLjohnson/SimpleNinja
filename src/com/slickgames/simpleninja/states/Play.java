@@ -41,7 +41,6 @@ public class Play extends GameState {
     public Array<Enemy> enemies;
     public boolean ignorePlayer = false;
     public Array<Projectile> projectiles;
-    public float currentTime = TimeUtils.nanoTime();
     private ParticleEffect runningDust, bloodSplat;
     private Box2DDebugRenderer b2dr;
     private OrthographicCamera b2dCam;
@@ -62,6 +61,8 @@ public class Play extends GameState {
     private Array<ParticleEffect> bloodParts;
     private boolean pauseOnUpdate;
     private Sound hita = game.getAssetManager().get("res/sfx/hit/hit3.wav");
+    public float currentTime = TimeUtils.nanoTime();
+
 
     public Play(GameStateManager gsm) {
         super(gsm);
@@ -90,7 +91,6 @@ public class Play extends GameState {
         // set up box2d cam
         b2dCam = new OrthographicCamera();
         b2dCam.setToOrtho(false, Game.V_WIDTH / PPM, Game.V_HEIGHT / PPM);
-
         // set up hud & debug
         sr = new ShapeRenderer();
         sr.setAutoShapeType(true);
@@ -139,8 +139,7 @@ public class Play extends GameState {
                 player.setDir(-1);
 
                 if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
-                    player.getBody().applyForceToCenter(
-                            cl.isPlayerOnGround() ? -player.getMaxSpeed() * 8 : -player.getMaxSpeed(), 0, true);
+                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? -player.getMaxSpeed() * 8 : -player.getMaxSpeed(), 0, true);
                 }
                 if (cl.isPlayerOnGround()) {
                     if (!player.isRunning()) {
@@ -152,8 +151,7 @@ public class Play extends GameState {
 
                 if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
 
-                    player.getBody().applyForceToCenter(
-                            cl.isPlayerOnGround() ? player.getMaxSpeed() * 8 : player.getMaxSpeed(), 0, true);
+                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? player.getMaxSpeed() * 8 : player.getMaxSpeed(), 0, true);
                 }
                 if (cl.isPlayerOnGround()) {
                     if (!player.isRunning() && cl.isPlayerOnGround()) {
@@ -222,8 +220,8 @@ public class Play extends GameState {
 
         {
             if (MyInput.isDown(MyInput.JUMP) && (player.getBody().getLinearVelocity().y < .1f || wallRun == 0)) {
-                player.getBody().applyLinearImpulse(1.5f * player.getDir(),
-                        wallRun == 0 ? 4.5f - player.getBody().getLinearVelocity().y : 4.5f - wallRun, 0, 0, true);
+                player.getBody().applyLinearImpulse(1.5f * player.getDir(), wallRun == 0 ? 4.5f - player.getBody().getLinearVelocity().y : 4.5f - wallRun, 0, 0,
+                        true);
                 wallRun += (wallRun >= 4.5 ? 0 : .5f);
             }
         } else
@@ -361,6 +359,7 @@ public class Play extends GameState {
             projectiles.get(i).render(sb);
 
         }
+
         // particles
         sb.begin();
         if (player.isRunning()) {
@@ -414,7 +413,6 @@ public class Play extends GameState {
 
         }
         sr.end();
-
     }
 
     @Override
@@ -473,7 +471,6 @@ public class Play extends GameState {
     // private void createHealhtBar(Player p) {
     // sr.
     // }
-
     public void createEnemy(int numOfEnems) {
 
         for (int i = 0; i < numOfEnems; i++) {
@@ -490,8 +487,7 @@ public class Play extends GameState {
             shape.setAsBox(6 / PPM, 10 / PPM, new Vector2(0, -9 / PPM), 0);
             fdef.shape = shape;
             fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
-            fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL | B2DVars.BIT_GROUND | B2DVars.BIT_CYSTAL
-                    | B2DVars.BIT_PLAYER | B2DVars.BIT_Projectile;
+            fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL | B2DVars.BIT_GROUND | B2DVars.BIT_CYSTAL | B2DVars.BIT_PLAYER | B2DVars.BIT_Projectile;
             body.createFixture(fdef).setUserData("enemy" + i);
 
             // create enemy Hitboxs
@@ -704,5 +700,4 @@ public class Play extends GameState {
             body.setUserData(c);
         }
     }
-
 }

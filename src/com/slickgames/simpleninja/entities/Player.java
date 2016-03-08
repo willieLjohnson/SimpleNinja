@@ -7,10 +7,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.slickgames.simpleninja.main.Game;
 
 public class Player extends B2DSprite {
-    public boolean running, idling, jumping, attacking, attacked;
-    TextureRegion[] run, idle, jump, attack;
+    public boolean shooting,running, idling, jumping, attacking, attacked;
+    TextureRegion[] run, idle, jump, attack,shoot;
     private int numCrystals;
     private int totalCrystals;
+
 
 
     public Player(Body body) {
@@ -23,6 +24,7 @@ public class Player extends B2DSprite {
         idle = TextureRegion.split(idlingAnimation, 54, 42)[0];
         jump = TextureRegion.split(runningAnimation, 54, 42)[0];
         attack = TextureRegion.split(attackingAnimation, 54, 42)[0];
+        shoot=  TextureRegion.split(attackingAnimation, 54, 42)[0];
         setAnimation(idle, 1 / 7f);
     }
 
@@ -41,6 +43,7 @@ public class Player extends B2DSprite {
                 running = true;
                 idling = false;
                 jumping = false;
+                shooting=false;
                 attacking = false;
                 setAnimation(run, 1 / 16f);
                 break;
@@ -49,12 +52,14 @@ public class Player extends B2DSprite {
                 idling = true;
                 jumping = false;
                 attacking = false;
+                shooting=false;
                 setAnimation(idle, 1 / 7f);
                 break;
             case "jump":
                 running = false;
                 idling = false;
                 jumping = true;
+                shooting=false;
                 attacking = false;
                 setAnimation(jump, 1 / 2f);
                 break;
@@ -63,7 +68,17 @@ public class Player extends B2DSprite {
                 idling = false;
                 jumping = false;
                 attacking = true;
+                shooting=false;
                 setAnimation(attack, 1 / 32f);
+            case "projectile":
+                shooting = true;
+                running = false;
+                idling = false;
+                jumping = false;
+                attacking = false;
+
+                setAnimation(shoot,1/5f);
+
         }
 
     }
