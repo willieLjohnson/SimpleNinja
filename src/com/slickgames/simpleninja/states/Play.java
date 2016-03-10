@@ -291,8 +291,6 @@ public class Play extends GameState {
 
         for (int i = 0; i < projectiles.size; i++) {
             projectiles.get(i).update(dt);
-            if (Math.abs(projectiles.get(i).getBody().getLinearVelocity().x) < 1)
-                projectiles.get(i).getBody().applyLinearImpulse(10*player.getDir(), 0, 0, 0, false);
         }
 
         Random rand;
@@ -664,7 +662,7 @@ public class Play extends GameState {
 
         body.createFixture(fdef).setUserData("project");
 
-        new Projectile(body, this);
+        new Projectile(body, this, 10*player.getDir());
         System.out.println(projectiles.size);
 
     }
