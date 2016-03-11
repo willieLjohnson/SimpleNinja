@@ -14,7 +14,7 @@ import com.slickgames.simpleninja.main.Game;
 import com.slickgames.simpleninja.states.Play;
 
 public class Enemy extends B2DSprite {
-    public static final float MAX_SPEED = 1.5f;
+    public static final float MAX_SPEED = 2f;
     private final int GUARD = 0;
     private final int CHASE = 1;
     private final int FIND = 2;
@@ -82,7 +82,7 @@ public class Enemy extends B2DSprite {
             if (!attacking && !idling)
             toggleAnimation("idle");
         }
-        if ((getAnimation().getCurrentFrame() % 4 == 0 && this.getAnimation().getCurrentFrame() != 0) && swinging) {
+        if ((getAnimation().getCurrentFrame() % 4 == 0 && this.getAnimation().getCurrentFrame() != 0) && attacking) {
 
             attacked = true;
             swinging = false;
@@ -147,6 +147,7 @@ public class Enemy extends B2DSprite {
 
             case CHASE:
                 dir = (target.x < body.getPosition().x ? -1 : 1);
+                
                 if (body.getLinearVelocity().y == 0) {
                     if (playerAttackable) {
                         if (charge == 0) {
@@ -160,12 +161,12 @@ public class Enemy extends B2DSprite {
                         }
                         if (!swinging) swinging = true;
                     }
-                    if (!swinging) {
+                    if (!attacking) {
                         if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
                             body.applyForceToCenter(16f * dir, 0, true);
                         }
-                        if (body.getLinearVelocity().y == 0 && target.y > body.getPosition().y) {
-                            body.applyLinearImpulse(0, 2, 0, 0, true);
+                        if ((target.y - body.getPosition().y) >.5) {
+                            body.applyLinearImpulse(0, 4, 0, 0, true);
                         }
                     }
                 } else {
@@ -231,7 +232,7 @@ public class Enemy extends B2DSprite {
                 idling = false;
                 jumping = false;
                 attacking = true;
-                setAnimation(attack, 1 / 15f);
+                setAnimation(attack, 1 / 32f);
         }
 
     }

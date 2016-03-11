@@ -305,7 +305,7 @@ public class Play extends GameState {
 
         for (Enemy e : cl.getAttackers()) {
             if (e.attacked) {
-                player.damage(1);
+                player.damage(5);
             }
         }
         currentTime = TimeUtils.nanoTime();
@@ -453,7 +453,7 @@ public class Play extends GameState {
         shape.setAsBox(12 / PPM, 4 / PPM, new Vector2(0, -19 / PPM), 0);
         fdef.shape = shape;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER;
-        fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_GROUND;
+        fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_GROUND | B2DVars.BIT_ENEMY;
         fdef.isSensor = true;
         body.createFixture(fdef).setUserData("foot");
 
@@ -558,7 +558,7 @@ public class Play extends GameState {
             body.createFixture(fdef).setUserData("wallcollision" + i);
 
             // create attack range
-            shape.setAsBox(30 / PPM, 8 / PPM, new Vector2(0, -5 / PPM), 0);
+            shape.setAsBox(15 / PPM, 8 / PPM, new Vector2(0, -5 / PPM), 0);
             fdef.shape = shape;
             fdef.filter.categoryBits = B2DVars.BIT_ENEMY_ATTACK_RANGE;
             fdef.filter.maskBits = B2DVars.BIT_PLAYER;
