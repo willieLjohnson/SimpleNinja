@@ -17,6 +17,7 @@ public class MyContactListener implements ContactListener {
     private boolean wallRun;
     private boolean enemyHit;
     private Play play;
+    private Array<Enemy> attackers;
 
 
     public MyContactListener(Play aPlay) {
@@ -24,6 +25,7 @@ public class MyContactListener implements ContactListener {
         play = aPlay;
         bodiesToRemove = new Array<Body>();
         enemiesHit = new Array<Enemy>();
+        attackers = new Array<Enemy>();
     }
 
     // called when two fixtures start collide
@@ -47,6 +49,21 @@ public class MyContactListener implements ContactListener {
             wallRun = true;
         if (fb.getUserData() != null && fb.getUserData().equals("hand"))
             wallRun = true;
+
+        if (fa.getUserData() != null && fa.getUserData().equals("playerHitBox")) {
+            Enemy e = (Enemy) fb.getBody().getUserData();
+            if (!attackers.contains(e, true)) {
+                attackers.add(e);
+                e.playerAttackable = true;
+            }
+        }
+        if (fb.getUserData() != null && fb.getUserData().equals("playerHitBox")) {
+            Enemy e = (Enemy) fa.getBody().getUserData();
+            if (!attackers.contains(e, true)) {
+                attackers.add(e);
+                e.playerAttackable = true;
+            }
+        }
 
         /// enemy senses
         for (Enemy e : play.enemies) {
@@ -75,7 +92,7 @@ public class MyContactListener implements ContactListener {
             if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id)) {
                 enemiesHit.add(e);
             }
-
+            System.out.println(attackers);
         }
     }
 
@@ -96,6 +113,16 @@ public class MyContactListener implements ContactListener {
             wallRun = false;
         if (fb.getUserData() != null && fb.getUserData().equals("hand"))
             wallRun = false;
+        if (fa.getUserData() != null && fa.getUserData().equals("playerHitBox")) {
+            Enemy n = (Enemy) fb.getBody().getUserData();
+            n.playerAttackable = false;
+            attackers.removeIndex(attackers.indexOf(n, true));
+        }
+        if (fb.getUserData() != null && fb.getUserData().equals("playerHitBox")) {
+            Enemy n = (Enemy) fa.getBody().getUserData();
+            n.playerAttackable = false;
+            attackers.removeIndex(attackers.indexOf(n, true));
+        }
 
         // enemy senses
         for (Enemy e : play.enemies) {
@@ -152,6 +179,10 @@ public class MyContactListener implements ContactListener {
         return enemiesHit;
     }
 
+    public Array<Enemy> getAttackers() {
+        return attackers;
+    }
+
     public boolean wallRun() {
         return wallRun;
     }
@@ -167,5 +198,4 @@ public class MyContactListener implements ContactListener {
     public boolean isEnemyHit(int id) {
         return enemyHit;
     }
-
 }

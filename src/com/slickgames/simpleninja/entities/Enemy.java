@@ -35,6 +35,9 @@ public class Enemy extends B2DSprite {
     private float lastSeen;
     private float lastSwitch;
     private boolean bounced;
+    public boolean playerAttackable;
+    private boolean swinging;
+    private float charge;
 
     public Enemy(Body body, Play aPlay, int aId) {
         super(body);
@@ -64,12 +67,10 @@ public class Enemy extends B2DSprite {
         }
 
         if (dir == -1) {
-
             if (!this.getAnimation().getFrame().isFlipX()) {
                 this.getAnimation().getFrame().flip(true, false);
             }
         } else {
-
             if (this.getAnimation().getFrame().isFlipX()) {
                 this.getAnimation().getFrame().flip(true, false);
             }
@@ -78,7 +79,23 @@ public class Enemy extends B2DSprite {
             if (!running && !attacking)
                 toggleAnimation("run");
         } else {
+            if (!attacking && !idling)
             toggleAnimation("idle");
+        }
+        if ((getAnimation().getCurrentFrame() % 4 == 0 && this.getAnimation().getCurrentFrame() != 0) && swinging) {
+
+            attacked = true;
+            swinging = false;
+            charge = 0;
+            attacking = false;
+//            if (currentTime - lastAttack > 250000000f) {
+//                player.setAttacking(false);
+//                currentAttack = 0;
+//                swingSpeed = 0;
+//            }
+
+        } else {
+            attacked = false;
         }
     }
 
@@ -130,12 +147,30 @@ public class Enemy extends B2DSprite {
 
             case CHASE:
                 dir = (target.x < body.getPosition().x ? -1 : 1);
-                if (Math.abs((target.x + target.y) - (body.getPosition().x + body.getPosition().y)) <= .14f && !attacking) {
-                    toggleAnimation("attack");
-                }
-                if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) body.applyForceToCenter(16f * dir, 0, true);
-                if (body.getLinearVelocity().y == 0 && target.y > body.getPosition().y) {
-                    body.applyLinearImpulse(0, 2, 0, 0, true);
+                if (body.getLinearVelocity().y == 0) {
+                    if (playerAttackable) {
+                        if (charge == 0) {
+                            charge = currentTime;
+                        }
+                        if (!attacking) {
+                            if (currentTime - charge > 200000000f) {
+                                toggleAnimation("attack");
+                                swinging = true;
+                            }
+                        }
+                        if (!swinging) swinging = true;
+                    }
+                    if (!swinging) {
+                        if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
+                            body.applyForceToCenter(16f * dir, 0, true);
+                        }
+                        if (body.getLinearVelocity().y == 0 && target.y > body.getPosition().y) {
+                            body.applyLinearImpulse(0, 2, 0, 0, true);
+                        }
+                    }
+                } else {
+                    swinging = false;
+                    charge = 0;
                 }
                 break;
 
@@ -196,7 +231,7 @@ public class Enemy extends B2DSprite {
                 idling = false;
                 jumping = false;
                 attacking = true;
-                setAnimation(attack, 1 / 32f);
+                setAnimation(attack, 1 / 15f);
         }
 
     }

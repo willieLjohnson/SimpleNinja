@@ -302,6 +302,12 @@ public class Play extends GameState {
         for (ParticleEffect p : bloodParts) {
             p.update(Gdx.graphics.getDeltaTime());
         }
+
+        for (Enemy e : cl.getAttackers()) {
+            if (e.attacked) {
+                player.damage(1);
+            }
+        }
         currentTime = TimeUtils.nanoTime();
     }
 
@@ -435,6 +441,14 @@ public class Play extends GameState {
                 | B2DVars.BIT_ENEMY | B2DVars.BIT_VISIONCONE;
         body.createFixture(fdef).setUserData("player");
 
+        // create player Hitboxs
+        shape.setAsBox(12 / PPM, 20 / PPM, new Vector2(0, -9 / PPM), 0);
+        fdef.shape = shape;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER;
+        fdef.filter.maskBits = B2DVars.BIT_ENEMY_ATTACK_RANGE;
+        fdef.isSensor = true;
+        body.createFixture(fdef).setUserData("playerHitBox");
+
         // create foot sensor
         shape.setAsBox(12 / PPM, 4 / PPM, new Vector2(0, -19 / PPM), 0);
         fdef.shape = shape;
@@ -465,9 +479,6 @@ public class Play extends GameState {
         body.setUserData(player);
     }
 
-    // private void createHealhtBar(Player p) {
-    // sr.
-    // }
     public void createEnemy(int numOfEnems) {
 
         for (int i = 0; i < numOfEnems; i++) {
@@ -478,7 +489,6 @@ public class Play extends GameState {
             // create enemy
             bdef.position.set((80 + (i * 10)) / PPM, 500 / PPM);
             bdef.type = BodyType.DynamicBody;
-            // bdef.linearVelocity.set(1f, 0);
             Body body = world.createBody(bdef);
 
             shape.setAsBox(6 / PPM, 10 / PPM, new Vector2(0, -9 / PPM), 0);
@@ -495,8 +505,7 @@ public class Play extends GameState {
             fdef.isSensor = true;
             body.createFixture(fdef).setUserData("enemyHitBox" + i);
 
-            // creat foot sensor
-
+            // create foot sensor
             shape.setAsBox(12 / PPM, 4 / PPM, new Vector2(0, -19 / PPM), 0);
             fdef.shape = shape;
             fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
@@ -504,7 +513,7 @@ public class Play extends GameState {
             fdef.isSensor = true;
             body.createFixture(fdef).setUserData("Efoot" + i);
 
-            // creat vision sensors
+            // create vision sensors
             PolygonShape cs = new PolygonShape();
             Vector2[] v = new Vector2[4];
             v[0] = new Vector2(0 / PPM, 0 / PPM);
@@ -547,6 +556,14 @@ public class Play extends GameState {
             fdef.isSensor = true;
             fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL | B2DVars.BIT_GROUND | B2DVars.BIT_PLAYER;
             body.createFixture(fdef).setUserData("wallcollision" + i);
+
+            // create attack range
+            shape.setAsBox(30 / PPM, 8 / PPM, new Vector2(0, -5 / PPM), 0);
+            fdef.shape = shape;
+            fdef.filter.categoryBits = B2DVars.BIT_ENEMY_ATTACK_RANGE;
+            fdef.filter.maskBits = B2DVars.BIT_PLAYER;
+            fdef.isSensor = true;
+            body.createFixture(fdef).setUserData("enemyAttackRange" + i);
 
             new Enemy(body, this, i);
         }
