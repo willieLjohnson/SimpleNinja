@@ -11,8 +11,8 @@ import com.slickgames.simpleninja.states.Play;
  */
 public class Projectile extends B2DSprite {
     private float velocity;
-    public Projectile(Body body, Play play, float aVelocity) {
-        super(body);
+    public Projectile(Body body, Play aPlay, float aVelocity) {
+        super(body,aPlay);
         velocity = aVelocity;
         Texture tex = Game.game.getAssetManager().get("res/images/crystal.png");
         TextureRegion[] sprites = TextureRegion.split(tex, 16, 16)[0];

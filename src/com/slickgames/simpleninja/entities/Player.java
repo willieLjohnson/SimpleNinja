@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.slickgames.simpleninja.main.Game;
+import com.slickgames.simpleninja.states.Play;
 
 public class Player extends B2DSprite {
     public boolean shooting,running, idling, jumping, attacking, attacked;
@@ -14,8 +15,8 @@ public class Player extends B2DSprite {
 
 
 
-    public Player(Body body) {
-        super(body);
+    public Player(Body body, Play play) {
+        super(body, play);
 
         Texture runningAnimation = Game.game.getAssetManager().get("res/images/simple_run.png");
         Texture attackingAnimation = Game.game.getAssetManager().get("res/images/simple_attack.png");

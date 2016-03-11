@@ -1,10 +1,15 @@
 package com.slickgames.simpleninja.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.slickgames.simpleninja.handlers.Animation;
+import com.slickgames.simpleninja.handlers.GameStateManager;
+import com.slickgames.simpleninja.main.Game;
+import com.slickgames.simpleninja.states.Play;
 
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
@@ -18,11 +23,12 @@ public abstract class B2DSprite {
     protected float MAX_SPEED = 2f;
     protected int MAX_HEALTH = 20;
     public int health = MAX_HEALTH;
+    public Play play;
 
-    public B2DSprite(Body body) {
+    public B2DSprite(Body body, Play aPlay) {
         this.body = body;
         animation = new Animation();
-
+        play = aPlay;
     }
 
     public void setAnimation(TextureRegion[] reg, float delay) {
@@ -80,7 +86,12 @@ public abstract class B2DSprite {
 
     public void damage(int dmg) {
         health -= dmg;
-        System.out.println(health);
+        ParticleEffect bloodSplat = new ParticleEffect();
+        bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
+        bloodSplat.setPosition(this.getPosition().x * PPM - this.getWidth() / 10,
+                this.getPosition().y * PPM - this.getHeight() / 4);
+        bloodSplat.start();
+        play.bloodParts.add(bloodSplat);
     }
 
     public abstract void kill();

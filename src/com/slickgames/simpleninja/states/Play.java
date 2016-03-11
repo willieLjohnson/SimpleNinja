@@ -58,7 +58,7 @@ public class Play extends GameState {
     private boolean ran;
     private boolean attacked;
     private int rotTick;
-    private Array<ParticleEffect> bloodParts;
+    public Array<ParticleEffect> bloodParts;
     private boolean pauseOnUpdate;
     private Sound hita = game.getAssetManager().get("res/sfx/hit/hit3.wav");
     public float currentTime = TimeUtils.nanoTime();
@@ -188,14 +188,6 @@ public class Play extends GameState {
             for (Enemy e : cl.enemiesHit) {
                 attacked = true;
                 e.damage(currentAttack / 2);
-
-                bloodSplat = new ParticleEffect();
-                bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
-                bloodSplat.setPosition(e.getPosition().x * PPM - e.getWidth() / 10,
-                        e.getPosition().y * PPM - e.getHeight() / 4);
-                bloodSplat.start();
-                bloodParts.add(bloodSplat);
-
             }
 
         }
@@ -474,7 +466,7 @@ public class Play extends GameState {
         body.createFixture(fdef).setUserData("attackRange");
 
         // create player
-        player = new Player(body);
+        player = new Player(body,this);
 
         body.setUserData(player);
     }
@@ -708,7 +700,7 @@ public class Play extends GameState {
             Body body = world.createBody(bdef);
             body.createFixture(fdef).setUserData("crystal");
 
-            Crystal c = new Crystal(body);
+            Crystal c = new Crystal(body,this);
             crystals.add(c);
 
             body.setUserData(c);

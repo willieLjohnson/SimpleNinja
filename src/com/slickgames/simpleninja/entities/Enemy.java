@@ -27,7 +27,6 @@ public class Enemy extends B2DSprite {
     Vector2 normal = new Vector2();
     Fixture cFix;
     ShapeRenderer sr;
-    Play play;
     private int numCrystals;
     private int totalCrystals;
     private boolean enemySpotted;
@@ -39,10 +38,9 @@ public class Enemy extends B2DSprite {
     private boolean swinging;
     private float charge;
 
-    public Enemy(Body body, Play aPlay, int aId) {
-        super(body);
+    public Enemy(Body body, Play play, int aId) {
+        super(body,play);
         id = aId;
-        play = aPlay;
         body.setUserData(this);
         play.enemies.add(this);
 
