@@ -14,8 +14,8 @@ public class Projectile extends B2DSprite {
     public Projectile(Body body, Play play, float aVelocity) {
         super(body);
         velocity = aVelocity;
-        Texture tex = Game.game.getAssetManager().get("res/images/crystal.png");
-        TextureRegion[] sprites = TextureRegion.split(tex, 16, 16)[0];
+        Texture tex = Game.game.getAssetManager().get("res/images/kuni.png");
+        TextureRegion[] sprites = TextureRegion.split(tex, 314, 236)[0];
 
         setAnimation(sprites, 1 / 12f);
         body.setUserData("proj" + play.projectiles.size);
