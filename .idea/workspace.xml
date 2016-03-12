@@ -2,89 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6161952c-bd19-4fae-803a-f92bcbae086a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/B2DSprite.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/B2DSprite.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Crystal.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Crystal.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Enemy.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Enemy.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Player.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Player.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Projectile.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Projectile.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/B2DVars.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/B2DVars.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/MyContactListener.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/MyContactListener.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/Hash.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/Hash.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/ItemsManager.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/ItemsManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/PipelineState.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/PipelineState.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/PostProcessorListener.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/PostProcessorListener.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Antialiasing.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Antialiasing.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Bloom$Settings.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Bloom$Settings.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Bloom.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Bloom.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/CameraMotion.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/CameraMotion.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/CrtMonitor.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/CrtMonitor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Curvature.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Curvature.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Fxaa.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Fxaa.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/LensFlare.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/LensFlare.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/LensFlare2$Settings.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/LensFlare2$Settings.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/LensFlare2.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/LensFlare2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/MotionBlur.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/MotionBlur.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Nfaa.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Nfaa.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Vignette.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Vignette.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Zoomer.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/effects/Zoomer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Bias$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Bias$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Bias.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Bias.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Blur$BlurType.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Blur$BlurType.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Blur$Tap.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Blur$Tap.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Blur.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Blur.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CameraBlur$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CameraBlur$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CameraBlur.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CameraBlur.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Combine$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Combine$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Combine.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Combine.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Convolve1D$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Convolve1D$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Convolve1D.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Convolve1D.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Convolve2D.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Convolve2D.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Copy$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Copy$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Copy.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Copy.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CrtScreen$Effect.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CrtScreen$Effect.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CrtScreen$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CrtScreen$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CrtScreen$RgbMode.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CrtScreen$RgbMode.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CrtScreen.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/CrtScreen.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Filter$Parameter.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Filter$Parameter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Filter.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Filter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/FxaaFilter$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/FxaaFilter$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/FxaaFilter.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/FxaaFilter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Lens$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Lens$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Lens.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Lens.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Lens2$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Lens2$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Lens2.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Lens2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/MotionFilter$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/MotionFilter$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/MotionFilter.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/MotionFilter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/MultipassFilter.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/MultipassFilter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/NfaaFilter$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/NfaaFilter$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/NfaaFilter.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/NfaaFilter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialBlur$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialBlur$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialBlur$Quality.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialBlur$Quality.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialBlur.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialBlur.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialDistortion$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialDistortion$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialDistortion.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/RadialDistortion.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Threshold$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Threshold$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Threshold.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Threshold.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Vignetting$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Vignetting$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Vignetting.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Vignetting.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Zoom$Param.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Zoom$Param.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Zoom.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/filters/Zoom.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/utils/FullscreenQuad.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/utils/FullscreenQuad.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/utils/PingPongBuffer.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/postprocessing/utils/PingPongBuffer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/main/Launcher.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/main/Launcher.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu$1.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu$2.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Options.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Options.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Play.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Play.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/B2DSprite.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/B2DSprite.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Crystal.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Crystal.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Player.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Projectile.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Projectile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInputProcessor.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInputProcessor.java" />
     </list>
     <ignored path="SimpleNinja.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -106,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Play.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Play.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.3642612">
-              <caret line="181" column="13" selection-start-line="181" selection-start-column="13" selection-end-line="181" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="251" column="9" selection-start-line="251" selection-start-column="9" selection-end-line="251" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -165,11 +84,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#6749#6750#0" expanded="false" />
-                <element signature="e#6778#6779#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -179,38 +94,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#1373#1374#0" expanded="false" />
-                <element signature="e#1402#1403#0" expanded="false" />
-                <element signature="e#2540#2541#0" expanded="false" />
-                <element signature="e#2570#2571#0" expanded="false" />
-                <element signature="e#2601#2602#0" expanded="false" />
-                <element signature="e#2630#2631#0" expanded="false" />
-                <element signature="e#2664#2665#0" expanded="false" />
-                <element signature="e#2694#2695#0" expanded="false" />
-                <element signature="e#2730#2731#0" expanded="false" />
-                <element signature="e#2762#2763#0" expanded="false" />
-                <element signature="e#2805#2806#0" expanded="false" />
-                <element signature="e#2834#2835#0" expanded="false" />
-                <element signature="e#2868#2869#0" expanded="false" />
-                <element signature="e#2902#2903#0" expanded="false" />
-                <element signature="e#2939#2940#0" expanded="false" />
-                <element signature="e#2975#2976#0" expanded="false" />
-                <element signature="e#3018#3019#0" expanded="false" />
-                <element signature="e#3051#3052#0" expanded="false" />
-                <element signature="e#3455#3456#0" expanded="false" />
-                <element signature="e#3529#3530#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="B2DVars.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/B2DVars.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -221,29 +104,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#1596#1597#0" expanded="false" />
-                <element signature="e#1628#1629#0" expanded="false" />
-                <element signature="e#1657#1658#0" expanded="false" />
-                <element signature="e#1684#1685#0" expanded="false" />
-                <element signature="e#1720#1721#0" expanded="false" />
-                <element signature="e#1761#1762#0" expanded="false" />
-                <element signature="e#1792#1793#0" expanded="false" />
-                <element signature="e#1820#1821#0" expanded="false" />
-                <element signature="e#1852#1853#0" expanded="false" />
-                <element signature="e#1881#1882#0" expanded="false" />
-                <element signature="e#1908#1909#0" expanded="false" />
-                <element signature="e#1934#1935#0" expanded="false" />
-                <element signature="e#1967#1968#0" expanded="false" />
-                <element signature="e#1990#1991#0" expanded="false" />
-                <element signature="e#2024#2025#0" expanded="false" />
-                <element signature="e#2056#2057#0" expanded="false" />
-                <element signature="e#2103#2104#0" expanded="false" />
-                <element signature="e#2144#2145#0" expanded="false" />
-                <element signature="e#2663#2664#0" expanded="false" />
-                <element signature="e#2696#2697#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -253,27 +114,27 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="122" column="30" selection-start-line="122" selection-start-column="30" selection-end-line="122" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#6396#6397#0" expanded="false" />
-                <element signature="e#6438#6439#0" expanded="false" />
-                <element signature="e#6476#6477#0" expanded="false" />
-                <element signature="e#6510#6511#0" expanded="false" />
-                <element signature="e#6550#6551#0" expanded="false" />
-                <element signature="e#6586#6587#0" expanded="false" />
-                <element signature="e#6631#6632#0" expanded="false" />
-                <element signature="e#6687#6688#0" expanded="false" />
-                <element signature="e#6733#6734#0" expanded="false" />
-                <element signature="e#6770#6771#0" expanded="false" />
-                <element signature="e#6813#6814#0" expanded="false" />
-                <element signature="e#6846#6847#0" expanded="false" />
-                <element signature="e#6888#6889#0" expanded="false" />
-                <element signature="e#6920#6921#0" expanded="false" />
-                <element signature="e#6952#6953#0" expanded="false" />
-                <element signature="e#6982#6983#0" expanded="false" />
-                <element signature="e#7172#7173#0" expanded="false" />
-                <element signature="e#7203#7204#0" expanded="false" />
-              </folding>
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyInputProcessor.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInputProcessor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5463917">
+              <caret line="51" column="26" selection-start-line="51" selection-start-column="26" selection-end-line="51" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyInput.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInput.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -336,7 +197,6 @@
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Launcher.java" />
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Pause.java" />
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Game.java" />
-        <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInputProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInput.java" />
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/B2DVars.java" />
         <option value="$PROJECT_DIR$/libs/gdx-box2d.jar!/com/badlogic/gdx/physics/box2d/Contact.class" />
@@ -348,6 +208,7 @@
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/B2DSprite.java" />
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInputProcessor.java" />
       </list>
     </option>
   </component>
@@ -422,6 +283,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="simpleninja" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SimpleNinja" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SimpleNinja-M" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="simpleninja" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="handlers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -830,12 +713,18 @@
       <option name="project" value="LOCAL" />
       <updated>1457720186018</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Fix blood effect">
+      <created>1457739495613</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1457739495613</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1060" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -847,7 +736,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33656958" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3390625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3390625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -954,29 +843,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1373#1374#0" expanded="false" />
-            <element signature="e#1402#1403#0" expanded="false" />
-            <element signature="e#2540#2541#0" expanded="false" />
-            <element signature="e#2570#2571#0" expanded="false" />
-            <element signature="e#2601#2602#0" expanded="false" />
-            <element signature="e#2630#2631#0" expanded="false" />
-            <element signature="e#2664#2665#0" expanded="false" />
-            <element signature="e#2694#2695#0" expanded="false" />
-            <element signature="e#2730#2731#0" expanded="false" />
-            <element signature="e#2762#2763#0" expanded="false" />
-            <element signature="e#2805#2806#0" expanded="false" />
-            <element signature="e#2834#2835#0" expanded="false" />
-            <element signature="e#2868#2869#0" expanded="false" />
-            <element signature="e#2902#2903#0" expanded="false" />
-            <element signature="e#2939#2940#0" expanded="false" />
-            <element signature="e#2975#2976#0" expanded="false" />
-            <element signature="e#3018#3019#0" expanded="false" />
-            <element signature="e#3051#3052#0" expanded="false" />
-            <element signature="e#3455#3456#0" expanded="false" />
-            <element signature="e#3529#3530#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1035,27 +902,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#6396#6397#0" expanded="false" />
-            <element signature="e#6438#6439#0" expanded="false" />
-            <element signature="e#6476#6477#0" expanded="false" />
-            <element signature="e#6510#6511#0" expanded="false" />
-            <element signature="e#6550#6551#0" expanded="false" />
-            <element signature="e#6586#6587#0" expanded="false" />
-            <element signature="e#6631#6632#0" expanded="false" />
-            <element signature="e#6687#6688#0" expanded="false" />
-            <element signature="e#6733#6734#0" expanded="false" />
-            <element signature="e#6770#6771#0" expanded="false" />
-            <element signature="e#6813#6814#0" expanded="false" />
-            <element signature="e#6846#6847#0" expanded="false" />
-            <element signature="e#6888#6889#0" expanded="false" />
-            <element signature="e#6920#6921#0" expanded="false" />
-            <element signature="e#6952#6953#0" expanded="false" />
-            <element signature="e#6982#6983#0" expanded="false" />
-            <element signature="e#7172#7173#0" expanded="false" />
-            <element signature="e#7203#7204#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1228,14 +1075,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/libs/gdx-box2d.jar!/com/badlogic/gdx/physics/box2d/Contact.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.30483273">
@@ -1265,58 +1104,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInputProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="12" selection-start-line="24" selection-start-column="12" selection-end-line="24" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyContactListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="122" column="30" selection-start-line="122" selection-start-column="30" selection-end-line="122" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#6396#6397#0" expanded="false" />
-            <element signature="e#6438#6439#0" expanded="false" />
-            <element signature="e#6476#6477#0" expanded="false" />
-            <element signature="e#6510#6511#0" expanded="false" />
-            <element signature="e#6550#6551#0" expanded="false" />
-            <element signature="e#6586#6587#0" expanded="false" />
-            <element signature="e#6631#6632#0" expanded="false" />
-            <element signature="e#6687#6688#0" expanded="false" />
-            <element signature="e#6733#6734#0" expanded="false" />
-            <element signature="e#6770#6771#0" expanded="false" />
-            <element signature="e#6813#6814#0" expanded="false" />
-            <element signature="e#6846#6847#0" expanded="false" />
-            <element signature="e#6888#6889#0" expanded="false" />
-            <element signature="e#6920#6921#0" expanded="false" />
-            <element signature="e#6952#6953#0" expanded="false" />
-            <element signature="e#6982#6983#0" expanded="false" />
-            <element signature="e#7172#7173#0" expanded="false" />
-            <element signature="e#7203#7204#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/B2DVars.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Crystal.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#634#635#0" expanded="false" />
-            <element signature="e#670#671#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1328,48 +1120,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1373#1374#0" expanded="false" />
-            <element signature="e#1402#1403#0" expanded="false" />
-            <element signature="e#2540#2541#0" expanded="false" />
-            <element signature="e#2570#2571#0" expanded="false" />
-            <element signature="e#2601#2602#0" expanded="false" />
-            <element signature="e#2630#2631#0" expanded="false" />
-            <element signature="e#2664#2665#0" expanded="false" />
-            <element signature="e#2694#2695#0" expanded="false" />
-            <element signature="e#2730#2731#0" expanded="false" />
-            <element signature="e#2762#2763#0" expanded="false" />
-            <element signature="e#2805#2806#0" expanded="false" />
-            <element signature="e#2834#2835#0" expanded="false" />
-            <element signature="e#2868#2869#0" expanded="false" />
-            <element signature="e#2902#2903#0" expanded="false" />
-            <element signature="e#2939#2940#0" expanded="false" />
-            <element signature="e#2975#2976#0" expanded="false" />
-            <element signature="e#3018#3019#0" expanded="false" />
-            <element signature="e#3051#3052#0" expanded="false" />
-            <element signature="e#3455#3456#0" expanded="false" />
-            <element signature="e#3529#3530#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#6749#6750#0" expanded="false" />
-            <element signature="e#6778#6779#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/GameStateManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3321492">
@@ -1377,36 +1127,6 @@
           <folding>
             <element signature="e#703#704#0" expanded="true" />
             <element signature="e#747#748#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/B2DSprite.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1596#1597#0" expanded="false" />
-            <element signature="e#1628#1629#0" expanded="false" />
-            <element signature="e#1657#1658#0" expanded="false" />
-            <element signature="e#1684#1685#0" expanded="false" />
-            <element signature="e#1720#1721#0" expanded="false" />
-            <element signature="e#1761#1762#0" expanded="false" />
-            <element signature="e#1792#1793#0" expanded="false" />
-            <element signature="e#1820#1821#0" expanded="false" />
-            <element signature="e#1852#1853#0" expanded="false" />
-            <element signature="e#1881#1882#0" expanded="false" />
-            <element signature="e#1908#1909#0" expanded="false" />
-            <element signature="e#1934#1935#0" expanded="false" />
-            <element signature="e#1967#1968#0" expanded="false" />
-            <element signature="e#1990#1991#0" expanded="false" />
-            <element signature="e#2024#2025#0" expanded="false" />
-            <element signature="e#2056#2057#0" expanded="false" />
-            <element signature="e#2103#2104#0" expanded="false" />
-            <element signature="e#2144#2145#0" expanded="false" />
-            <element signature="e#2663#2664#0" expanded="false" />
-            <element signature="e#2696#2697#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1439,8 +1159,68 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.3642612">
-          <caret line="181" column="13" selection-start-line="181" selection-start-column="13" selection-end-line="181" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="251" column="9" selection-start-line="251" selection-start-column="9" selection-end-line="251" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Crystal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#634#635#0" expanded="false" />
+            <element signature="e#670#671#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/B2DSprite.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyContactListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="122" column="30" selection-start-line="122" selection-start-column="30" selection-end-line="122" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInput.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/MyInputProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5463917">
+          <caret line="51" column="26" selection-start-line="51" selection-start-column="26" selection-end-line="51" selection-end-column="26" />
           <folding />
         </state>
       </provider>

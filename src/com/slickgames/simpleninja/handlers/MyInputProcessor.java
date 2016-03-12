@@ -8,15 +8,15 @@ public class MyInputProcessor extends InputAdapter {
 
     @Override
     public boolean keyDown(int k) {
-        if (k == Keys.A) {
+        if (k == Keys.LEFT) {
             MyInput.setKey(MyInput.LEFT, true);
         } if (k == Keys.P) {
             MyInput.setKey(MyInput.SHOOT, true);
         }
-        if (k == Keys.D) {
+        if (k == Keys.RIGHT) {
             MyInput.setKey(MyInput.RIGHT, true);
         }
-        if (k == Keys.SPACE) {
+        if (k == Keys.UP) {
             MyInput.setKey(MyInput.JUMP, true);
         }
         if (k == Keys.ESCAPE) {
@@ -25,21 +25,24 @@ public class MyInputProcessor extends InputAdapter {
         if (k == Keys.SHIFT_LEFT) {
             MyInput.setKey(MyInput.WALLRUN, true);
         }
-        if (k == Keys.P) {
+        if (k == Keys.C) {
             MyInput.setKey(MyInput.SHOOT, true);
+        }
+        if (k == Keys.X) {
+            MyInput.setKey(MyInput.ATTACK, true);
         }
         return true;
     }
 
     @Override
     public boolean keyUp(int k) {
-        if (k == Keys.A) {
+        if (k == Keys.LEFT) {
             MyInput.setKey(MyInput.LEFT, false);
         }
-        if (k == Keys.D) {
+        if (k == Keys.RIGHT) {
             MyInput.setKey(MyInput.RIGHT, false);
         }
-        if (k == Keys.SPACE) {
+        if (k == Keys.UP) {
             MyInput.setKey(MyInput.JUMP, false);
         }
         if (k == Keys.ESCAPE) {
@@ -48,23 +51,13 @@ public class MyInputProcessor extends InputAdapter {
         if (k == Keys.SHIFT_LEFT) {
             MyInput.setKey(MyInput.WALLRUN, false);
         }
-        if (k == Keys.P) {
+        if (k == Keys.C) {
             MyInput.setKey(MyInput.SHOOT, false);
         }
-        return true;
-    }
-
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
-            MyInput.setKey(MyInput.ATTACK, true);
-        }
-        return true;
-    }
-
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
+        if (k == Keys.X) {
             MyInput.setKey(MyInput.ATTACK, false);
         }
         return true;
     }
+
 }
