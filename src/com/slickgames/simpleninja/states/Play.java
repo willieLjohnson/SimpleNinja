@@ -132,66 +132,74 @@ public class Play extends GameState {
             createProjectile();
         }
 
-        // player movement
-        if (!swinging)
-            if (MyInput.isDown(MyInput.LEFT)) {
-                player.setDir(-1);
+        if (!swinging) {
+            if (!MyInput.isDown(MyInput.BLOCK)) {
+                player.blocking = false;
+                // movement
+                if (MyInput.isDown(MyInput.LEFT)) {
+                    player.setDir(-1);
 
-                if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
-                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? -player.getMaxSpeed() * 8 : -player.getMaxSpeed(), 0, true);
-                }
-                if (cl.isPlayerOnGround()) {
-                    if (!player.isRunning()) {
-                        player.toggleAnimation("run");
+                    if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
+                        player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? -player.getMaxSpeed() * 8 : -player.getMaxSpeed(), 0, true);
                     }
-                }
-            } else if (MyInput.isDown(MyInput.RIGHT)) {
-                player.setDir(1);
-
-                if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
-
-                    player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? player.getMaxSpeed() * 8 : player.getMaxSpeed(), 0, true);
-                }
-                if (cl.isPlayerOnGround()) {
-                    if (!player.isRunning() && cl.isPlayerOnGround()) {
-                        player.toggleAnimation("run");
+                    if (cl.isPlayerOnGround()) {
+                        if (!player.isRunning()) {
+                            player.toggleAnimation("run");
+                        }
                     }
+                } else if (MyInput.isDown(MyInput.RIGHT)) {
+                    player.setDir(1);
+
+                    if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
+
+                        player.getBody().applyForceToCenter(cl.isPlayerOnGround() ? player.getMaxSpeed() * 8 : player.getMaxSpeed(), 0, true);
+                    }
+                    if (cl.isPlayerOnGround()) {
+                        if (!player.isRunning() && cl.isPlayerOnGround()) {
+                            player.toggleAnimation("run");
+                        }
+                    }
+                } else if (!player.isIdle() && !player.isAttacking())
+                    player.toggleAnimation("idle");
+
+                // atttack
+                if (MyInput.isPressed(MyInput.ATTACK) && cl.isPlayerOnGround()) {
+                    hita.play();
+                    swinging = true;
+
+                    if (currentAttack >= 16) {
+                        currentAttack = 0;
+                        player.setAttacking(false);
+                        player.damage(player.health / 2);
+
+                    }
+                    if (currentAttack >= 4) {
+                        currentAttack += 4;
+                        player.getAnimation().setSpeed(1 / (32f + swingSpeed));
+
+                    }
+                    if (!player.isAttacking()) {
+                        player.toggleAnimation("attack");
+                        currentAttack = 4;
+                    }
+                    if (swingSpeed < 16) {
+                        swingSpeed += 4;
+                    }
+                    player.getBody().applyLinearImpulse(
+                            Math.abs(player.getBody().getLinearVelocity().x) > 1 ? 0f : player.getDir() * 6f, 0f, 0f, 0f, true);
+                    for (Enemy e : cl.enemiesHit) {
+                        attacked = true;
+                        e.damage(currentAttack / 2);
+                    }
+
                 }
-            } else if (!player.isIdle() && !player.isAttacking())
-                player.toggleAnimation("idle");
-
-        // atttack
-        if (MyInput.isPressed(MyInput.ATTACK) && !swinging && cl.isPlayerOnGround()) {
-            hita.play();
-            swinging = true;
-
-            if (currentAttack >= 16) {
-                currentAttack = 0;
-                player.setAttacking(false);
-                player.damage(player.health / 2);
+            } else {
+                if (!player.blocking) {
+                    player.toggleAnimation("block");
+                }
 
             }
-            if (currentAttack >= 4) {
-                currentAttack += 4;
-                player.getAnimation().setSpeed(1 / (32f + swingSpeed));
-
-            }
-            if (!player.isAttacking()) {
-                player.toggleAnimation("attack");
-                currentAttack = 4;
-            }
-            if (swingSpeed < 16) {
-                swingSpeed += 4;
-            }
-            player.getBody().applyLinearImpulse(
-                    Math.abs(player.getBody().getLinearVelocity().x) > 1 ? 0f : player.getDir() * 6f, 0f, 0f, 0f, true);
-            for (Enemy e : cl.enemiesHit) {
-                attacked = true;
-                e.damage(currentAttack / 2);
-            }
-
         }
-
         if ((player.getAnimation().getCurrentFrame() == currentAttack) && player.isAttacking()) {
             player.getAnimation().setSpeed(0f);
             if (swinging) {
@@ -297,7 +305,7 @@ public class Play extends GameState {
 
         for (Enemy e : cl.getAttackers()) {
             if (e.attacked) {
-                player.damage(5);
+                player.damage(player.blocking ? 1 : 5);
             }
         }
         currentTime = TimeUtils.nanoTime();
@@ -466,7 +474,7 @@ public class Play extends GameState {
         body.createFixture(fdef).setUserData("attackRange");
 
         // create player
-        player = new Player(body,this);
+        player = new Player(body, this);
 
         body.setUserData(player);
     }
@@ -671,7 +679,7 @@ public class Play extends GameState {
 
         body.createFixture(fdef).setUserData("project");
 
-        new Projectile(body, this, 10*player.getDir());
+        new Projectile(body, this, 10 * player.getDir());
         System.out.println(projectiles.size);
 
     }
@@ -700,7 +708,7 @@ public class Play extends GameState {
             Body body = world.createBody(bdef);
             body.createFixture(fdef).setUserData("crystal");
 
-            Crystal c = new Crystal(body,this);
+            Crystal c = new Crystal(body, this);
             crystals.add(c);
 
             body.setUserData(c);

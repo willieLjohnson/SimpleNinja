@@ -31,6 +31,9 @@ public class MyInputProcessor extends InputAdapter {
         if (k == Keys.X) {
             MyInput.setKey(MyInput.ATTACK, true);
         }
+        if (k == Keys.Z) {
+            MyInput.setKey(MyInput.BLOCK, true);
+        }
         return true;
     }
 
@@ -56,6 +59,9 @@ public class MyInputProcessor extends InputAdapter {
         }
         if (k == Keys.X) {
             MyInput.setKey(MyInput.ATTACK, false);
+        }
+        if (k == Keys.Z) {
+            MyInput.setKey(MyInput.BLOCK, false);
         }
         return true;
     }
