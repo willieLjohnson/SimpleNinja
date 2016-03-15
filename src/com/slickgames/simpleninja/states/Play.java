@@ -265,7 +265,7 @@ public class Play extends GameState {
         for (Enemy e : enemies) {
             e.update(dt);
             if (enemyAi)
-                e.seek(player.getBody(), world, cl);
+                e.seek(player.getBody(), world);
         }
 
         // update box2d
