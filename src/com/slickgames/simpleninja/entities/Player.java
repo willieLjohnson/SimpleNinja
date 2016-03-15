@@ -8,16 +8,15 @@ import com.slickgames.simpleninja.main.Game;
 import com.slickgames.simpleninja.states.Play;
 
 public class Player extends B2DSprite {
-    public boolean shooting,running, idling, jumping, attacking, attacked,blocking;
-    TextureRegion[] run, idle, jump, attack,shoot,block;
+    public boolean shooting, running, idling, jumping, attacking, attacked, blocking;
+    TextureRegion[] run, idle, jump, attack, shoot, block;
     private int numCrystals;
     private int totalCrystals;
 
 
-
     public Player(Body body, Play play) {
         super(body, play);
-
+        this.health = 10102301;
         Texture runningAnimation = Game.game.getAssetManager().get("res/images/simple_run.png");
         Texture attackingAnimation = Game.game.getAssetManager().get("res/images/simple_attack.png");
         Texture idlingAnimation = Game.game.getAssetManager().get("res/images/simple_idle.png");
@@ -27,7 +26,7 @@ public class Player extends B2DSprite {
         idle = TextureRegion.split(idlingAnimation, 54, 42)[0];
         jump = run;
         attack = TextureRegion.split(attackingAnimation, 54, 42)[0];
-        shoot =  TextureRegion.split(attackingAnimation, 54, 42)[0];
+        shoot = TextureRegion.split(attackingAnimation, 54, 42)[0];
         block = TextureRegion.split(blockingAnimation, 54, 42)[0];
         setAnimation(idle, 1 / 7f);
     }
@@ -47,7 +46,7 @@ public class Player extends B2DSprite {
                 running = true;
                 idling = false;
                 jumping = false;
-                blocking=false;
+                blocking = false;
                 attacking = false;
                 setAnimation(run, 1 / 16f);
                 break;
@@ -56,14 +55,14 @@ public class Player extends B2DSprite {
                 idling = true;
                 jumping = false;
                 attacking = false;
-                blocking=false;
+                blocking = false;
                 setAnimation(idle, 1 / 7f);
                 break;
             case "jump":
                 running = false;
                 idling = false;
                 jumping = true;
-                blocking=false;
+                blocking = false;
                 attacking = false;
                 setAnimation(jump, 1 / 2f);
                 break;
@@ -72,7 +71,7 @@ public class Player extends B2DSprite {
                 idling = false;
                 jumping = false;
                 attacking = true;
-                blocking=false;
+                blocking = false;
                 setAnimation(attack, 1 / 32f);
                 break;
             case "block":
@@ -80,8 +79,8 @@ public class Player extends B2DSprite {
                 idling = false;
                 jumping = false;
                 attacking = false;
-                blocking=true;
-                setAnimation(block, 1/32f);
+                blocking = true;
+                setAnimation(block, 1 / 32f);
         }
 
     }

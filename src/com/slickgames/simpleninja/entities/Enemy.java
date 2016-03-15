@@ -42,6 +42,7 @@ public class Enemy extends B2DSprite {
     public boolean detectLeft;
     public boolean withinRange;
     public boolean wallCollision;
+    private boolean charging;
 
     public Enemy(Body body, Play play, int aId) {
         super(body, play);
@@ -122,7 +123,7 @@ public class Enemy extends B2DSprite {
                         bounced = true;
                         dir *= -1;
                         lastSwitch = currentTime;
-                    }else if (currentTime - lastSwitch > 1000000000f)
+                    } else if (currentTime - lastSwitch > 1000000000f)
                         bounced = false;
                     if (Math.abs(body.getLinearVelocity().x) < .5f)
                         body.applyForceToCenter(32f * dir, 0, true);
@@ -136,39 +137,41 @@ public class Enemy extends B2DSprite {
             case CHASE:
                 dir = (target.x < body.getPosition().x ? -1 : 1);
 
+                System.out.println(getAnimation().getCurrentFrame() + 1);
                 // if the player is in range
                 if (playerAttackable) {
                     // charge attack
-                    if (charge == 0) {
+                    if (!charging) {
                         charge = currentTime;
+                        charging = true;
                     }
-                } else if (charge == 0 && !swinging) {
+                } else if (!charging) {
+                    attacking = false;
+
                     if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
                         body.applyForceToCenter(16f * dir, 0, true);
                     }
                     if ((target.y - body.getPosition().y) > .5) {
                         body.applyLinearImpulse(0, 1, 0, 0, true);
                     }
-                    attacking = false;
+
                 }
                 // if done charging and not already attacking, attack.
-                if (charge != 0 && currentTime - charge > 400000000f) {
-                    if (!attacking) {
-                        toggleAnimation("attack");
-                        swinging = true;
-                    }
+                if ((charging && currentTime - charge > 200000000f)) {
+                    if (!attacking) toggleAnimation("attack");
+                    swinging = true;
+
                 }
 
                 // one attack is every 4 frames, so reset attack.
-                if (attackFrame == 4 && swinging) {
+                if ((getAnimation().getCurrentFrame() + 1) % 4 == 0 && attacking) {
                     attacked = true;
                     swinging = false;
+                    charging = false;
                     charge = 0;
-                    attackFrame = 0;
+//                    attacking = false;
                 } else {
                     attacked = false;
-                    if (attacking)
-                        attackFrame++;
                 }
                 break;
 
@@ -229,7 +232,7 @@ public class Enemy extends B2DSprite {
                 idling = false;
                 jumping = false;
                 attacking = true;
-                setAnimation(attack, 1 / 32f);
+                setAnimation(attack, 1 / 10f);
         }
 
     }

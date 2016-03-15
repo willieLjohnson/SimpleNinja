@@ -50,21 +50,6 @@ public class MyContactListener implements ContactListener {
         if (fb.getUserData() != null && fb.getUserData().equals("hand"))
             wallRun = true;
 
-        if (fa.getUserData() != null && fa.getUserData().equals("playerHitBox")) {
-            Enemy e = (Enemy) fb.getBody().getUserData();
-            if (!attackers.contains(e, true)) {
-                attackers.add(e);
-                e.playerAttackable = true;
-            }
-        }
-        if (fb.getUserData() != null && fb.getUserData().equals("playerHitBox")) {
-            Enemy e = (Enemy) fa.getBody().getUserData();
-            if (!attackers.contains(e, true)) {
-                attackers.add(e);
-                e.playerAttackable = true;
-            }
-        }
-
         /// enemy senses
         for (Enemy e : play.enemies) {
             if (e.getBody().getUserData().equals(fa.getBody().getUserData())) {
@@ -78,6 +63,12 @@ public class MyContactListener implements ContactListener {
                     e.wallCollision = true;
                 if (fa.getUserData() != null && fa.getUserData().equals("enemyHitBox" + e.id))
                     enemiesHit.add(e);
+                if (fa.getUserData() != null && fa.getUserData().equals("enemyAttackRange" + e.id)) {
+                    if (!attackers.contains(e, true)) {
+                        attackers.add(e);
+                        e.playerAttackable = true;
+                    }
+                }
             }
             if (e.getBody().getUserData().equals(fb.getBody().getUserData())) {
                 if (fb.getUserData() != null && fb.getUserData().equals("visionRight" + e.id))
@@ -90,6 +81,12 @@ public class MyContactListener implements ContactListener {
                     e.wallCollision = true;
                 if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id))
                     enemiesHit.add(e);
+                if (fb.getUserData() != null && fb.getUserData().equals("enemyAttackRange" + e.id)) {
+                    if (!attackers.contains(e, true)) {
+                        attackers.add(e);
+                        e.playerAttackable = true;
+                    }
+                }
             }
         }
     }
@@ -111,11 +108,6 @@ public class MyContactListener implements ContactListener {
             wallRun = false;
         if (fb.getUserData() != null && fb.getUserData().equals("hand"))
             wallRun = false;
-        if (fa.getUserData() != null && fa.getUserData().equals("playerHitBox")) {
-            Enemy n = (Enemy) fb.getBody().getUserData();
-            n.playerAttackable = false;
-            attackers.removeIndex(attackers.indexOf(n, true));
-        }
         if (fb.getUserData() != null && fb.getUserData().equals("playerHitBox")) {
             Enemy n = (Enemy) fa.getBody().getUserData();
             n.playerAttackable = false;
@@ -135,7 +127,10 @@ public class MyContactListener implements ContactListener {
                     e.wallCollision = false;
                 if (fa.getUserData() != null && fa.getUserData().equals("enemyHitBox" + e.id))
                     enemiesHit.removeIndex(enemiesHit.indexOf(e, true));
-
+                if (fa.getUserData() != null && fa.getUserData().equals("enemyAttackRange" + e.id)) {
+                    e.playerAttackable = false;
+                    attackers.removeIndex(attackers.indexOf(e, true));
+                }
             }
             if (e.getBody().getUserData().equals(fb.getBody().getUserData())) {
                 if (fb.getUserData() != null && fb.getUserData().equals("visionRight" + e.id))
@@ -147,9 +142,11 @@ public class MyContactListener implements ContactListener {
                 if (fb.getUserData() != null && fb.getUserData().equals("wallcollision" + e.id))
                     e.wallCollision = false;
                 if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id))
-                    enemiesHit.add(e);
-                if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id))
                     enemiesHit.removeIndex(enemiesHit.indexOf(e, true));
+                if (fb.getUserData() != null && fb.getUserData().equals("enemyAttackRange" + e.id)) {
+                    e.playerAttackable = false;
+                    attackers.removeIndex(attackers.indexOf(e, true));
+                }
             }
         }
 

@@ -215,9 +215,7 @@ public class Play extends GameState {
 
         }
         // player jump
-        if (cl.wallRun() && jump >= 1)
-
-        {
+        if (cl.wallRun() && jump >= 1) {
             if (MyInput.isDown(MyInput.JUMP) && (player.getBody().getLinearVelocity().y < .1f || wallRun == 0)) {
                 player.getBody().applyLinearImpulse(1.5f * player.getDir(), wallRun == 0 ? 4.5f - player.getBody().getLinearVelocity().y : 4.5f - wallRun, 0, 0,
                         true);
