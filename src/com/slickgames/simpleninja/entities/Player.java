@@ -16,7 +16,6 @@ public class Player extends B2DSprite {
 
     public Player(Body body, Play play) {
         super(body, play);
-        this.health = 10102301;
         Texture runningAnimation = Game.game.getAssetManager().get("res/images/simple_run.png");
         Texture attackingAnimation = Game.game.getAssetManager().get("res/images/simple_attack.png");
         Texture idlingAnimation = Game.game.getAssetManager().get("res/images/simple_idle.png");

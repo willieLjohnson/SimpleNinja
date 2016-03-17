@@ -2,6 +2,7 @@ package com.slickgames.simpleninja.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -14,7 +15,8 @@ import com.slickgames.simpleninja.states.Play;
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 
-public abstract class B2DSprite {
+public abstract class B2DSprite extends Sprite{
+
     protected Body body;
     protected Animation animation;
     protected float width;
@@ -25,16 +27,18 @@ public abstract class B2DSprite {
     public int health = MAX_HEALTH;
     public Play play;
 
-    public B2DSprite(Body body, Play aPlay) {
-        this.body = body;
+    public B2DSprite(Body aBody, Play aPlay) {
+        body = aBody;
         animation = new Animation();
         play = aPlay;
+
     }
 
     public void setAnimation(TextureRegion[] reg, float delay) {
         animation.setFrames(reg, delay);
         height = reg[0].getRegionHeight();
         width = reg[0].getRegionWidth();
+
     }
 
     public abstract void update(float dt);

@@ -10,24 +10,22 @@ import com.slickgames.simpleninja.states.Play;
  * Created by Administrator on 2/10/2016.
  */
 public class Projectile extends B2DSprite {
-    private float velocity;
-    public Projectile(Body body, Play aPlay, float aVelocity) {
-        super(body,aPlay);
-        velocity = aVelocity;
-        Texture tex = Game.game.getAssetManager().get("res/images/crystal.png");
-        TextureRegion[] sprites = TextureRegion.split(tex, 16, 16)[0];
 
+    public Projectile(Body body, Play aPlay, float velocity) {
+        super(body,aPlay);
+
+        Texture tex = Game.game.getAssetManager().get("res/images/throw_knife.png");
+        TextureRegion[] sprites = TextureRegion.split(tex, 8, 2)[0];
+        body.getFixtureList().first().setDensity(0);
         setAnimation(sprites, 1 / 12f);
         body.setUserData("proj" + play.projectiles.size);
+        body.setLinearVelocity(velocity,1);
         play.projectiles.add(this);
     }
 
     @Override
     public void update(float dt) {
         animation.update(dt);
-
-        if (Math.abs(body.getLinearVelocity().x) < 1)
-            body.applyLinearImpulse(velocity, 0, 0, 0, false);
     }
 
     @Override

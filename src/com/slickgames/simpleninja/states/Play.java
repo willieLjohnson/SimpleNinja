@@ -302,7 +302,7 @@ public class Play extends GameState {
         }
 
         for (Enemy e : cl.getAttackers()) {
-            if (e.attacked) {
+            if (e.attacked && e.playerAttackable) {
                 player.damage(player.blocking ? 1 : 5);
             }
         }
@@ -673,11 +673,11 @@ public class Play extends GameState {
         fdef.shape = cshape;
         // fdef.isSensor = true;
         fdef.filter.categoryBits = B2DVars.BIT_Projectile;
-        fdef.filter.maskBits = B2DVars.BIT_ENEMY | B2DVars.BIT_GROUND;
+        fdef.filter.maskBits = B2DVars.BIT_ENEMY| B2DVars.BIT_GROUND;
 
         body.createFixture(fdef).setUserData("project");
 
-        new Projectile(body, this, 10 * player.getDir());
+        new Projectile(body, this, 5 * player.getDir());
         System.out.println(projectiles.size);
 
     }

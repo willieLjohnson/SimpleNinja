@@ -53,6 +53,7 @@ public class Game implements ApplicationListener {
         //misc
         assets.load("res/images/crystal.png", Texture.class);
         assets.load("res/images/hud.png", Texture.class);
+        assets.load("res/images/throw_knife.png", Texture.class);
 
         //main menu
         assets.load("res/menu/waterfall_animation.Png", Texture.class);

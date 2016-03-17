@@ -160,7 +160,6 @@ public class Enemy extends B2DSprite {
                 if ((charging && currentTime - charge > 200000000f)) {
                     if (!attacking) toggleAnimation("attack");
                     swinging = true;
-
                 }
 
                 // one attack is every 4 frames, so reset attack.
@@ -169,9 +168,9 @@ public class Enemy extends B2DSprite {
                     swinging = false;
                     charging = false;
                     charge = 0;
-//                    attacking = false;
+                    attacking = false;
                 } else {
-                    attacked = false;
+                	attacked = false;
                 }
                 break;
 
