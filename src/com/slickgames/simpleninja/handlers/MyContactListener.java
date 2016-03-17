@@ -9,7 +9,7 @@ public class MyContactListener implements ContactListener {
 
     public Array<Enemy> enemiesHit;
     private int numFootContacts;
-    private Array<Body> bodiesToRemove;
+    public Array<Body> bodiesToRemove;
     private boolean detectRight;
     private boolean detectLeft;
     private boolean withinRange;
@@ -63,6 +63,8 @@ public class MyContactListener implements ContactListener {
                     e.wallCollision = true;
                 if (fa.getUserData() != null && fa.getUserData().equals("enemyHitBox" + e.id))
                     enemiesHit.add(e);
+                if (fa.getUserData() != null && fa.getUserData().equals("Efoot" + e.id))
+                	e.numFootContacts++;
                 if (fa.getUserData() != null && fa.getUserData().equals("enemyAttackRange" + e.id)) {
                     if (!attackers.contains(e, true)) {
                         attackers.add(e);
@@ -81,6 +83,8 @@ public class MyContactListener implements ContactListener {
                     e.wallCollision = true;
                 if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id))
                     enemiesHit.add(e);
+                if (fb.getUserData() != null && fb.getUserData().equals("Efoot" + e.id))
+                	e.numFootContacts++;
                 if (fb.getUserData() != null && fb.getUserData().equals("enemyAttackRange" + e.id)) {
                     if (!attackers.contains(e, true)) {
                         attackers.add(e);
@@ -127,6 +131,8 @@ public class MyContactListener implements ContactListener {
                     e.wallCollision = false;
                 if (fa.getUserData() != null && fa.getUserData().equals("enemyHitBox" + e.id))
                     enemiesHit.removeIndex(enemiesHit.indexOf(e, true));
+                if (fa.getUserData() != null && fa.getUserData().equals("Efoot" + e.id))
+                	e.numFootContacts--;
                 if (fa.getUserData() != null && fa.getUserData().equals("enemyAttackRange" + e.id)) {
                     e.playerAttackable = false;
                     attackers.removeIndex(attackers.indexOf(e, true));
@@ -143,6 +149,8 @@ public class MyContactListener implements ContactListener {
                     e.wallCollision = false;
                 if (fb.getUserData() != null && fb.getUserData().equals("enemyHitBox" + e.id))
                     enemiesHit.removeIndex(enemiesHit.indexOf(e, true));
+                if (fb.getUserData() != null && fb.getUserData().equals("Efoot" + e.id))
+                	e.numFootContacts--;
                 if (fb.getUserData() != null && fb.getUserData().equals("enemyAttackRange" + e.id)) {
                     e.playerAttackable = false;
                     attackers.removeIndex(attackers.indexOf(e, true));

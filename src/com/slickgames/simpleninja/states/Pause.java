@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.slickgames.simpleninja.entities.Enemy;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInputProcessor;
 import com.slickgames.simpleninja.main.Game;
@@ -130,6 +131,12 @@ public class Pause extends GameState {
                 case "addEnemy":
                     gsm.play.createEnemy(Integer.parseInt(param2));
                     break;
+                case "killallfuckers":
+                	for (Enemy e: gsm.play.enemies) {
+                		gsm.play.cl.bodiesToRemove.add(e.getBody());
+                	}
+                	gsm.play.enemies.clear();
+                	break;
                 default:
                     cmd.setText("Error");
             }

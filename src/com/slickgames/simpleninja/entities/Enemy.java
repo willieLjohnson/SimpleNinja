@@ -43,6 +43,7 @@ public class Enemy extends B2DSprite {
     public boolean withinRange;
     public boolean wallCollision;
     private boolean charging;
+	public int numFootContacts;
 
     public Enemy(Body body, Play play, int aId) {
         super(body, play);
@@ -151,7 +152,7 @@ public class Enemy extends B2DSprite {
                     if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
                         body.applyForceToCenter(16f * dir, 0, true);
                     }
-                    if ((target.y - body.getPosition().y) > .5) {
+                    if (isEnemyOnGround()&&(target.y - body.getPosition().y) > .5) {
                         body.applyLinearImpulse(0, 1, 0, 0, true);
                     }
 
@@ -254,5 +255,8 @@ public class Enemy extends B2DSprite {
 
     public boolean isPlayerSpotted() {
         return dir == 1 ? detectRight : detectLeft;
+    }
+    public boolean isEnemyOnGround() {
+        return numFootContacts > 0;
     }
 }

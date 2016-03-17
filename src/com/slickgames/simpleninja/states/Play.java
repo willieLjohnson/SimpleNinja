@@ -272,9 +272,9 @@ public class Play extends GameState {
         // remove crystals
         Array<Body> bodies = cl.getBodiesToRemove();
         for (Body b : bodies) {
-            crystals.removeValue((Crystal) b.getUserData(), true);
+//            crystals.removeValue((Crystal) b.getUserData(), true);
             world.destroyBody(b);
-            player.collectCrystal();
+//            player.collectCrystal();
         }
         bodies.clear();
         bodies.clear();
@@ -507,7 +507,7 @@ public class Play extends GameState {
             shape.setAsBox(12 / PPM, 4 / PPM, new Vector2(0, -19 / PPM), 0);
             fdef.shape = shape;
             fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
-            fdef.filter.maskBits = B2DVars.BIT_GROUND | B2DVars.BIT_EDGE;
+            fdef.filter.maskBits = B2DVars.BIT_GROUND | B2DVars.BIT_EDGE | B2DVars.BIT_WALL;
             fdef.isSensor = true;
             body.createFixture(fdef).setUserData("Efoot" + i);
 
@@ -622,7 +622,7 @@ public class Play extends GameState {
             bdef.position.set(x, y);
             fdef.shape = cshape;
             fdef.filter.categoryBits = B2DVars.BIT_GROUND;
-            fdef.filter.maskBits = B2DVars.BIT_PLAYER | B2DVars.BIT_ENEMY;
+            fdef.filter.maskBits = B2DVars.BIT_PLAYER | B2DVars.BIT_ENEMY | B2DVars.BIT_Projectile;
             // fdef.friction = 1.5f;
             Body body = world.createBody(bdef);
             body.createFixture(fdef).setUserData("ground");
@@ -661,19 +661,20 @@ public class Play extends GameState {
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
 
-        CircleShape cshape = new CircleShape();
+        PolygonShape shape = new PolygonShape();
 
 
         bdef.position.set(player.getPosition().x, player.getPosition().y);
         bdef.type = BodyType.DynamicBody;
-        cshape.setRadius(8 / PPM);
-        // bdef.linearVelocity.set(1f, 0);
+        // bdef.linearVelocity.set(1f, 0)
+        
         Body body = world.createBody(bdef);
-
-        fdef.shape = cshape;
+       
+        shape.setAsBox(8 / PPM, 2 / PPM);
+        fdef.shape = shape;
         // fdef.isSensor = true;
         fdef.filter.categoryBits = B2DVars.BIT_Projectile;
-        fdef.filter.maskBits = B2DVars.BIT_ENEMY| B2DVars.BIT_GROUND;
+        fdef.filter.maskBits = B2DVars.BIT_ENEMY | B2DVars.BIT_GROUND;
 
         body.createFixture(fdef).setUserData("project");
 
