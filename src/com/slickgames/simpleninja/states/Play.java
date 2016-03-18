@@ -189,7 +189,7 @@ public class Play extends GameState {
                             Math.abs(player.getBody().getLinearVelocity().x) > 1 ? 0f : player.getDir() * 6f, 0f, 0f, 0f, true);
                     for (Enemy e : cl.enemiesHit) {
                         attacked = true;
-                        e.damage(currentAttack / 2);
+                        e.damage((currentAttack / 2) - player.penelty);
                     }
 
                 }
@@ -205,6 +205,7 @@ public class Play extends GameState {
             if (swinging) {
                 lastAttack = currentTime;
                 swinging = false;
+                player.stamina-=25;
             }
             player.attacked = true;
             if (currentTime - lastAttack > 250000000f) {
@@ -396,6 +397,10 @@ public class Play extends GameState {
         // player health
         sr.setColor(1f, .2f, 0f, 1f);
         sr.box(b2dCam.position.x - 1.66f, b2dCam.position.y + .83f, 0, .05f * player.health, .025f, 0);
+
+        // player stamina
+        sr.setColor(.2f, 1f, 0f, 1f);
+        sr.box(b2dCam.position.x - 1.66f, b2dCam.position.y + .80f, 0, .01f * player.stamina, .025f, 0);
 
         // enemy health
         sr.setColor(1f, 0f, 0f, 1f);

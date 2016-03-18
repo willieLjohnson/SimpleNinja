@@ -152,8 +152,8 @@ public class Enemy extends B2DSprite {
                     if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
                         body.applyForceToCenter(16f * dir, 0, true);
                     }
-                    if (isEnemyOnGround()&&(target.y - body.getPosition().y) > .5) {
-                        body.applyLinearImpulse(0, 1, 0, 0, true);
+                    if ((isEnemyOnGround()&&(target.y - body.getPosition().y) > .5) && body.getLinearVelocity().y < 1) {
+                        body.applyLinearImpulse(0, 3, 0, 0, true);
                     }
 
                 }

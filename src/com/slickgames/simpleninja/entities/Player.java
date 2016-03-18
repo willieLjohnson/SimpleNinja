@@ -12,6 +12,7 @@ public class Player extends B2DSprite {
     TextureRegion[] run, idle, jump, attack, shoot, block;
     private int numCrystals;
     private int totalCrystals;
+    public int penelty;
 
 
     public Player(Body body, Play play) {
@@ -118,6 +119,8 @@ public class Player extends B2DSprite {
 
     @Override
     public void playerUpdate(float dt, float lastAttack) {
+        penelty = (getMaxStamina() - stamina)/10;
+
         if (health <= 0) {
             kill();
         }
@@ -126,6 +129,7 @@ public class Player extends B2DSprite {
             attacked = false;
         } else
             animation.update(dt);
+        System.out.println(penelty);
     }
 
     public void kill() {

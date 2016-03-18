@@ -24,8 +24,11 @@ public abstract class B2DSprite extends Sprite{
     protected int dir = 1;
     protected float MAX_SPEED = 2f;
     protected int MAX_HEALTH = 20;
+    protected int MAX_STAMINA = 100;
     public int health = MAX_HEALTH;
+    public int stamina = MAX_STAMINA;
     public Play play;
+
 
     public B2DSprite(Body aBody, Play aPlay) {
         body = aBody;
@@ -102,5 +105,9 @@ public abstract class B2DSprite extends Sprite{
 
     public int getMaxHealth() {
         return MAX_HEALTH;
+    }
+
+    public int getMaxStamina() {
+        return MAX_STAMINA;
     }
 }
