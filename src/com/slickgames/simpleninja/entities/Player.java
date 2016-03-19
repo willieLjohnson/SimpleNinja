@@ -1,9 +1,11 @@
 package com.slickgames.simpleninja.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.slickgames.simpleninja.main.Game;
 import com.slickgames.simpleninja.states.Play;
 
@@ -12,7 +14,7 @@ public class Player extends B2DSprite {
     TextureRegion[] run, idle, jump, attack, shoot, block;
     private int numCrystals;
     private int totalCrystals;
-    public int penelty;
+    public double penelty;
 
 
     public Player(Body body, Play play) {
@@ -129,6 +131,10 @@ public class Player extends B2DSprite {
             attacked = false;
         } else
             animation.update(dt);
+
+        if (TimeUtils.nanoTime() - lastAttack > 650000000f && stamina < getMaxStamina()) {
+            stamina+=.5;
+        }
         System.out.println(penelty);
     }
 
@@ -138,6 +144,6 @@ public class Player extends B2DSprite {
     }
 
     private void replace() {
-        this.body.setTransform(new Vector2(0, 6), body.getAngle());
+        this.body.setTransform(new Vector2(0, 7), body.getAngle());
     }
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
@@ -80,7 +81,7 @@ public class Play extends GameState {
 
         // create enemy
         enemies = new Array<Enemy>();
-        createEnemy(3);
+        createEnemy(15);
 
         // create tiles
         createTiles();
@@ -91,6 +92,7 @@ public class Play extends GameState {
         // set up box2d cam
         b2dCam = new OrthographicCamera();
         b2dCam.setToOrtho(false, Game.V_WIDTH / PPM, Game.V_HEIGHT / PPM);
+//        cam.zoom +=.25f;
         // set up hud & debug
         sr = new ShapeRenderer();
         sr.setAutoShapeType(true);
@@ -170,7 +172,7 @@ public class Play extends GameState {
                     if (currentAttack >= 16) {
                         currentAttack = 0;
                         player.setAttacking(false);
-                        player.damage(player.health / 2);
+                        if (player.stamina <= 0)player.damage(player.health / 2);
 
                     }
                     if (currentAttack >= 4) {
@@ -189,7 +191,7 @@ public class Play extends GameState {
                             Math.abs(player.getBody().getLinearVelocity().x) > 1 ? 0f : player.getDir() * 6f, 0f, 0f, 0f, true);
                     for (Enemy e : cl.enemiesHit) {
                         attacked = true;
-                        e.damage((currentAttack / 2) - player.penelty);
+                        e.damage((currentAttack / 2) );
                     }
 
                 }
@@ -206,6 +208,8 @@ public class Play extends GameState {
                 lastAttack = currentTime;
                 swinging = false;
                 player.stamina-=25;
+                if (player.stamina < 0)
+                    player.stamina = 0;
             }
             player.attacked = true;
             if (currentTime - lastAttack > 250000000f) {
@@ -332,8 +336,13 @@ public class Play extends GameState {
         }
 
 		/* set cam and debug cam to follow player */
-        cam.position.set((player.getPosition().x * PPM + Game.V_WIDTH / 4) + player.getBody().getLinearVelocity().x,
-                (player.getPosition().y * PPM) + player.getBody().getLinearVelocity().y, 0);
+        float lerp =10f;
+        Vector3 position = cam.position;
+        position.x += Math.floor((player.getPosition().x*PPM - position.x) * lerp/2 * Gdx.graphics.getDeltaTime()) + player.getBody().getLinearVelocity().x*2;
+        position.y += Math.floor((player.getPosition().y*PPM - position.y) * lerp * Gdx.graphics.getDeltaTime());
+
+		/* set cam and debug cam to follow player */
+        cam.position.set(position.x, position.y, 0);
         b2dCam.position.set(cam.position.x / PPM, cam.position.y / PPM, 0);
 
         cam.update();
@@ -399,8 +408,8 @@ public class Play extends GameState {
         sr.box(b2dCam.position.x - 1.66f, b2dCam.position.y + .83f, 0, .05f * player.health, .025f, 0);
 
         // player stamina
-        sr.setColor(.2f, 1f, 0f, 1f);
-        sr.box(b2dCam.position.x - 1.66f, b2dCam.position.y + .80f, 0, .01f * player.stamina, .025f, 0);
+        sr.setColor(.7f, 1f, 0f, 1f);
+        sr.box(b2dCam.position.x - 1.66f, b2dCam.position.y + .80f, 0, (float) (.005f * player.stamina), .025f, 0);
 
         // enemy health
         sr.setColor(1f, 0f, 0f, 1f);
@@ -432,7 +441,7 @@ public class Play extends GameState {
         PolygonShape shape = new PolygonShape();
 
         // create player
-        bdef.position.set(0 / PPM, 600 / PPM);
+        bdef.position.set(0 / PPM, 700 / PPM);
         bdef.type = BodyType.DynamicBody;
         // bdef.linearVelocity.set(1f, 0);
         Body body = world.createBody(bdef);
@@ -574,7 +583,7 @@ public class Play extends GameState {
 
     private void createTiles() {
         // load tile map
-        tileMap = new TmxMapLoader().load("res/maps/sliced.tmx");
+        tileMap = new TmxMapLoader().load("res/maps/slicedNEW.tmx");
         tmr = new OrthogonalTiledMapRenderer(tileMap);
         tileSize = (int) tileMap.getProperties().get("tilewidth");
         BodyDef bdef = new BodyDef();
@@ -669,7 +678,7 @@ public class Play extends GameState {
         PolygonShape shape = new PolygonShape();
 
 
-        bdef.position.set(player.getPosition().x, player.getPosition().y);
+        bdef.position.set(player.getPosition().x, player.getPosition().y-.1f);
         bdef.type = BodyType.DynamicBody;
         // bdef.linearVelocity.set(1f, 0)
         

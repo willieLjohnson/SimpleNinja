@@ -82,6 +82,7 @@ public class Game implements ApplicationListener {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
+
         viewPort = new ExtendViewport(Game.V_WIDTH, Game.V_HEIGHT, cam);
         stage = new Stage(viewPort);
         viewPort.apply();
