@@ -44,6 +44,9 @@ public class Game implements ApplicationListener {
         assets.load("res/images/simple_attack.png", Texture.class);
         assets.load("res/images/simple_idle.png", Texture.class);
         assets.load("res/images/simple_block.png", Texture.class);
+        assets.load("res/images/simple_throw2.png", Texture.class);
+        assets.load("res/images/simple_throw1.png", Texture.class);
+
 
         //enemy assets
         assets.load("res/images/enemy_idle.png", Texture.class);
@@ -53,7 +56,9 @@ public class Game implements ApplicationListener {
         //misc
         assets.load("res/images/crystal.png", Texture.class);
         assets.load("res/images/hud.png", Texture.class);
-        assets.load("res/images/throw_knife.png", Texture.class);
+        assets.load("res/images/throw_knife2.png", Texture.class);
+        assets.load("res/images/throw_knife1.png", Texture.class);
+
 
         //main menu
         assets.load("res/menu/waterfall_animation.Png", Texture.class);

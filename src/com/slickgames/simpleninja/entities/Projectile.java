@@ -14,12 +14,12 @@ public class Projectile extends B2DSprite {
     public Projectile(Body body, Play aPlay, float velocity) {
         super(body,aPlay);
 
-        Texture tex = Game.game.getAssetManager().get("res/images/throw_knife.png");
-        TextureRegion[] sprites = TextureRegion.split(tex, 8, 2)[0];
-        body.getFixtureList().first().setDensity(0);
+        Texture tex = Game.game.getAssetManager().get("res/images/throw_knife1.png");
+        TextureRegion[] sprites = TextureRegion.split(tex,8, 2)[0];
+        body.getFixtureList().first().setDensity(1);
         setAnimation(sprites, 1 / 12f);
         body.setUserData("proj" + play.projectiles.size);
-        body.setLinearVelocity(velocity,1);
+        body.setLinearVelocity(velocity,1.5f);
         play.projectiles.add(this);
     }
 

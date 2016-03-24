@@ -250,6 +250,7 @@ public class Enemy extends B2DSprite {
     public void kill() {
         replace();
         health = MAX_HEALTH;
+        play.player.stamina+=20;
     }
 
     private void replace() {
