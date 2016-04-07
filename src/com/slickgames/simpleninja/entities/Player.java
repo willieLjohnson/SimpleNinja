@@ -151,7 +151,6 @@ public class Player extends B2DSprite {
         if (TimeUtils.nanoTime() - lastAttack > 650000000f && stamina < getMaxStamina()) {
             stamina+=1;
         }
-        System.out.println(penelty);
     }
 
     public void kill() {

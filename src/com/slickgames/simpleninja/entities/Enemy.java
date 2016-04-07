@@ -68,7 +68,6 @@ public class Enemy extends B2DSprite {
         currentTime = TimeUtils.nanoTime();
         if (health <= 0) {
             kill();
-            System.out.println("ded");
             swinging = false;
             attacking = false;
         }
@@ -120,7 +119,6 @@ public class Enemy extends B2DSprite {
             }
         else
             state = CHASE;
-
         switch (state) {
             case GUARD:
                 if (currentTime - lastSwitch < 3000000000f) {
@@ -142,7 +140,6 @@ public class Enemy extends B2DSprite {
             case CHASE:
                 dir = (target.x < body.getPosition().x ? -1 : 1);
 
-                System.out.println(getAnimation().getCurrentFrame() + 1);
                 // if the player is in range
                 if (playerAttackable) {
                     // charge attack

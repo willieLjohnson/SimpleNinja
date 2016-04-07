@@ -10,7 +10,7 @@ import com.slickgames.simpleninja.states.Play;
  * Created by Administrator on 2/10/2016.
  */
 public class Projectile extends B2DSprite {
-
+ public int id;
     public Projectile(Body body, Play aPlay, float velocity) {
         super(body,aPlay);
 
@@ -18,7 +18,8 @@ public class Projectile extends B2DSprite {
         TextureRegion[] sprites = TextureRegion.split(tex,8, 2)[0];
         body.getFixtureList().first().setDensity(1);
         setAnimation(sprites, 1 / 12f);
-        body.setUserData("proj" + play.projectiles.size);
+        body.setUserData(this);
+        id = play.projectiles.size;
         body.setLinearVelocity(velocity,1.5f);
         play.projectiles.add(this);
     }
