@@ -202,6 +202,7 @@ public class Play extends GameState {
 				for (Enemy e : cl.enemiesHit) {
 					attacked = true;
 					e.damage((currentAttack / 2));
+					e.charge += 100000000f;
 				}
 			}
 		} else {
@@ -284,28 +285,34 @@ public class Play extends GameState {
 		// update box2d
 		world.step(dt, 6, 2);
 
-        for (Enemy e : cl.enemiesShot) {
-            e.damage(5);
-        }
+		for (Enemy e : cl.enemiesShot) {
+			e.damage(5);
+		}
 		// remove bodies
 		Array<Body> bodies = cl.getBodiesToRemove();
 
 		for (Body b : bodies) {
 			// crystals
 			try {
-				if (crystals.contains((Crystal) b.getUserData(), true))crystals.removeValue((Crystal) b.getUserData(), true);
-			} catch (java.lang.ClassCastException e) {
-			}
+				if (crystals.contains((Crystal) b.getUserData(), true)) {
+					crystals.removeValue((Crystal) b.getUserData(), true);
+					player.collectCrystal();
+				}
+			} catch (java.lang.ClassCastException e) {}
+
 			// projectiles
 			try {
-				if (projectiles.contains((Projectile) b.getUserData(), true))projectiles.removeValue((Projectile) b.getUserData(), true);
-			} catch (java.lang.ClassCastException e) {
-				
-			}
+				if (projectiles.contains((Projectile) b.getUserData(), true))
+					projectiles.removeValue((Projectile) b.getUserData(), true);
+			} catch (java.lang.ClassCastException e) {}
+
+			// enemies
+			try {
+				if (enemies.contains((Enemy) b.getUserData(), true))
+					enemies.removeValue((Enemy) b.getUserData(), true);
+			} catch (java.lang.ClassCastException e) {}
 			world.destroyBody(b);
-			// player.collectCrystal();if (crystals.contains((Crystal) b.getUserData(), true))
 		}
-		bodies.clear();
 		bodies.clear();
 
 		player.playerUpdate(dt, lastAttack);
