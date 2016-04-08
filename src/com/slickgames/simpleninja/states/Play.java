@@ -308,8 +308,13 @@ public class Play extends GameState {
 
 			// enemies
 			try {
-				if (enemies.contains((Enemy) b.getUserData(), true))
+				if (enemies.contains((Enemy) b.getUserData(), true)) {
 					enemies.removeValue((Enemy) b.getUserData(), true);
+					if (cl.enemiesHit.contains((Enemy) b.getUserData(),true)) {
+						cl.enemiesHit.removeValue((Enemy) b.getUserData(), true);
+					}
+//					cl.enemiesShot.clear(); Comment out if you notice problems with "ghost" enemies
+				}
 			} catch (java.lang.ClassCastException e) {}
 			world.destroyBody(b);
 		}
