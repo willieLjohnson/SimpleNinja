@@ -80,7 +80,7 @@ public class Play extends GameState {
 
 		// create enemy
 		enemies = new Array<Enemy>();
-		createEnemy(5);
+		createEnemy(1);
 
 		// create tiles
 		createTiles();
@@ -608,7 +608,7 @@ public class Play extends GameState {
 			body.createFixture(fdef).setUserData("wallcollision" + i);
 
 			// create attack range
-			shape.setAsBox(15 / PPM, 8 / PPM, new Vector2(0, -5 / PPM), 0);
+			shape.setAsBox(35 / PPM, 8 / PPM, new Vector2(0, -5 / PPM), 0);
 			fdef.shape = shape;
 			fdef.filter.categoryBits = B2DVars.BIT_ENEMY_ATTACK_RANGE;
 			fdef.filter.maskBits = B2DVars.BIT_PLAYER;
@@ -648,7 +648,7 @@ public class Play extends GameState {
 			bdef.position.set(x, y);
 			fdef.shape = cshape;
 			fdef.filter.categoryBits = B2DVars.BIT_WALL;
-			fdef.filter.maskBits = B2DVars.BIT_PLAYER | B2DVars.BIT_ENEMY;
+			fdef.filter.maskBits = B2DVars.BIT_PLAYER | B2DVars.BIT_ENEMY | B2DVars.BIT_Projectile;
 			// fdef.friction = 1.5f;
 			Body body = world.createBody(bdef);
 			body.createFixture(fdef).setUserData("wall");
@@ -701,7 +701,7 @@ public class Play extends GameState {
 			bdef.position.set(x, y);
 			fdef.shape = cshape;
 			fdef.filter.categoryBits = B2DVars.BIT_EDGE;
-			fdef.filter.maskBits = B2DVars.BIT_PLAYER | B2DVars.BIT_ENEMY;
+			fdef.filter.maskBits = B2DVars.BIT_PLAYER | B2DVars.BIT_ENEMY | B2DVars.BIT_Projectile;
 			// fdef.friction = 1.5f;
 			Body body = world.createBody(bdef);
 			body.createFixture(fdef).setUserData("edge");
@@ -717,15 +717,15 @@ public class Play extends GameState {
 
 		bdef.position.set(player.getPosition().x, player.getPosition().y - .1f);
 		bdef.type = BodyType.DynamicBody;
-		// bdef.linearVelocity.set(1f, 0)
+		bdef.angularDamping = 1f;
 
 		Body body = world.createBody(bdef);
 
-		shape.setAsBox(8 / PPM, 2 / PPM);
+		shape.setAsBox(3 / PPM, 1 / PPM);
 		fdef.shape = shape;
 		// fdef.isSensor = true;
 		fdef.filter.categoryBits = B2DVars.BIT_Projectile;
-		fdef.filter.maskBits = B2DVars.BIT_ENEMY | B2DVars.BIT_GROUND;
+		fdef.filter.maskBits = B2DVars.BIT_ENEMY | B2DVars.BIT_GROUND | B2DVars.BIT_WALL | B2DVars.BIT_EDGE;
 
 		body.createFixture(fdef).setUserData("project");
 

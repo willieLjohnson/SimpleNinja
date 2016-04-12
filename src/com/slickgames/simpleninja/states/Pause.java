@@ -116,7 +116,7 @@ public class Pause extends GameState {
                 case "tdb":
                     gsm.debug = !gsm.debug;
                     break;
-                case "setSpeed":
+                case "ss":
                     gsm.play.player.setMaxSpeed(Float.parseFloat(param2));
                     break;
                 case "tai":
@@ -128,15 +128,18 @@ public class Pause extends GameState {
                 case "tip":
                     gsm.play.ignorePlayer = !gsm.play.ignorePlayer;
                     break;
-                case "addEnemy":
+                case "ae":
                     gsm.play.createEnemy(Integer.parseInt(param2));
                     break;
-                case "killallfuckers":
+                case "kaf":
                 	for (Enemy e: gsm.play.enemies) {
                 		gsm.play.cl.bodiesToRemove.add(e.getBody());
                 	}
                 	gsm.play.enemies.clear();
                 	break;
+                case "op":
+                    gsm.play.player.op = !gsm.play.player.op;
+                    break;
                 default:
                     cmd.setText("Error");
             }

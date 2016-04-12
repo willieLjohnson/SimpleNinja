@@ -28,19 +28,21 @@ public abstract class B2DSprite extends Sprite{
     public int health = MAX_HEALTH;
     public float stamina = MAX_STAMINA;
     public Play play;
-
+    public boolean op;
+    public Sprite sprite;
 
     public B2DSprite(Body aBody, Play aPlay) {
         body = aBody;
         animation = new Animation();
         play = aPlay;
-
     }
 
     public void setAnimation(TextureRegion[] reg, float delay) {
         animation.setFrames(reg, delay);
         height = reg[0].getRegionHeight();
         width = reg[0].getRegionWidth();
+        sprite = new Sprite(reg[0]);
+        setOriginCenter();
 
     }
 
@@ -49,9 +51,13 @@ public abstract class B2DSprite extends Sprite{
     public abstract void playerUpdate(float dt, float lastAttack);
 
     public void render(SpriteBatch sb) {
+        sprite.setRegion(animation.getFrame());
+        sprite.setPosition(body.getPosition().x * PPM - width / 2 , body.getPosition().y * PPM - height / 2);
+        sprite.setRotation(body.getAngle()*PPM);
         sb.begin();
-        sb.draw(animation.getFrame(), body.getPosition().x * PPM - width / 2,
-                body.getPosition().y * PPM - height / 2);
+//        sb.draw(animation.getFrame(), body.getPosition().x * PPM - width / 2,
+//                body.getPosition().y * PPM - height / 2);
+        sprite.draw(sb);
         sb.end();
     }
 
@@ -92,13 +98,15 @@ public abstract class B2DSprite extends Sprite{
     }
 
     public void damage(int dmg) {
-        health -= dmg;
-        ParticleEffect bloodSplat = new ParticleEffect();
-        bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
-        bloodSplat.setPosition(this.getPosition().x * PPM - this.getWidth() / 10,
-                this.getPosition().y * PPM - this.getHeight() / 4);
-        bloodSplat.start();
-        play.bloodParts.add(bloodSplat);
+        if (!op) {
+            health -= dmg;
+            ParticleEffect bloodSplat = new ParticleEffect();
+            bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
+            bloodSplat.setPosition(this.getPosition().x * PPM - this.getWidth() / 10,
+                    this.getPosition().y * PPM - this.getHeight() / 4);
+            bloodSplat.start();
+            play.bloodParts.add(bloodSplat);
+        }
     }
 
     public abstract void kill();
