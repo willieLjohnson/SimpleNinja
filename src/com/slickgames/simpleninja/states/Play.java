@@ -129,13 +129,14 @@ public class Play extends GameState {
 			pauseOnUpdate = true;
 		}
 
-		if (MyInput.isPressed(MyInput.SHOOT)) {
+		if (MyInput.isPressed(MyInput.SHOOT)  && player.ammo >= 0) {
 			player.toggleAnimation("throw");
 		}
 
-		if (player.throwing && player.getAnimation().getCurrentFrame() == 2) {
+		if ((player.throwing && player.getAnimation().getCurrentFrame() == 2)) {
 			player.throwing = false;
 			createProjectile();
+			player.ammo--;
 		}
 
 		if (!MyInput.isDown(MyInput.BLOCK)) {

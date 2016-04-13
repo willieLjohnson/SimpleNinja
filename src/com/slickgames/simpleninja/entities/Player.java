@@ -15,7 +15,8 @@ public class Player extends B2DSprite {
     private int numCrystals;
     private int totalCrystals;
     public double penelty;
-
+    private int MAX_AMMO = 5;
+    public int ammo = MAX_AMMO;
 
     public Player(Body body, Play play) {
         super(body, play);
