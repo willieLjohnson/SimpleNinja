@@ -225,9 +225,7 @@ public class Play extends GameState {
             if (!player.blocking) {
                 player.toggleAnimation("block");
             }
-
         }
-
         if ((player.getAnimation().getCurrentFrame() == currentAttack) && player.isAttacking()) {
             player.getAnimation().setSpeed(0f);
             if (swinging) {
@@ -531,7 +529,7 @@ public class Play extends GameState {
         body.createFixture(fdef).setUserData("hand");
 
         // create attack range
-        shape.setAsBox(30 / PPM, 8 / PPM, new Vector2(0, -5 / PPM), 0);
+        shape.setAsBox(20 / PPM, 8 / PPM, new Vector2(0, -5 / PPM), 0);
         fdef.shape = shape;
         fdef.filter.categoryBits = B2DVars.BIT_ATTACK_RANGE;
         fdef.filter.maskBits = B2DVars.BIT_ENEMY;
@@ -562,6 +560,14 @@ public class Play extends GameState {
             fdef.filter.maskBits = B2DVars.BIT_EDGE | B2DVars.BIT_WALL | B2DVars.BIT_GROUND | B2DVars.BIT_CYSTAL
                     | B2DVars.BIT_PLAYER | B2DVars.BIT_Projectile;
             body.createFixture(fdef).setUserData("enemy" + i);
+
+            // stack prevention
+            shape.setAsBox(2f / PPM, 3f / PPM, new Vector2(0, -9 / PPM), 0);
+            fdef.shape = shape;
+            fdef.filter.categoryBits = B2DVars.BIT_ENEMY;
+            fdef.filter.maskBits = B2DVars.BIT_ENEMY;
+            fdef.restitution = 1;
+            body.createFixture(fdef).setUserData("stack" + i);
 
             // create enemy Hitboxs
             shape.setAsBox(12 / PPM, 20 / PPM, new Vector2(0, -9 / PPM), 0);

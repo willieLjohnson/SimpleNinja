@@ -1,35 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="de640bf8-3356-41c5-9ee5-f4cb8de11667" name="Default" comment="Change projectile behaviour&#10;&#10;Also tweak commands">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Player.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Player.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Projectile.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Projectile.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/MyContactListener.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/MyContactListener.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Pause$1.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Pause$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Pause.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Pause.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Play.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Play.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.classpath" afterPath="$PROJECT_DIR$/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/slick.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/slick.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+    <list default="true" id="de640bf8-3356-41c5-9ee5-f4cb8de11667" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Enemy.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Enemy.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.core.resources.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.core.resources.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.m2e.discovery.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.m2e.discovery.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.context.core.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.context.core.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.monitor.ui.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.monitor.ui.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.tasks.ui.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.tasks.ui.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.ide.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.ide.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.workbench.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.workbench.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.1.6.0.20150526-2032.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.1.6.0.20150526-2032.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.oomph.setup/workspace.setup" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.oomph.setup/workspace.setup" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.project" afterPath="$PROJECT_DIR$/.project" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Player.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Player.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java" />
     </list>
     <ignored path="SimpleNinja.iws" />
@@ -90,8 +64,8 @@
       <file leaf-file-name="Play.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="223" column="16" selection-start-line="223" selection-start-column="16" selection-end-line="223" selection-end-column="16" />
+            <state relative-caret-position="336">
+              <caret line="547" column="41" selection-start-line="547" selection-start-column="41" selection-end-line="547" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -567,7 +541,14 @@
       <option name="project" value="LOCAL" />
       <updated>1460482792082</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add basic air combat&#10;&#10;- Air attacks cost 75 stamina and CANNOT be used with out it.&#10;- Throwing projectiles in air cost 3 ammo (SOON)&#10;- Stamina now regenerates faster">
+      <created>1460591005850</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1460591005850</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -582,7 +563,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39894736" sideWeight="0.50208336" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32947367" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32947367" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -593,7 +574,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39894736" sideWeight="0.49791667" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39894736" sideWeight="0.49791667" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -638,7 +619,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Change projectile behaviour&#10;&#10;Also tweak commands" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change projectile behaviour&#10;&#10;Also tweak commands" />
+    <MESSAGE value="Add basic air combat&#10;&#10;- Air attacks cost 75 stamina and CANNOT be used with out it.&#10;- Throwing projectiles in air cost 3 ammo (SOON)&#10;- Stamina now regenerates faster" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add basic air combat&#10;&#10;- Air attacks cost 75 stamina and CANNOT be used with out it.&#10;- Throwing projectiles in air cost 3 ammo (SOON)&#10;- Stamina now regenerates faster" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -781,8 +763,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="223" column="16" selection-start-line="223" selection-start-column="16" selection-end-line="223" selection-end-column="16" />
+        <state relative-caret-position="336">
+          <caret line="547" column="41" selection-start-line="547" selection-start-column="41" selection-end-line="547" selection-end-column="41" />
           <folding />
         </state>
       </provider>
