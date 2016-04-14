@@ -181,12 +181,11 @@ public class Play extends GameState {
                     swinging = true;
                     if (player.stamina > 0)
                         player.stamina -= 25;
-
                     if (currentAttack >= 16) {
                         currentAttack = 0;
                         player.setAttacking(false);
-                        if (player.stamina <= 0)
-                            player.damage(player.health / 2);
+                        if (player.stamina <= 0 && player.health > player.getMaxHealth() / 5)
+                            player.damage(player.getMaxHealth() / 5);
                     }
                     if (currentAttack >= 4) {
                         currentAttack += 4;
@@ -199,10 +198,12 @@ public class Play extends GameState {
                     if (swingSpeed < 16) {
                         swingSpeed += 4;
                     }
-                    if ((MyInput.isDown(MyInput.LEFT) || MyInput.isDown(MyInput.RIGHT)))
+                    if ((MyInput.isDown(MyInput.LEFT) || MyInput.isDown(MyInput.RIGHT)) && player.stamina > 40) {
                         player.getBody().applyLinearImpulse(
-                                Math.abs(player.getBody().getLinearVelocity().x) > 1.5f ? 0f : player.getDir() * 3f, 0f, 0f,
+                                Math.abs(player.getBody().getLinearVelocity().x) > 3.5f ? 0f : player.getDir() * 4f, 0f, 0f,
                                 0f, true);
+                        player.stamina-=40;
+                    }
                     for (Enemy e : cl.enemiesHit) {
                         attacked = true;
                         e.damage((currentAttack / 2));
