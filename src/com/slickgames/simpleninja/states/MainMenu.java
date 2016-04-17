@@ -126,7 +126,6 @@ public class MainMenu extends GameState {
 
     @Override
     public void dispose() {
-        game.stage.dispose();
         mainMenuMusic.dispose();
     }
 }
