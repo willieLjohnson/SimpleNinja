@@ -35,6 +35,7 @@ public class Pause extends GameState {
     public Pause(GameStateManager gsm) {
         super(gsm);
         cam = new OrthographicCamera();
+
         cam.setToOrtho(false, Game.V_WIDTH, Game.V_HEIGHT);
         game.viewPort.setCamera(cam);
         game.stage = new Stage(game.viewPort);
@@ -121,6 +122,7 @@ public class Pause extends GameState {
                     break;
                 case "tai":
                     gsm.play.enemyAi = !gsm.play.enemyAi;
+                    gsm.play.createEnemy(200000);
                     break;
                 case "fling":
                     gsm.play.player.getBody().applyLinearImpulse(121, 0, 0, 0, true);
@@ -140,6 +142,9 @@ public class Pause extends GameState {
                 case "op":
                     gsm.play.player.op = !gsm.play.player.op;
                     break;
+                case "proj":
+                    gsm.play.player.ammo= 30;
+               break;
                 default:
                     cmd.setText("Error");
             }

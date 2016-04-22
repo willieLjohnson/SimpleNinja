@@ -62,8 +62,11 @@ public class Play extends GameState {
     public Array<ParticleEffect> bloodParts;
     private boolean pauseOnUpdate;
     private Sound hita = game.getAssetManager().get("res/sfx/hit/hit3.wav");
+    private Sound step = game.getAssetManager().get("res/sfx/simple_step1.wav");
+
     public float currentTime = TimeUtils.nanoTime();
     private int airAttack;
+    private float lastStep;
 
     public Play(GameStateManager gsm) {
         super(gsm);
@@ -146,7 +149,10 @@ public class Play extends GameState {
             if (!attacked)
                 if (MyInput.isDown(MyInput.LEFT)) {
                     player.setDir(-1);
-
+                    if ((currentTime - (player.getBody().getLinearVelocity().x) * 20000000) - lastStep > 270000000 && cl.isPlayerOnGround()) {
+                        lastStep = currentTime;
+                        step.play(.1f, ((float) Math.random() * 2) + 2, 1);
+                    }
                     if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
                         player.getBody().applyForceToCenter(
                                 cl.isPlayerOnGround() ? -player.getMaxSpeed() * 8 : -player.getMaxSpeed(), 0, true);
@@ -158,7 +164,10 @@ public class Play extends GameState {
                     }
                 } else if (MyInput.isDown(MyInput.RIGHT)) {
                     player.setDir(1);
-
+                    if ((currentTime + (player.getBody().getLinearVelocity().x) * 20000000) - lastStep > 270000000 && cl.isPlayerOnGround()) {
+                        lastStep = currentTime;
+                        step.play(.1f, ((float) Math.random() * 2) + 2, 1);
+                    }
                     if (Math.abs(player.getBody().getLinearVelocity().x) < player.getMaxSpeed()) {
 
                         player.getBody().applyForceToCenter(
@@ -202,7 +211,7 @@ public class Play extends GameState {
                         player.getBody().applyLinearImpulse(
                                 Math.abs(player.getBody().getLinearVelocity().x) > 3.5f ? 0f : player.getDir() * 4f, 0f, 0f,
                                 0f, true);
-                        player.stamina-=40;
+                        player.stamina -= 40;
                     }
                     for (Enemy e : cl.enemiesHit) {
                         attacked = true;
@@ -359,7 +368,7 @@ public class Play extends GameState {
 
         for (Enemy e : cl.getAttackers()) {
             if (e.attacked && e.playerAttackable) {
-                player.damage(player.blocking ? 1 : 5);
+                player.damage(player.blocking ? 1 : (int)e.getDamage());
             }
         }
         currentTime = TimeUtils.nanoTime();
