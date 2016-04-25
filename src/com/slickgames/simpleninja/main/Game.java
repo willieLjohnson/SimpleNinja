@@ -30,7 +30,7 @@ public class Game implements ApplicationListener {
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private GameStateManager gsm;
-    private double difficulty = .5; // .5 CHEEZ, 1 normal, 2 hard?
+    private double difficulty = 1; // .5 CHEEZ, 1 normal, 2 hard?
 
     @Override
     public void create() {

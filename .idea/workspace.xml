@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="de640bf8-3356-41c5-9ee5-f4cb8de11667" name="Default" comment="Add 3 new features&#10;&#10;- Very simple (and bad) footstep sfx&#10;- Difficulty implemented&#10;- Player running animation speed changes based on movespeed (so does footstep sfx)">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/sfx/simple_step1.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/sfx/simple_step2.wav" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Enemy.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Enemy.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Player.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/entities/Player.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/Animation.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/handlers/Animation.class" />
+    <list default="true" id="de640bf8-3356-41c5-9ee5-f4cb8de11667" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/images/SimpleNinja1_0.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/main/Game.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/main/Game.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu$1.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu$2.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/MainMenu.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Pause$1.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Pause$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Pause.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Pause.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Play.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/states/Play.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.classpath" afterPath="$PROJECT_DIR$/.classpath" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/main/Launcher.class" afterPath="$PROJECT_DIR$/bin/com/slickgames/simpleninja/main/Launcher.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Player.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/Animation.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/Animation.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Game.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Pause.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Pause.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Launcher.java" afterPath="$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Launcher.java" />
     </list>
     <ignored path="SimpleNinja.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -61,21 +47,28 @@
       <file leaf-file-name="Enemy.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-75.62069">
-              <caret line="157" column="89" selection-start-line="157" selection-start-column="89" selection-end-line="157" selection-end-column="89" />
-              <folding>
-                <element signature="e#9002#9003#0" expanded="true" />
-                <element signature="e#9031#9032#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0">
+              <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Game.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.2730696">
-              <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="21" column="47" selection-start-line="21" selection-start-column="47" selection-end-line="21" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Launcher.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Launcher.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.48022598">
+              <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -84,7 +77,7 @@
       <file leaf-file-name="Play.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.7586207">
+            <state vertical-scroll-proportion="0.0">
               <caret line="157" column="57" selection-start-line="157" selection-start-column="57" selection-end-line="157" selection-end-column="81" />
               <folding />
             </state>
@@ -149,6 +142,7 @@
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java" />
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java" />
         <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Game.java" />
+        <option value="$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Launcher.java" />
       </list>
     </option>
   </component>
@@ -190,7 +184,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -373,12 +369,10 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="myc&#9;PSI&#9;JAVA://com.slickgames.simpleninja.handlers.MyContactListener" />
+    <property name="SearchEverywhereHistoryKey" value="launcher&#9;PSI&#9;JAVA://com.slickgames.simpleninja.main.Launcher&#10;myc&#9;PSI&#9;JAVA://com.slickgames.simpleninja.handlers.MyContactListener" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -695,7 +689,13 @@
       <option name="project" value="LOCAL" />
       <updated>1460591005850</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add 3 new features/fixes&#10;&#10;- Very simple (and bad) footstep sfx&#10;- Difficulty implemented&#10;- Player running animation speed changes based on movespeed (so does footstep sfx)">
+      <created>1461344926549</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1461344926549</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -771,7 +771,8 @@
     <MESSAGE value="Change projectile behaviour&#10;&#10;Also tweak commands" />
     <MESSAGE value="Add basic air combat&#10;&#10;- Air attacks cost 75 stamina and CANNOT be used with out it.&#10;- Throwing projectiles in air cost 3 ammo (SOON)&#10;- Stamina now regenerates faster" />
     <MESSAGE value="Add 3 new features&#10;&#10;- Very simple (and bad) footstep sfx&#10;- Difficulty implemented&#10;- Player running animation speed changes based on movespeed (so does footstep sfx)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add 3 new features&#10;&#10;- Very simple (and bad) footstep sfx&#10;- Difficulty implemented&#10;- Player running animation speed changes based on movespeed (so does footstep sfx)" />
+    <MESSAGE value="Add 3 new features/fixes&#10;&#10;- Very simple (and bad) footstep sfx&#10;- Difficulty implemented&#10;- Player running animation speed changes based on movespeed (so does footstep sfx)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add 3 new features/fixes&#10;&#10;- Very simple (and bad) footstep sfx&#10;- Difficulty implemented&#10;- Player running animation speed changes based on movespeed (so does footstep sfx)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -784,6 +785,66 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Pause.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="47" selection-start-line="21" selection-start-column="47" selection-end-line="21" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="157" column="57" selection-start-line="157" selection-start-column="57" selection-end-line="157" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="132" column="12" selection-start-line="132" selection-start-column="12" selection-end-line="132" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/B2DSprite.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="99" column="26" selection-start-line="99" selection-start-column="23" selection-end-line="99" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/handlers/Animation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="65" column="29" selection-start-line="65" selection-start-column="29" selection-end-line="65" selection-end-column="29" />
+          <folding>
+            <element signature="e#1408#1409#0" expanded="true" />
+            <element signature="e#1438#1439#0" expanded="true" />
+            <element signature="e#1496#1497#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Pause.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -866,7 +927,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/states/Play.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.7586207">
+        <state vertical-scroll-proportion="0.0">
           <caret line="157" column="57" selection-start-line="157" selection-start-column="57" selection-end-line="157" selection-end-column="81" />
           <folding />
         </state>
@@ -874,19 +935,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/entities/Enemy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-75.62069">
-          <caret line="157" column="89" selection-start-line="157" selection-start-column="89" selection-end-line="157" selection-end-column="89" />
-          <folding>
-            <element signature="e#9002#9003#0" expanded="true" />
-            <element signature="e#9031#9032#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.2730696">
-          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="47" selection-start-line="21" selection-start-column="47" selection-end-line="21" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/slickgames/simpleninja/main/Launcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48022598">
+          <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
           <folding />
         </state>
       </provider>
