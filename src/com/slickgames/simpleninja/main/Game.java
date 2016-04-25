@@ -67,8 +67,8 @@ public class Game implements ApplicationListener {
 
         //Options
         assets.load("res/Style/Knode.png", Texture.class);
-        assets.load("res/Style/onAndoff Slider.jpg", Texture.class);
-      //  assets.load("res/menu/optBack.jpg",Texture.class);
+        assets.load("res/Style/diffculty.png", Texture.class);
+        assets.load("res/menu/optBack.png",Texture.class);
 
         // reports progress for loading all assets
         while (!assets.update()) {
