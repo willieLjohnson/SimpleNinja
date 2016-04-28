@@ -14,4 +14,5 @@ public class B2DVars {
     public static final short BIT_EDGE = 128;
     public static final short BIT_ATTACK_RANGE = 256;
     public static final short BIT_Projectile = 512;
+    public static final short BIT_ENEMY_ATTACK_RANGE = 1024;
 }

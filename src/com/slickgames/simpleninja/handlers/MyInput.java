@@ -2,7 +2,7 @@ package com.slickgames.simpleninja.handlers;
 
 public class MyInput {
 
-    public static final int NUM_KEYS = 7;
+    public static final int NUM_KEYS = 8;
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     public static final int JUMP = 2;
@@ -10,6 +10,7 @@ public class MyInput {
     public static final int RESET = 4;
     public static int WALLRUN = 5;
     public static final int SHOOT= 6;
+    public static final int BLOCK = 7;
     public static boolean[] keys;
     public static boolean[] pkeys;
 

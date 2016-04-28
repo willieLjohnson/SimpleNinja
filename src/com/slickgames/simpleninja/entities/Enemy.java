@@ -9,15 +9,15 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.slickgames.simpleninja.handlers.MyContactListener;
 import com.slickgames.simpleninja.main.Game;
 import com.slickgames.simpleninja.states.Play;
 
 public class Enemy extends B2DSprite {
-    public static final float MAX_SPEED = 1.5f;
+    public static final float MAX_SPEED = 2f * ((float)Game.game.getDifficulty());
     private final int GUARD = 0;
     private final int CHASE = 1;
     private final int FIND = 2;
+
     public boolean running, idling, jumping, attacking, attacked, ignorePlayer;
     public int state = 0;
     public int id;
@@ -27,7 +27,6 @@ public class Enemy extends B2DSprite {
     Vector2 normal = new Vector2();
     Fixture cFix;
     ShapeRenderer sr;
-    Play play;
     private int numCrystals;
     private int totalCrystals;
     private boolean enemySpotted;
@@ -35,11 +34,22 @@ public class Enemy extends B2DSprite {
     private float lastSeen;
     private float lastSwitch;
     private boolean bounced;
+    public boolean playerAttackable;
+    private boolean swinging;
+    public float charge;
+    private int attackFrame;
+    public boolean detectRight;
+    public boolean detectLeft;
+    public boolean withinRange;
+    public boolean wallCollision;
+    private boolean charging;
+    public int numFootContacts;
+    private boolean aggressive = false;
+    private double damage = 5 * Game.game.getDifficulty();
 
-    public Enemy(Body body, Play aPlay, int aId) {
-        super(body);
+    public Enemy(Body body, Play play, int aId) {
+        super(body, play);
         id = aId;
-        play = aPlay;
         body.setUserData(this);
         play.enemies.add(this);
 
@@ -60,16 +70,15 @@ public class Enemy extends B2DSprite {
         currentTime = TimeUtils.nanoTime();
         if (health <= 0) {
             kill();
-            System.out.println("ded");
+            swinging = false;
+            attacking = false;
         }
 
         if (dir == -1) {
-
             if (!this.getAnimation().getFrame().isFlipX()) {
                 this.getAnimation().getFrame().flip(true, false);
             }
         } else {
-
             if (this.getAnimation().getFrame().isFlipX()) {
                 this.getAnimation().getFrame().flip(true, false);
             }
@@ -78,11 +87,12 @@ public class Enemy extends B2DSprite {
             if (!running && !attacking)
                 toggleAnimation("run");
         } else {
-            toggleAnimation("idle");
+            if (!attacking && !idling)
+                toggleAnimation("idle");
         }
     }
 
-    public void seek(Body player, World world, MyContactListener cl) {
+    public void seek(Body player, World world) {
         target.set(player.getPosition());
         RayCastCallback callback = (fixture, point, normal1, fraction) -> {
             cFix = fixture;
@@ -95,29 +105,29 @@ public class Enemy extends B2DSprite {
         };
         world.rayCast(callback, this.body.getPosition(), target);
 
-
-        if (cFix.getBody().equals(player) && cl.isPlayerSpotted(dir) && !play.ignorePlayer) {
-            state = 1;
-            lastSeen = currentTime;
-        } else if (state == 1 && (!cl.isWithinRange() && !cFix.getBody().equals(player))) {
-            if (currentTime - lastSeen > 2000000000f) {
-                state = 2;
+        if (!aggressive)
+            if (cFix.getBody().equals(player) && isPlayerSpotted() && !play.ignorePlayer) {
+                state = CHASE;
+                lastSeen = currentTime;
+            } else if (state == CHASE && (!withinRange && !cFix.getBody().equals(player))) {
+                if (currentTime - lastSeen > 2000000000f) {
+                    state = FIND;
+                }
+            } else {
+                if (currentTime - lastSeen > 5000000000f) {
+                    state = GUARD;
+                }
             }
-
-        } else {
-            if (currentTime - lastSeen > 5000000000f) {
-                state = 0;
-            }
-        }
+        else
+            state = CHASE;
         switch (state) {
             case GUARD:
                 if (currentTime - lastSwitch < 3000000000f) {
-                    if (cl.isCollidingWall() && !bounced) {
+                    if (wallCollision && !bounced) {
                         bounced = true;
                         dir *= -1;
                         lastSwitch = currentTime;
-                    }
-                    if (currentTime - lastSwitch > 1000000000f)
+                    } else if (currentTime - lastSwitch > 1000000000f)
                         bounced = false;
                     if (Math.abs(body.getLinearVelocity().x) < .5f)
                         body.applyForceToCenter(32f * dir, 0, true);
@@ -130,12 +140,41 @@ public class Enemy extends B2DSprite {
 
             case CHASE:
                 dir = (target.x < body.getPosition().x ? -1 : 1);
-                if (Math.abs((target.x + target.y) - (body.getPosition().x + body.getPosition().y)) <= .14f && !attacking) {
-                    toggleAnimation("attack");
+
+                // if the player is in range
+                if (playerAttackable) {
+                    // charge attack
+                    if (!charging) {
+                        charge = currentTime;
+                        charging = true;
+                    }
+                } else if (!charging) {
+                    attacking = false;
+
+                    if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
+                        body.applyForceToCenter((MAX_SPEED * 8) * dir, 0, true);
+                    }
+                    if ((isEnemyOnGround() && (target.y - body.getPosition().y) > .5) && body.getLinearVelocity().y < 1) {
+                        body.applyLinearImpulse(0, (target.y - body.getPosition().y) * 4, 0, 0, true);
+                    }
+
                 }
-                if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) body.applyForceToCenter(16f * dir, 0, true);
-                if (body.getLinearVelocity().y == 0 && target.y > body.getPosition().y) {
-                    body.applyLinearImpulse(0, 2, 0, 0, true);
+                // if done charging and not already attacking, attack.
+                if ((charging && currentTime - charge > 200000000f)) {
+                    if (!attacking)
+                        toggleAnimation("attack");
+                    swinging = true;
+                }
+
+                // one attack is every 4 frames, so reset attack.
+                if ((getAnimation().getCurrentFrame() + 1) % 4 == 0 && attacking) {
+                    attacked = true;
+                    swinging = false;
+                    charging = false;
+                    charge = 0;
+                    attacking = false;
+                } else {
+                    attacked = false;
                 }
                 break;
 
@@ -143,7 +182,7 @@ public class Enemy extends B2DSprite {
                 if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
                     body.applyForceToCenter(32f * dir, 0, true);
                 }
-                if (cl.isCollidingWall())
+                if (wallCollision)
                     dir *= -1;
         }
 
@@ -196,11 +235,10 @@ public class Enemy extends B2DSprite {
                 idling = false;
                 jumping = false;
                 attacking = true;
-                setAnimation(attack, 1 / 32f);
+                setAnimation(attack, 1 / 10f);
         }
 
     }
-
 
     @Override
     public void playerUpdate(float dt, float lastAttack) {
@@ -208,12 +246,26 @@ public class Enemy extends B2DSprite {
 
     @Override
     public void kill() {
-        replace();
+        // replace();
         health = MAX_HEALTH;
+        play.player.stamina += 20;
+        play.cl.bodiesToRemove.add(body);
     }
 
     private void replace() {
         this.body.setTransform(new Vector2(5, 8), body.getAngle());
         state = 0;
+    }
+
+    public boolean isPlayerSpotted() {
+        return dir == 1 ? detectRight : detectLeft;
+    }
+
+    public boolean isEnemyOnGround() {
+        return numFootContacts > 0;
+    }
+
+    public double getDamage() {
+        return damage;
     }
 }

@@ -30,11 +30,11 @@ public class Game implements ApplicationListener {
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private GameStateManager gsm;
+    private double difficulty = 1; // .5 CHEEZ, 1 normal, 2 hard?
 
     @Override
     public void create() {
         game = this;
-
 
         //load assets
         assets = new AssetManager();
@@ -43,7 +43,10 @@ public class Game implements ApplicationListener {
         assets.load("res/images/simple_run.png", Texture.class);
         assets.load("res/images/simple_attack.png", Texture.class);
         assets.load("res/images/simple_idle.png", Texture.class);
-        assets.load("res/images/kuni.png", Texture.class);
+
+        assets.load("res/images/simple_block.png", Texture.class);
+        assets.load("res/images/simple_throw2.png", Texture.class);
+        assets.load("res/images/simple_throw1.png", Texture.class);
 
         //enemy assets
         assets.load("res/images/enemy_idle.png", Texture.class);
@@ -53,6 +56,9 @@ public class Game implements ApplicationListener {
         //misc
         assets.load("res/images/crystal.png", Texture.class);
         assets.load("res/images/hud.png", Texture.class);
+        assets.load("res/images/throw_knife2.png", Texture.class);
+        assets.load("res/images/throw_knife1.png", Texture.class);
+
 
         //main menu
         assets.load("res/menu/waterfall_animation.Png", Texture.class);
@@ -64,6 +70,8 @@ public class Game implements ApplicationListener {
         assets.load("res/sfx/hit/hita .wav", Sound.class);
         assets.load("res/sfx/hit/hit2.wav", Sound.class);
         assets.load("res/sfx/hit/hit3.wav", Sound.class);
+        assets.load("res/sfx/simple_step1.wav", Sound.class);
+        assets.load("res/sfx/simple_step2.wav", Sound.class);
 
         //Options
         assets.load("res/Style/Knode.png", Texture.class);
@@ -82,12 +90,12 @@ public class Game implements ApplicationListener {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
+
         viewPort = new ExtendViewport(Game.V_WIDTH, Game.V_HEIGHT, cam);
         stage = new Stage(viewPort);
         viewPort.apply();
 
         gsm = new GameStateManager(this);
-
     }
 
     @Override
@@ -135,4 +143,6 @@ public class Game implements ApplicationListener {
         return cam;
     }
 
+    public double getDifficulty() {return difficulty;};
+    public void setDifficulty(double d) {difficulty = d;}
 }

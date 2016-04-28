@@ -60,6 +60,12 @@ public class Animation {
         return currentFrame;
     }
 
+    public void setDelay(float d) {
+        this.delay = d;
+    }
+    public float getDelay() {
+        return delay;
+    }
     public int getTimesPlayed() {
         return timesPlayed;
     }

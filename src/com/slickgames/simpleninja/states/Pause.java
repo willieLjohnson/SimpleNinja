@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.slickgames.simpleninja.entities.Enemy;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInputProcessor;
 import com.slickgames.simpleninja.main.Game;
@@ -34,6 +35,7 @@ public class Pause extends GameState {
     public Pause(GameStateManager gsm) {
         super(gsm);
         cam = new OrthographicCamera();
+
         cam.setToOrtho(false, Game.V_WIDTH, Game.V_HEIGHT);
         game.viewPort.setCamera(cam);
         game.stage = new Stage(game.viewPort);
@@ -115,11 +117,12 @@ public class Pause extends GameState {
                 case "tdb":
                     gsm.debug = !gsm.debug;
                     break;
-                case "setSpeed":
+                case "ss":
                     gsm.play.player.setMaxSpeed(Float.parseFloat(param2));
                     break;
                 case "tai":
                     gsm.play.enemyAi = !gsm.play.enemyAi;
+                    gsm.play.createEnemy(200000);
                     break;
                 case "fling":
                     gsm.play.player.getBody().applyLinearImpulse(121, 0, 0, 0, true);
@@ -127,9 +130,21 @@ public class Pause extends GameState {
                 case "tip":
                     gsm.play.ignorePlayer = !gsm.play.ignorePlayer;
                     break;
-                case "addEnemy":
+                case "ae":
                     gsm.play.createEnemy(Integer.parseInt(param2));
                     break;
+                case "kaf":
+                	for (Enemy e: gsm.play.enemies) {
+                		gsm.play.cl.bodiesToRemove.add(e.getBody());
+                	}
+                	gsm.play.enemies.clear();
+                	break;
+                case "op":
+                    gsm.play.player.op = !gsm.play.player.op;
+                    break;
+                case "proj":
+                    gsm.play.player.ammo= 30;
+               break;
                 default:
                     cmd.setText("Error");
             }
