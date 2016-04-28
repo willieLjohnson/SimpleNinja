@@ -43,6 +43,7 @@ public class Game implements ApplicationListener {
         assets.load("res/images/simple_run.png", Texture.class);
         assets.load("res/images/simple_attack.png", Texture.class);
         assets.load("res/images/simple_idle.png", Texture.class);
+
         assets.load("res/images/simple_block.png", Texture.class);
         assets.load("res/images/simple_throw2.png", Texture.class);
         assets.load("res/images/simple_throw1.png", Texture.class);

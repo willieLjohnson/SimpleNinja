@@ -50,3 +50,4 @@ public class Projectile extends B2DSprite {
 	}
 
 }
+
