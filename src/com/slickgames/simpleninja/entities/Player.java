@@ -82,7 +82,7 @@ public class Player extends B2DSprite {
                 attacking = true;
                 blocking = false;
                 throwing = false;
-                setAnimation(attack, 1 / 32f);
+                setAnimation(attack, 1 / 45f);
                 break;
             case "block":
                 running = false;
@@ -150,8 +150,8 @@ public class Player extends B2DSprite {
         } else
             animation.update(dt);
 
-        if (TimeUtils.nanoTime() - lastAttack > 650000000f && stamina < getMaxStamina() &&  play.cl.isPlayerOnGround()) {
-            stamina += 2.5;
+        if (TimeUtils.nanoTime() - lastAttack > 650000000f && stamina < getMaxStamina() &&  play.cl.isPlayerOnGround() && !attacked) {
+            stamina += getMaxStamina()/100;
         }
         if (running) animation.setDelay(Math.abs(1 / (Math.abs(body.getLinearVelocity().x*10)-4)) < 1/5f ? 1/16f : 1 / (Math.abs(body.getLinearVelocity().x*10)-4));
     }

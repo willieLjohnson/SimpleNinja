@@ -24,7 +24,7 @@ public abstract class B2DSprite extends Sprite{
     protected int dir = 1;
     protected float MAX_SPEED = 2f;
     protected int MAX_HEALTH = 20;
-    protected float MAX_STAMINA = 200;
+    protected float MAX_STAMINA = 400;
     public int health = MAX_HEALTH;
     public float stamina = MAX_STAMINA;
     public Play play;
