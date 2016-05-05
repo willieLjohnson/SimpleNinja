@@ -13,7 +13,7 @@ import com.slickgames.simpleninja.main.Game;
 import com.slickgames.simpleninja.states.Play;
 
 public class Enemy extends B2DSprite {
-    public static final float MAX_SPEED = 2f * ((float)Game.game.getDifficulty());
+    public static final float MAX_SPEED = 2f * ((float) Game.game.getDifficulty());
     private final int GUARD = 0;
     private final int CHASE = 1;
     private final int FIND = 2;
@@ -45,6 +45,7 @@ public class Enemy extends B2DSprite {
     private boolean charging;
     public int numFootContacts;
     private boolean aggressive = false;
+    public Texture runningAnimation, attackingAnimation, idlingAnimation;
     private double damage = 5 * Game.game.getDifficulty();
 
     public Enemy(Body body, Play play, int aId) {
@@ -53,9 +54,9 @@ public class Enemy extends B2DSprite {
         body.setUserData(this);
         play.enemies.add(this);
 
-        Texture runningAnimation = Game.game.getAssetManager().get("res/images/enemy_run.png");
-        Texture attackingAnimation = Game.game.getAssetManager().get("res/images/enemy_attack.png");
-        Texture idlingAnimation = Game.game.getAssetManager().get("res/images/enemy_idle.png");
+        runningAnimation = Game.game.getAssetManager().get("res/images/enemy_run.png");
+        attackingAnimation = Game.game.getAssetManager().get("res/images/enemy_attack.png");
+        idlingAnimation = Game.game.getAssetManager().get("res/images/enemy_idle.png");
         run = TextureRegion.split(runningAnimation, 54, 42)[0];
         idle = TextureRegion.split(idlingAnimation, 54, 42)[0];
         jump = TextureRegion.split(runningAnimation, 54, 42)[0];

@@ -17,10 +17,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.slickgames.simpleninja.entities.Crystal;
-import com.slickgames.simpleninja.entities.Enemy;
-import com.slickgames.simpleninja.entities.Player;
-import com.slickgames.simpleninja.entities.Projectile;
+import com.slickgames.simpleninja.entities.*;
 import com.slickgames.simpleninja.handlers.*;
 import com.slickgames.simpleninja.handlers.postprocessing.PostProcessor;
 import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
@@ -651,7 +648,7 @@ public class Play extends GameState {
 			fdef.isSensor = true;
 			body.createFixture(fdef).setUserData("enemyAttackRange" + i);
 
-			new Enemy(body, this, i);
+			new Shadow(body, this, i);
 		}
 	}
 

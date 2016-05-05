@@ -30,7 +30,7 @@ public class Game implements ApplicationListener {
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private GameStateManager gsm;
-    private double difficulty = 1; // .5 CHEEZ, 1 normal, 2 hard?
+    private double difficulty = 2; // .5 CHEEZ, 1 normal, 2 hard?
 
     @Override
     public void create() {
@@ -52,6 +52,10 @@ public class Game implements ApplicationListener {
         assets.load("res/images/enemy_idle.png", Texture.class);
         assets.load("res/images/enemy_attack.png", Texture.class);
         assets.load("res/images/enemy_run.png", Texture.class);
+
+        assets.load("res/images/big_enemy_idle.png", Texture.class);
+        assets.load("res/images/big_enemy_attack.png", Texture.class);
+        assets.load("res/images/big_enemy_run.png", Texture.class);
 
         //misc
         assets.load("res/images/crystal.png", Texture.class);
