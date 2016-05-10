@@ -26,13 +26,13 @@ import javafx.scene.shape.Rectangle;
  * Created by Administrator on 1/11/2016.
  */
 public class Options extends GameState {
-    TextButton graphics;
+    CheckBox shader;
     Skin Lskin;
     Skin skin;
     TextureRegion[] background;
     Animation menuAnimation;
     private TextButton ResizeButton;
-    private Slider Resize;
+    public Slider Diffculty;
     private Table table;
     private Sprite animationSprite;
 
@@ -49,88 +49,82 @@ public class Options extends GameState {
         Label.LabelStyle ls = new Label.LabelStyle(bt, Color.BLACK);
         Label label = new Label("Difficulty", ls);
         Label label2 = new Label("Easy    Normal   Hard", ls);
-        //buttons
+        //diffculty
+        //skin
+        skin.add("knob", new Texture(Gdx.files.internal("res/Style/Knode.png")));
+        skin.add("bgs", new Texture(Gdx.files.internal("res/Style/diffculty.png")));
+
+
+        //slider
+        Slider.SliderStyle DiffcultyStyle = new Slider.SliderStyle();
+        DiffcultyStyle.background = skin.getDrawable("bgs");
+        DiffcultyStyle.knob= skin.getDrawable("knob");
+        Diffculty = new Slider(1, 3, 1, false, DiffcultyStyle);
+        Diffculty.setVisible(true);
+
         // garphics
-        HorizontalGroup group = new HorizontalGroup();
-        final Button tab1 = new TextButton("Tab1", skin, "toggle");
-        final Button tab2 = new TextButton("Tab2", skin, "toggle");
+        VerticalGroup group = new VerticalGroup();
+        final Button Graphics = new TextButton("Graphics", skin, "toggle");
+        final Button GamePlay = new TextButton("Game Play", skin, "toggle");
+
         final Button tab3 = new TextButton("Tab3", skin, "toggle");
-        group.addActor(tab1);
-        group.addActor(tab2);
+
+        group.addActor(Graphics);
+        group.addActor(GamePlay);
         group.addActor(tab3);
-        table.add(group);
-        table.row();
-        graphics = new TextButton("Graphics", Lskin);// need to make a better skin
+
+        table.add(group).left();
         Stack content = new Stack();
-        final Image content1 = new Image(skin.newDrawable("white", 1,0,0,1));
-        final Image content2 = new Image(skin.newDrawable("white", 0,1,0,1));
-        final Image content3 = new Image(skin.newDrawable("white", 0,0,1,1));
-        content.addActor(content1);
-        content.addActor(content2);
-        content.addActor(content3);
-        table.add(content).expand().fill();
+//        final Image content1 = new Image(skin.newDrawable("white", 0,0,1,1));
+//        content.addActor(content3);
+        VerticalGroup GamPSet = new VerticalGroup();//gameplay
+        GamPSet.addActor(label);
+        GamPSet.addActor(label2);
+        GamPSet.addActor(Diffculty);
+        VerticalGroup GraphSet = new VerticalGroup();// graphics
+        shader = new CheckBox("Shaders", Lskin);// need to make a better skin
+GraphSet.addActor(shader);
+        //content-actors
+        content.add(GraphSet);
+        content.add(GamPSet);
+        //content-table
+        table.add(content).center();
         table.row();
+        //tab Action listener
         ChangeListener tab_listener = new ChangeListener(){
             @Override
             public void changed (ChangeEvent event, Actor actor) {
-                content1.setVisible(tab1.isChecked());
-                content2.setVisible(tab2.isChecked());
-                content3.setVisible(tab3.isChecked());
+//                content1.setVisible(Graphics.isChecked());
+//                content2.setVisible(GamePlay.isChecked());
+//                content3.setVisible(tab3.isChecked());
+                GamPSet.setVisible(GamePlay.isChecked());
+                GraphSet.setVisible(shader.isChecked());
             }
         };
-        tab1.addListener(tab_listener);
-        tab2.addListener(tab_listener);
+game.setDifficulty(Diffculty.getValue());
+        Graphics.addListener(tab_listener);
+        GamePlay.addListener(tab_listener);
         tab3.addListener(tab_listener);
+        //D-slider
+        ChangeListener Diffculy = new ChangeListener() {
 
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+
+        };
         // Let only one tab button be checked at a time
         ButtonGroup tabs = new ButtonGroup();
         tabs.setMinCheckCount(1);
         tabs.setMaxCheckCount(1);
-        tabs.add(tab1);
-        tabs.add(tab2);
+        tabs.add(Graphics);
+        tabs.add(GamePlay);
         tabs.add(tab3);
-
-        graphics.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-
-                event.stop();
-            }
-        });
-        //skin
-
-        skin.add("knob", new Texture(Gdx.files.internal("res/Style/Knode.png")));
-        skin.add("bgs", new Texture(Gdx.files.internal("res/Style/diffculty.png")));
-
         //table
-
         table.setFillParent(true);
-//        table.setWidth(game.stage.getWidth());
-//        table.setHeight(game.stage.getHeight());
-
         table.align(Align.center);
-         //slider
-        Slider.SliderStyle ResizeStyle = new Slider.SliderStyle();
-        ResizeStyle.background = skin.getDrawable("bgs");
-        ResizeStyle.knob= skin.getDrawable("knob");
-        Resize = new Slider(0, 2, 1, false, ResizeStyle);
-        Resize.setVisible(true);
-
         table.padTop(20);
-        //graphics
-
-
-        table.add(graphics);
-        table.row();
-        //diffculy slider
-        table.add(label);
-        table.row();
-        table.add(label2);
-        table.row();
-        table.add(Resize);
-        table.row();
-
         //stage
 
         game.stage.addActor(table);

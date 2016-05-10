@@ -31,6 +31,7 @@ public class Game implements ApplicationListener {
     private OrthographicCamera cam;
     private GameStateManager gsm;
     private double difficulty = 1; // .5 CHEEZ, 1 normal, 2 hard?
+    private int killcount ;
 
     @Override
     public void create() {
@@ -145,4 +146,6 @@ public class Game implements ApplicationListener {
 
     public double getDifficulty() {return difficulty;};
     public void setDifficulty(double d) {difficulty = d;}
+    public void Killcount(){killcount++;}
+    public int killas(){return killcount;}
 }

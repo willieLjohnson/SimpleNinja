@@ -243,6 +243,7 @@ public class Enemy extends B2DSprite {
     @Override
     public void playerUpdate(float dt, float lastAttack) {
     }
+    public Game cat =new Game();
 
     @Override
     public void kill() {
@@ -250,13 +251,14 @@ public class Enemy extends B2DSprite {
         health = MAX_HEALTH;
         play.player.stamina += 20;
         play.cl.bodiesToRemove.add(body);
+        cat.Killcount();
+        System.out.print(cat.killas());
     }
 
     private void replace() {
         this.body.setTransform(new Vector2(5, 8), body.getAngle());
         state = 0;
     }
-
     public boolean isPlayerSpotted() {
         return dir == 1 ? detectRight : detectLeft;
     }
