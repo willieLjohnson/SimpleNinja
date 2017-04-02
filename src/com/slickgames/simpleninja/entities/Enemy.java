@@ -149,6 +149,8 @@ public class Enemy extends B2DSprite {
                         charge = currentTime;
                         charging = true;
                     }
+
+                    //if not, keep moving
                 } else if (!charging) {
                     attacking = false;
 
@@ -160,6 +162,7 @@ public class Enemy extends B2DSprite {
                     }
 
                 }
+
                 // if done charging and not already attacking, attack.
                 if ((charging && currentTime - charge > 200000000f)) {
                     if (!attacking)

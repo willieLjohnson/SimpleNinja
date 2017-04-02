@@ -19,9 +19,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.slickgames.simpleninja.handlers.Animation;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.main.Game;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.shape.Rectangle;
+
 /**
  * Created by Administrator on 1/11/2016.
  */
