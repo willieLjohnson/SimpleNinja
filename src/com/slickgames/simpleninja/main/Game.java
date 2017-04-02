@@ -5,15 +5,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.handlers.MyInput;
+import com.slickgames.simpleninja.handlers.font.SmartFontGenerator;
 
 
 public class Game implements ApplicationListener {
@@ -23,6 +26,7 @@ public class Game implements ApplicationListener {
     public static final int SCALE = 2;
     public static final float STEP = 1 / 60f;
     public static Game game;
+    public BitmapFont fontSmall, fontMedium, fontLarge;
     public Stage stage;
     public AssetManager assets;
     public Viewport viewPort;
@@ -30,12 +34,18 @@ public class Game implements ApplicationListener {
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private GameStateManager gsm;
-    private double difficulty = 1; // .5 CHEEZ, 1 normal, 2 hard?
-    private int killcount ;
+    private double difficulty = 2; // .5 CHEEZ, 1 normal, 2 hard?
 
     @Override
     public void create() {
         game = this;
+
+        // fonts
+        SmartFontGenerator fontGen = new SmartFontGenerator();
+        FileHandle exoFile = Gdx.files.local("res/ui/acknowtt.ttf");
+        fontSmall = fontGen.createFont(exoFile, "exo-small", 12);
+        fontMedium = fontGen.createFont(exoFile, "exo-medium", 24);
+        fontLarge = fontGen.createFont(exoFile, "exo-large", 120);
 
         //load assets
         assets = new AssetManager();
@@ -53,6 +63,10 @@ public class Game implements ApplicationListener {
         assets.load("res/images/enemy_idle.png", Texture.class);
         assets.load("res/images/enemy_attack.png", Texture.class);
         assets.load("res/images/enemy_run.png", Texture.class);
+
+//        assets.load("res/images/big_enemy_idle.png", Texture.class);
+//        assets.load("res/images/big_enemy_attack.png", Texture.class);
+//        assets.load("res/images/big_enemy_run.png", Texture.class);
 
         //misc
         assets.load("res/images/crystal.png", Texture.class);
@@ -146,6 +160,4 @@ public class Game implements ApplicationListener {
 
     public double getDifficulty() {return difficulty;};
     public void setDifficulty(double d) {difficulty = d;}
-    public void Killcount(){killcount++;}
-    public int killas(){return killcount;}
 }
