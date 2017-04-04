@@ -20,7 +20,8 @@ import com.slickgames.simpleninja.handlers.font.SmartFontGenerator;
 
 
 public class Game implements ApplicationListener {
-    public static final String TITLE = "Simple Ninja v2.0";
+    public static final String TITLE = "Simple Ninja";
+    public static final double GAME_VERSION = 2.0;
     public static final int V_WIDTH = 1366 / 4;
     public static final int V_HEIGHT = 720 / 4;
     public static final int SCALE = 2;
@@ -104,7 +105,6 @@ public class Game implements ApplicationListener {
 
         cam = new OrthographicCamera();
         cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
-
 
         viewPort = new ExtendViewport(Game.V_WIDTH, Game.V_HEIGHT, cam);
         stage = new Stage(viewPort);

@@ -3,3 +3,6 @@
 *.class
 /hooks/*
 *.sample
+.idea/
+bin/
+generated-fonts/

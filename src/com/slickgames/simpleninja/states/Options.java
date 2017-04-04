@@ -9,20 +9,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.slickgames.simpleninja.handlers.Animation;
 import com.slickgames.simpleninja.handlers.GameStateManager;
 import com.slickgames.simpleninja.main.Game;
 
-/**
- * Created by Administrator on 1/11/2016.
- */
 public class Options extends GameState {
     CheckBox shader;
     Skin Lskin;

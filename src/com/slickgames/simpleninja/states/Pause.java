@@ -24,11 +24,9 @@ import java.util.regex.Pattern;
 public class Pause extends GameState {
 
 
-    private final TextButton quitButton, reset;
+    private final TextButton quitButton, resetButton;
     private final TextField cmd;
-    BitmapFont font = new BitmapFont();
-    Skin skin;
-    Table table;
+
     InputMultiplexer im;
     private ExtendViewport viewPort;
 
@@ -39,22 +37,45 @@ public class Pause extends GameState {
         cam.setToOrtho(false, Game.V_WIDTH, Game.V_HEIGHT);
         game.viewPort.setCamera(cam);
         game.stage = new Stage(game.viewPort);
-        skin = new Skin(Gdx.files.internal("res/font/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/font/uiskin.atlas")));
 
-        cmd = new TextField("", skin);
-        cmd.setMessageText(";)");
-
-        BitmapFont bt = new BitmapFont();
-        table = new Table();
+        Skin skin = new Skin(Gdx.files.internal("res/font/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/font/uiskin.atlas")));
+        Table table = new Table();
         table.setFillParent(true);
         table.setWidth(game.stage.getWidth());
         table.align(Align.center);
-        Label.LabelStyle ls = new Label.LabelStyle(bt, Color.WHITE);
-        Label label = new Label("Pause", ls);
-        reset = new TextButton("Reset", skin);
-        quitButton = new TextButton("Menu", skin);
 
-        reset.addListener(new ClickListener() {
+        Label heading = new Label("Pause", new Label.LabelStyle(Game.game.fontMedium, Color.WHITE));
+        heading.setFontScale(1.2f);
+
+        // font and density
+        float dp = Gdx.graphics.getDensity();
+
+        // text button style
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.getDrawable("default-round");
+        textButtonStyle.down = skin.getDrawable("default-round-down");
+        textButtonStyle.pressedOffsetX = 1 * dp;
+        textButtonStyle.pressedOffsetY = -1 * dp;
+        textButtonStyle.font = Game.game.fontMedium;
+        textButtonStyle.fontColor = Color.BLACK;
+
+        // cmd style
+        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+        textFieldStyle.background = skin.getDrawable("textfield");
+        textFieldStyle.selection = skin.getDrawable("selection");
+        textFieldStyle.font = Game.game.fontSmall;
+        textFieldStyle.fontColor = Color.WHITE;
+
+        skin.add("default-font", Game.game.fontMedium, BitmapFont.class);
+
+        resetButton = new TextButton("Reset", textButtonStyle);
+        quitButton = new TextButton("Menu", textButtonStyle);
+
+        cmd = new TextField("", textFieldStyle);
+        cmd.setWidth(Game.V_WIDTH);
+        cmd.setMessageText("Type Command");
+
+        resetButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gsm.play = new Play(gsm);
@@ -62,6 +83,7 @@ public class Pause extends GameState {
                 event.stop();
             }
         });
+        resetButton.pad(12*dp);
 
         /* Currently Broken
         quitButton.addListener(new ClickListener() {
@@ -73,16 +95,21 @@ public class Pause extends GameState {
             }
         });
         */
-        table.padTop(20);
-        table.add(label);
+        quitButton.pad(12 * dp);
+
+        table.add(heading);
+        table.getCell(heading).spaceBottom(15 * dp);
         table.row();
-        table.add(reset);
+        table.add(resetButton);
+        table.getCell(resetButton).spaceBottom(10 * dp);
         table.row();
         table.add(quitButton);
+        table.getCell(quitButton).spaceBottom(10 * dp);
         table.row();
-        table.add(cmd);
+//        table.add(cmd);
 
         game.stage.addActor(table);
+        game.stage.addActor(cmd);
 
         // handle input
 
@@ -134,17 +161,17 @@ public class Pause extends GameState {
                     gsm.play.createEnemy(Integer.parseInt(param2));
                     break;
                 case "kaf":
-                	for (Enemy e: gsm.play.enemies) {
-                		gsm.play.cl.bodiesToRemove.add(e.getBody());
-                	}
-                	gsm.play.enemies.clear();
-                	break;
+                    for (Enemy e: gsm.play.enemies) {
+                        gsm.play.cl.bodiesToRemove.add(e.getBody());
+                    }
+                    gsm.play.enemies.clear();
+                    break;
                 case "op":
                     gsm.play.player.op = !gsm.play.player.op;
                     break;
                 case "proj":
                     gsm.play.player.ammo= 30;
-               break;
+                    break;
                 default:
                     cmd.setText("Error");
             }

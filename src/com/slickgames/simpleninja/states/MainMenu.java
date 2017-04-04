@@ -63,6 +63,7 @@ public class MainMenu extends GameState {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gsm.setState(GameStateManager.PLAY);
+                dispose();
                 event.stop();
             }
         });
@@ -149,5 +150,7 @@ public class MainMenu extends GameState {
     public void dispose() {
         mainMenuMusic.dispose();
         gsm.game().stage.clear();
+        skin.dispose();
+
     }
 }
