@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.slickgames.simpleninja.handlers.Animation;
-import com.slickgames.simpleninja.handlers.GameStateManager;
-import com.slickgames.simpleninja.main.Game;
 import com.slickgames.simpleninja.states.Play;
 
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;

@@ -15,8 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.slickgames.simpleninja.handlers.Animation;
-import com.slickgames.simpleninja.handlers.GameStateManager;
-import com.slickgames.simpleninja.main.Game;
+import com.slickgames.simpleninja.main.SimpleNinja;
 
 public class Options extends GameState {
     CheckBox shader;
@@ -29,10 +28,10 @@ public class Options extends GameState {
     private Table table;
     private Sprite animationSprite;
 
-    public Options(GameStateManager gsm) {
-        super(gsm);
+    public Options(SimpleNinja game) {
+        super(game);
 
-        game.viewPort = new ExtendViewport(Game.V_WIDTH * Game.SCALE, Game.V_HEIGHT * Game.SCALE, cam);
+        viewPort = new ExtendViewport(SimpleNinja.V_WIDTH * SimpleNinja.SCALE, SimpleNinja.V_HEIGHT * SimpleNinja.SCALE, cam);
         Lskin = new Skin(Gdx.files.internal("res/font/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/font/uiskin.atlas")));
         skin = new Skin(Gdx.files.internal("res/font/uiskin.json"));
 
@@ -58,7 +57,7 @@ public class Options extends GameState {
         // garphics
         VerticalGroup group = new VerticalGroup();
         final Button Graphics = new TextButton("Graphics", skin, "toggle");
-        final Button GamePlay = new TextButton("Game Play", skin, "toggle");
+        final Button GamePlay = new TextButton("SimpleNinja Play", skin, "toggle");
 
         final Button tab3 = new TextButton("Tab3", skin, "toggle");
 
@@ -120,10 +119,10 @@ game.setDifficulty(Diffculty.getValue());
         table.padTop(20);
         //stage
 
-        game.stage.addActor(table);
+        stage.addActor(table);
         //aimations and backgroud
         menuAnimation = new Animation();
-        background = TextureRegion.split(Game.game.getAssetManager().get("res/menu/optBack.png"), 500,500)[0];
+        background = TextureRegion.split(game.getAssetManager().get("res/menu/optBack.png"), 500,500)[0];
         menuAnimation.setFrames(background, 1f);
         animationSprite = new Sprite(menuAnimation.getFrame());
         animationSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -150,8 +149,38 @@ game.setDifficulty(Diffculty.getValue());
         sb.begin();
         animationSprite.draw(sb);
         sb.end();
-        gsm.game().stage.act(Gdx.graphics.getDeltaTime());
-        gsm.game().stage.draw();
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
 
     }
 

@@ -1,23 +1,28 @@
 package com.slickgames.simpleninja.states;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.slickgames.simpleninja.handlers.GameStateManager;
-import com.slickgames.simpleninja.main.Game;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.slickgames.simpleninja.main.SimpleNinja;
 
-public abstract class GameState {
+public abstract class GameState implements Screen{
 
-    protected GameStateManager gsm;
-    protected Game game;
+    public SimpleNinja game;
 
     protected SpriteBatch sb;
     protected OrthographicCamera cam;
+    protected Viewport viewPort;
+    protected Stage stage;
 
-    protected GameState(GameStateManager gsm) {
-        this.gsm = gsm;
-        game = gsm.game();
+    protected GameState(SimpleNinja game) {
+        this.game = game;
         sb = game.getSpriteBatch();
         cam = game.getCamera();
+        viewPort = game.getViewPort();
+        stage = game.getStage();
+
     }
 
     public abstract void handleInput();

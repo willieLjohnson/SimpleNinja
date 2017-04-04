@@ -5,11 +5,12 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,12 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.slickgames.simpleninja.handlers.Animation;
-import com.slickgames.simpleninja.handlers.GameStateManager;
-import com.slickgames.simpleninja.main.Game;
+import com.slickgames.simpleninja.main.SimpleNinja;
 
-public class MainMenu extends GameState {
+public class MainMenu extends GameState{
+
     Animation menuAnimation;
-    TextureRegion[] menuTexReg;
     Music mainMenuMusic;
     private TextButton optionsButton;
     private Skin skin;
@@ -33,17 +33,21 @@ public class MainMenu extends GameState {
 
     private Label heading;
 
-    public MainMenu(GameStateManager gsm) {
-        super(gsm);
+    public MainMenu(SimpleNinja game) {
+        super(game);
+
+        cam = new OrthographicCamera();
+
+        cam.setToOrtho(false, SimpleNinja.V_WIDTH, SimpleNinja.V_HEIGHT);
+        viewPort.setCamera(cam);
+        stage = new Stage(viewPort);
 
         skin = new Skin(new TextureAtlas(Gdx.files.local("res/ui/button.pack")));
 
         table = new Table();
         table.setFillParent(true);
-        table.setWidth(game.stage.getWidth());
-        table.align(Align.center);
 
-        heading = new Label(Game.TITLE, new Label.LabelStyle(Game.game.fontMedium, Color.WHITE));
+        heading = new Label(SimpleNinja.TITLE, new Label.LabelStyle(game.fontMedium, Color.WHITE));
         heading.setFontScale(1.2f);
 
         float dp = Gdx.graphics.getDensity();
@@ -52,7 +56,7 @@ public class MainMenu extends GameState {
         textButtonStyle.down = skin.getDrawable("button.down");
         textButtonStyle.pressedOffsetX = 1 * dp;
         textButtonStyle.pressedOffsetY = -1 * dp;
-        textButtonStyle.font = Game.game.fontMedium;
+        textButtonStyle.font = game.fontMedium;
         textButtonStyle.fontColor = Color.BLACK;
 
         startButton = new TextButton("Start", textButtonStyle);
@@ -62,8 +66,8 @@ public class MainMenu extends GameState {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gsm.setState(GameStateManager.PLAY);
-                dispose();
+                game.play = new Play(game);
+                game.setScreen(game.play);
                 event.stop();
             }
         });
@@ -72,7 +76,7 @@ public class MainMenu extends GameState {
         optionsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gsm.setState(GameStateManager.Option);
+                game.setScreen(new Options(game));
                 event.stop();
             }
         });
@@ -98,21 +102,20 @@ public class MainMenu extends GameState {
         table.row();
         table.add(quitButton);
 
-        game.stage.addActor(table);
+        stage.addActor(table);
 
         // animations
         menuAnimation = new Animation();
 
         mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/waterfall_music.mp3"));
 
-        menuTexReg = TextureRegion.split(Game.game.getAssetManager().get("res/menu/waterfall_animation.Png"), 500, 475)[0];
+        TextureRegion[] menuTexReg = TextureRegion.split(game.getAssetManager().get("res/menu/waterfall_animation.Png"), 500, 475)[0];
         menuAnimation.setFrames(menuTexReg, 1 / 25f);
 
         animationSprite = new Sprite(menuAnimation.getFrame());
-        animationSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // handle input
-        InputMultiplexer im = new InputMultiplexer(gsm.game().stage);
+        InputMultiplexer im = new InputMultiplexer(stage);
         Gdx.input.setInputProcessor(im);
 
         // sfx
@@ -129,28 +132,62 @@ public class MainMenu extends GameState {
     public void update(float dt) {
         menuAnimation.update(dt);
         animationSprite = new Sprite(menuAnimation.getFrame());
-        animationSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        animationSprite.setSize(SimpleNinja.V_WIDTH, SimpleNinja.V_HEIGHT);
         animationSprite.flip(true, false);
     }
 
     @Override
     public void render() {
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        cam.update();
+
+        sb.setProjectionMatrix(cam.combined);
         sb.begin();
         animationSprite.draw(sb);
         sb.end();
-        gsm.game().stage.act(Gdx.graphics.getDeltaTime());
-        gsm.game().stage.draw();
+
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
 
     @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
     public void dispose() {
         mainMenuMusic.dispose();
-        gsm.game().stage.clear();
         skin.dispose();
 
+        stage.dispose();
     }
 }

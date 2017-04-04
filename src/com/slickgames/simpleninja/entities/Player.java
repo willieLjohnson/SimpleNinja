@@ -1,15 +1,15 @@
 package com.slickgames.simpleninja.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.slickgames.simpleninja.main.Game;
+import com.slickgames.simpleninja.main.SimpleNinja;
 import com.slickgames.simpleninja.states.Play;
 
 public class Player extends B2DSprite {
+
     public boolean shooting, running, idling, jumping, attacking, attacked, blocking, throwing;
     TextureRegion[] run, idle, jump, attack, shoot, block, throwProj;
     private int numCrystals;
@@ -20,11 +20,11 @@ public class Player extends B2DSprite {
 
     public Player(Body body, Play play) {
         super(body, play);
-        Texture runningAnimation = Game.game.getAssetManager().get("res/images/simple_run.png");
-        Texture attackingAnimation = Game.game.getAssetManager().get("res/images/simple_attack.png");
-        Texture idlingAnimation = Game.game.getAssetManager().get("res/images/simple_idle.png");
-        Texture blockingAnimation = Game.game.getAssetManager().get("res/images/simple_block.png");
-        Texture throwingAnimation = Game.game.getAssetManager().get("res/images/simple_throw1.png");
+        Texture runningAnimation = play.game.getAssetManager().get("res/images/simple_run.png");
+        Texture attackingAnimation = play.game.getAssetManager().get("res/images/simple_attack.png");
+        Texture idlingAnimation = play.game.getAssetManager().get("res/images/simple_idle.png");
+        Texture blockingAnimation = play.game.getAssetManager().get("res/images/simple_block.png");
+        Texture throwingAnimation = play.game.getAssetManager().get("res/images/simple_throw1.png");
 
         run = TextureRegion.split(runningAnimation, 54, 42)[0];
         idle = TextureRegion.split(idlingAnimation, 54, 42)[0];

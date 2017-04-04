@@ -22,14 +22,16 @@ import com.slickgames.simpleninja.handlers.*;
 import com.slickgames.simpleninja.handlers.postprocessing.PostProcessor;
 import com.slickgames.simpleninja.handlers.postprocessing.ShaderLoader;
 import com.slickgames.simpleninja.handlers.postprocessing.effects.Bloom;
-import com.slickgames.simpleninja.main.Game;
+import com.slickgames.simpleninja.main.SimpleNinja;
 
 import java.util.Random;
 
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 public class Play extends GameState {
+
 	public final PostProcessor postProcessor;
+
 	public Player player;
 	public boolean enemyAi = true;
 	public World world;
@@ -65,8 +67,9 @@ public class Play extends GameState {
 	private int airAttack;
 	private float lastStep;
 
-	public Play(GameStateManager gsm) {
-		super(gsm);
+	public Play(SimpleNinja game) {
+		super(game);
+
 		Gdx.input.setInputProcessor(new MyInputProcessor());
 
 		// set up box2d stuff
@@ -81,7 +84,7 @@ public class Play extends GameState {
 
 		// create enemy
 		enemies = new Array<Enemy>();
-		createEnemy(1);
+		createEnemy(5);
 
 		// create tiles
 		createTiles();
@@ -91,7 +94,8 @@ public class Play extends GameState {
 
 		// set up box2d cam
 		b2dCam = new OrthographicCamera();
-		b2dCam.setToOrtho(false, Game.V_WIDTH / PPM, Game.V_HEIGHT / PPM);
+		b2dCam.setToOrtho(false, SimpleNinja.V_WIDTH / PPM, SimpleNinja.V_HEIGHT / PPM);
+
 		// cam.zoom +=.25f;
 		// set up hud & debug
 		sr = new ShapeRenderer();
@@ -289,8 +293,8 @@ public class Play extends GameState {
 	public void update(float dt) {
 
 		if (pauseOnUpdate) {
-			gsm.setState(GameStateManager.PAUSE);
-			pauseOnUpdate = false;
+            game.setScreen(new Pause(game));
+            pauseOnUpdate = false;
 		}
 		// check input
 		handleInput();
@@ -481,7 +485,7 @@ public class Play extends GameState {
 		}
 
 		sr.set(ShapeRenderer.ShapeType.Line);
-		if (gsm.debug) {
+		if (game.debug) {
 			b2dr.render(world, b2dCam.combined);
 			for (Enemy e : enemies) {
 				sr.line(e.getVectors("p1"), e.getVectors("p2"));
@@ -493,11 +497,40 @@ public class Play extends GameState {
 	}
 
 	@Override
+	public void show() {
+
+	}
+
+	@Override
+	public void render(float delta) {
+
+	}
+
+	@Override
+	public void resize(int width, int height) {
+
+	}
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
+	@Override
+	public void hide() {
+	}
+
+	@Override
 	public void dispose() {
-		postProcessor.dispose();
 	}
 
 	private void createPlayer() {
+
 		BodyDef bdef = new BodyDef();
 		FixtureDef fdef = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
