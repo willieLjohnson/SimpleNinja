@@ -9,44 +9,42 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.slickgames.simpleninja.main.SimpleNinja;
 import com.slickgames.simpleninja.states.Play;
 
 public class Enemy extends B2DSprite {
-    public static final float MAX_SPEED = 2f; //  * ((float) play.game.getDifficulty())
-    private final int GUARD = 0;
-    private final int CHASE = 1;
-    private final int FIND = 2;
+    private static final int GUARD = 0;
+    private static final int CHASE = 1;
+    private static final int FIND = 2;
 
-    public boolean running, idling, jumping, attacking, attacked, ignorePlayer;
-    public int state = 0;
-    public int id;
-    TextureRegion[] run, idle, jump, attack;
-    Vector2 target = new Vector2();
-    Vector2 collision = new Vector2();
-    Vector2 normal = new Vector2();
-    Fixture cFix;
-    ShapeRenderer sr;
-    private int numCrystals;
-    private int totalCrystals;
+    private boolean playerAttackable;
+    private int id;
+    private boolean detectRight;
+    private boolean detectLeft;
+    private boolean withinRange;
+    private boolean wallCollision;
+    private int numFootContacts;
+
+    private boolean running, idling, jumping, attacking, attacked, ignorePlayer;
+    private int currentState = 0;
+
+    private TextureRegion[] run, idle, jump, attack;
+    private Vector2 target = new Vector2();
+    private Vector2 collision = new Vector2();
+    private Vector2 normal = new Vector2();
+    private Fixture cFix;
     private boolean enemySpotted;
     private float currentTime;
     private float lastSeen;
     private float lastSwitch;
     private boolean bounced;
-    public boolean playerAttackable;
+
     private boolean swinging;
-    public float charge;
-    private int attackFrame;
-    public boolean detectRight;
-    public boolean detectLeft;
-    public boolean withinRange;
-    public boolean wallCollision;
+    private float charge;
+
     private boolean charging;
-    public int numFootContacts;
+
     private boolean aggressive = false;
-    public Texture runningAnimation, attackingAnimation, idlingAnimation;
-    private double damage = 5 * play.game.getDifficulty();
+    private double damage = 5 * game.getDifficulty();
 
     public Enemy(Body body, Play play, int aId) {
         super(body, play);
@@ -54,9 +52,10 @@ public class Enemy extends B2DSprite {
         body.setUserData(this);
         play.enemies.add(this);
 
-        runningAnimation = play.game.getAssetManager().get("res/images/enemy_run.png");
-        attackingAnimation = play.game.getAssetManager().get("res/images/enemy_attack.png");
-        idlingAnimation = play.game.getAssetManager().get("res/images/enemy_idle.png");
+        Texture runningAnimation = game.getAssetManager().get("res/images/enemy_run.png");
+        Texture attackingAnimation = game.getAssetManager().get("res/images/enemy_attack.png");
+        Texture idlingAnimation = game.getAssetManager().get("res/images/enemy_idle.png");
+
         run = TextureRegion.split(runningAnimation, 54, 42)[0];
         idle = TextureRegion.split(idlingAnimation, 54, 42)[0];
         jump = TextureRegion.split(runningAnimation, 54, 42)[0];
@@ -69,7 +68,7 @@ public class Enemy extends B2DSprite {
     public void update(float dt) {
         animation.update(dt);
         currentTime = TimeUtils.nanoTime();
-        if (health <= 0) {
+        if (getHealth() <= 0) {
             kill();
             swinging = false;
             attacking = false;
@@ -107,21 +106,21 @@ public class Enemy extends B2DSprite {
         world.rayCast(callback, this.body.getPosition(), target);
 
         if (!aggressive)
-            if (cFix.getBody().equals(player) && isPlayerSpotted() && !play.ignorePlayer) {
-                state = CHASE;
+            if (cFix.getBody().equals(player) && isPlayerSpotted() && !ignorePlayer) {
+                currentState = CHASE;
                 lastSeen = currentTime;
-            } else if (state == CHASE && (!withinRange && !cFix.getBody().equals(player))) {
+            } else if (currentState == CHASE && (!withinRange && !cFix.getBody().equals(player))) {
                 if (currentTime - lastSeen > 2000000000f) {
-                    state = FIND;
+                    currentState = FIND;
                 }
             } else {
                 if (currentTime - lastSeen > 5000000000f) {
-                    state = GUARD;
+                    currentState = GUARD;
                 }
             }
         else
-            state = CHASE;
-        switch (state) {
+            currentState = CHASE;
+        switch (currentState) {
             case GUARD:
                 if (currentTime - lastSwitch < 3000000000f) {
                     if (wallCollision && !bounced) {
@@ -154,8 +153,8 @@ public class Enemy extends B2DSprite {
                 } else if (!charging) {
                     attacking = false;
 
-                    if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
-                        body.applyForceToCenter((MAX_SPEED * 8) * dir, 0, true);
+                    if (Math.abs(body.getLinearVelocity().x) < getMaxSpeed()) {
+                        body.applyForceToCenter((getMaxSpeed() * 8) * dir, 0, true);
                     }
                     if ((isEnemyOnGround() && (target.y - body.getPosition().y) > .5) && body.getLinearVelocity().y < 1) {
                         body.applyLinearImpulse(0, (target.y - body.getPosition().y) * 4, 0, 0, true);
@@ -183,7 +182,7 @@ public class Enemy extends B2DSprite {
                 break;
 
             case FIND:
-                if (Math.abs(body.getLinearVelocity().x) < MAX_SPEED) {
+                if (Math.abs(body.getLinearVelocity().x) < getMaxSpeed()) {
                     body.applyForceToCenter(32f * dir, 0, true);
                 }
                 if (wallCollision)
@@ -192,26 +191,7 @@ public class Enemy extends B2DSprite {
 
     }
 
-    public void collectCrystal() {
-        numCrystals++;
-    }
-
-    public Vector2 getVectors(String t) {
-        switch (t) {
-            case "p1":
-                return this.body.getPosition();
-            case "p2":
-                return target;
-            case "c":
-                return collision;
-            case "n":
-                return normal;
-            default:
-                return collision;
-        }
-    }
-
-    public void toggleAnimation(String animation) {
+    private void toggleAnimation(String animation) {
         switch (animation) {
             case "run":
                 running = true;
@@ -248,27 +228,123 @@ public class Enemy extends B2DSprite {
     public void playerUpdate(float dt, float lastAttack) {
     }
 
-    @Override
-    public void kill() {
-        // replace();
-        health = MAX_HEALTH;
-        play.player.stamina += 20;
+    private void kill() {
+        setHealth(MAX_HEALTH);
         play.cl.bodiesToRemove.add(body);
     }
 
-    private void replace() {
-        this.body.setTransform(new Vector2(5, 8), body.getAngle());
-        state = 0;
+    public Vector2 getVectors(String t) {
+        switch (t) {
+            case "p1":
+                return this.body.getPosition();
+            case "p2":
+                return target;
+            case "c":
+                return collision;
+            case "n":
+                return normal;
+            default:
+                return collision;
+        }
     }
-    public boolean isPlayerSpotted() {
+
+    private boolean isPlayerSpotted() {
         return dir == 1 ? detectRight : detectLeft;
     }
 
-    public boolean isEnemyOnGround() {
+    private boolean isEnemyOnGround() {
         return numFootContacts > 0;
+    }
+
+    public boolean isPlayerAttackable() {
+        return playerAttackable;
+    }
+
+    public void setPlayerAttackable(boolean playerAttackable) {
+        this.playerAttackable = playerAttackable;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isDetectRight() {
+        return detectRight;
+    }
+
+    public void setDetectRight(boolean detectRight) {
+        this.detectRight = detectRight;
+    }
+
+    public boolean isDetectLeft() {
+        return detectLeft;
+    }
+
+    public void setDetectLeft(boolean detectLeft) {
+        this.detectLeft = detectLeft;
+    }
+
+    public boolean isWithinRange() {
+        return withinRange;
+    }
+
+    public void setWithinRange(boolean withinRange) {
+        this.withinRange = withinRange;
+    }
+
+    public boolean isWallCollision() {
+        return wallCollision;
+    }
+
+    public void setWallCollision(boolean wallCollision) {
+        this.wallCollision = wallCollision;
+    }
+
+    public int getNumFootContacts() {
+        return numFootContacts;
+    }
+
+    public void addNumFootContacts(int amount) {
+        numFootContacts += amount;
+    }
+
+    public void setNumFootContacts(int numFootContacts) {
+        this.numFootContacts = numFootContacts;
+    }
+
+    public float getCharge() {
+        return charge;
+    }
+
+    public void setCharge(float charge) {
+        this.charge = charge;
+    }
+
+    public boolean isCharging() {
+        return charging;
+    }
+
+    public void setCharging(boolean charging) {
+        this.charging = charging;
     }
 
     public double getDamage() {
         return damage;
+    }
+
+    public void setDamage(double damage) {
+        this.damage = damage;
+    }
+
+    public boolean isAttacked() {
+        return attacked;
+    }
+
+    public void setAttacked(boolean attacked) {
+        this.attacked = attacked;
     }
 }

@@ -8,40 +8,45 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.slickgames.simpleninja.handlers.Animation;
+import com.slickgames.simpleninja.main.SimpleNinja;
 import com.slickgames.simpleninja.states.Play;
 
 import static com.slickgames.simpleninja.handlers.B2DVars.PPM;
 
 
 public abstract class B2DSprite extends Sprite{
+    static int MAX_HEALTH = 20;
 
-    protected Body body;
-    protected Animation animation;
-    protected float width;
-    protected float height;
-    protected int dir = 1;
-    protected float MAX_SPEED = 2f;
-    protected int MAX_HEALTH = 20;
-    protected float MAX_STAMINA = 400;
-    public int health = MAX_HEALTH;
-    public float stamina = MAX_STAMINA;
-    public Play play;
-    public boolean op;
-    public Sprite sprite;
+    private static float MAX_SPEED = 2f;
+    private static float MAX_STAMINA = 400;
 
-    public B2DSprite(Body aBody, Play aPlay) {
+    public boolean godMode;
+
+    Body body;
+    Animation animation;
+    int dir = 1;
+    Play play;
+    SimpleNinja game;
+
+    private int health = MAX_HEALTH;
+    private float stamina = MAX_STAMINA;
+    private float width;
+    private float height;
+    private Sprite sprite;
+
+    B2DSprite(Body aBody, Play play) {
         body = aBody;
         animation = new Animation();
-        play = aPlay;
+        this.play = play;
+        game = this.play.getGame();
     }
 
-    public void setAnimation(TextureRegion[] reg, float delay) {
+    void setAnimation(TextureRegion[] reg, float delay) {
         animation.setFrames(reg, delay);
         height = reg[0].getRegionHeight();
         width = reg[0].getRegionWidth();
         sprite = new Sprite(reg[0]);
         setOriginCenter();
-
     }
 
     public abstract void update(float dt);
@@ -52,54 +57,17 @@ public abstract class B2DSprite extends Sprite{
         sprite.setRegion(animation.getFrame());
         sprite.setPosition(body.getPosition().x * PPM - width / 2 , body.getPosition().y * PPM - height / 2);
         sprite.setRotation(body.getAngle()*PPM);
+
         sb.begin();
-//        sb.draw(animation.getFrame(), body.getPosition().x * PPM - width / 2,
-//                body.getPosition().y * PPM - height / 2);
         sprite.draw(sb);
         sb.end();
     }
 
-    public Animation getAnimation() {
-        return animation;
-    }
-
-    public Body getBody() {
-        return body;
-    }
-
-    public Vector2 getPosition() {
-        return body.getPosition();
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public int getDir() {
-        return dir;
-    }
-
-    public void setDir(int x) {
-        dir = x;
-    }
-
-    public float getMaxSpeed() {
-        return MAX_SPEED;
-    }
-
-    public void setMaxSpeed(float maxSpeed) {
-        this.MAX_SPEED = maxSpeed;
-    }
-
     public void damage(int dmg) {
-        if (!op) {
+        if (!godMode) {
             health -= dmg;
             ParticleEffect bloodSplat = new ParticleEffect();
-            bloodSplat.load(Gdx.files.internal("res/particles/blood_splat"), Gdx.files.internal("res/particles"));
+            bloodSplat.load(Gdx.files.internal("res/particles/bloodSplat"), Gdx.files.internal("res/particles"));
             bloodSplat.setPosition(this.getPosition().x * PPM - this.getWidth() / 10,
                     this.getPosition().y * PPM - this.getHeight() / 4);
             bloodSplat.start();
@@ -107,13 +75,96 @@ public abstract class B2DSprite extends Sprite{
         }
     }
 
-    public abstract void kill();
+    public Vector2 getPosition() {
+        return body.getPosition();
+    }
 
-    public int getMaxHealth() {
+    public Body getBody() {
+        return body;
+    }
+
+    public static int getMaxHealth() {
         return MAX_HEALTH;
     }
 
-    public float getMaxStamina() {
+    public static void setMaxHealth(int maxHealth) {
+        MAX_HEALTH = maxHealth;
+    }
+
+    public static float getMaxSpeed() {
+        return MAX_SPEED;
+    }
+
+    public static void setMaxSpeed(float maxSpeed) {
+        MAX_SPEED = maxSpeed;
+    }
+
+    public static float getMaxStamina() {
         return MAX_STAMINA;
+    }
+
+    public static void setMaxStamina(float maxStamina) {
+        MAX_STAMINA = maxStamina;
+    }
+
+    public boolean isGodMode() {
+        return godMode;
+    }
+
+    public void setGodMode(boolean godMode) {
+        this.godMode = godMode;
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
+    }
+
+    @Override
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    @Override
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public int getDir() {
+        return dir;
+    }
+
+    public void setDir(int dir) {
+        this.dir = dir;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public float getStamina() {
+        return stamina;
+    }
+
+    public void addStamina(float amount) {
+        stamina += amount;
+    }
+    public void setStamina(float stamina) {
+        this.stamina = stamina;
     }
 }

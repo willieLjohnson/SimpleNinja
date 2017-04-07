@@ -1,73 +1,58 @@
 package com.slickgames.simpleninja.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.slickgames.simpleninja.handlers.Animation;
 import com.slickgames.simpleninja.main.SimpleNinja;
 
-public class MainMenu extends GameState{
+public class MainMenu extends GameState {
 
-    Animation menuAnimation;
-    Music mainMenuMusic;
-    private TextButton optionsButton;
-    private Skin skin;
-    private Table table;
-    private TextButton startButton;
-    private TextButton quitButton;
+    private Animation menuAnimation;
     private Sprite animationSprite;
-
-    private Label heading;
+    private Music mainMenuMusic;
 
     public MainMenu(SimpleNinja game) {
         super(game);
 
-        cam = new OrthographicCamera();
+        Skin skin = new Skin(Gdx.files.internal("res/ui/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/ui/uiskin.atlas")));
 
-        cam.setToOrtho(false, SimpleNinja.V_WIDTH, SimpleNinja.V_HEIGHT);
-        viewPort.setCamera(cam);
-        stage = new Stage(viewPort);
-
-        skin = new Skin(new TextureAtlas(Gdx.files.local("res/ui/button.pack")));
-
-        table = new Table();
+        Table table = new Table();
         table.setFillParent(true);
 
-        heading = new Label(SimpleNinja.TITLE, new Label.LabelStyle(game.fontMedium, Color.WHITE));
-        heading.setFontScale(1.2f);
-
         float dp = Gdx.graphics.getDensity();
+
+        // text button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button.up");
-        textButtonStyle.down = skin.getDrawable("button.down");
+        textButtonStyle.up = skin.getDrawable("default-round");
+        textButtonStyle.down = skin.getDrawable("default-round-down");
         textButtonStyle.pressedOffsetX = 1 * dp;
         textButtonStyle.pressedOffsetY = -1 * dp;
-        textButtonStyle.font = game.fontMedium;
+        textButtonStyle.font = getGame().getFont("med");
         textButtonStyle.fontColor = Color.BLACK;
 
-        startButton = new TextButton("Start", textButtonStyle);
-        optionsButton = new TextButton("Options", textButtonStyle);
-        quitButton = new TextButton("Quit", textButtonStyle);
+        Label heading = new Label(SimpleNinja.TITLE, new Label.LabelStyle(game.getFont("med"), Color.WHITE));
+        heading.setFontScale(1.2f);
+
+        TextButton startButton = new TextButton("Start", textButtonStyle);
+        TextButton optionsButton = new TextButton("Options", textButtonStyle);
+        TextButton quitButton = new TextButton("Quit", textButtonStyle);
 
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.play = new Play(game);
-                game.setScreen(game.play);
+                game.setPlay(new Play(game));
+                game.setScreen(game.getPlay());
                 event.stop();
             }
         });
@@ -107,16 +92,15 @@ public class MainMenu extends GameState{
         // animations
         menuAnimation = new Animation();
 
-        mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/waterfall_music.mp3"));
+        mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("res/music/waterfallMusic.mp3"));
 
-        TextureRegion[] menuTexReg = TextureRegion.split(game.getAssetManager().get("res/menu/waterfall_animation.Png"), 500, 475)[0];
+        TextureRegion[] menuTexReg = TextureRegion.split(game.getAssetManager().get("res/menu/waterfallBackground.Png"), 500, 475)[0];
         menuAnimation.setFrames(menuTexReg, 1 / 25f);
 
         animationSprite = new Sprite(menuAnimation.getFrame());
 
         // handle input
-        InputMultiplexer im = new InputMultiplexer(stage);
-        Gdx.input.setInputProcessor(im);
+        Gdx.input.setInputProcessor(stage);
 
         // sfx
         mainMenuMusic.play();
@@ -125,7 +109,6 @@ public class MainMenu extends GameState{
 
     @Override
     public void handleInput() {
-
     }
 
     @Override
@@ -186,8 +169,6 @@ public class MainMenu extends GameState{
     @Override
     public void dispose() {
         mainMenuMusic.dispose();
-        skin.dispose();
-
         stage.dispose();
     }
 }

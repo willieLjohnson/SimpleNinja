@@ -6,3 +6,5 @@
 .idea/
 bin/
 generated-fonts/
+*.log
+hs_err_pid4288.log

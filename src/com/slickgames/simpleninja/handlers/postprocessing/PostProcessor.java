@@ -35,7 +35,7 @@ import com.slickgames.simpleninja.handlers.postprocessing.utils.PingPongBuffer;
  * @author bmanuel */
 public final class PostProcessor implements Disposable {
     private static final Array<PingPongBuffer> buffers = new Array<PingPongBuffer>(5);
-    /** Enable pipeline state queries: beware the pipeline can stall! */
+    /** Enable pipeline currentState queries: beware the pipeline can stall! */
     public static boolean EnableQueryStates = false;
     private static PipelineState pipelineState = null;
     private static Format fbFormat;

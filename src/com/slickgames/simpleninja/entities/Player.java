@@ -5,32 +5,30 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.slickgames.simpleninja.main.SimpleNinja;
 import com.slickgames.simpleninja.states.Play;
 
 public class Player extends B2DSprite {
 
-    public boolean shooting, running, idling, jumping, attacking, attacked, blocking, throwing;
-    TextureRegion[] run, idle, jump, attack, shoot, block, throwProj;
+    private boolean running, idling, jumping, attacking, attacked, blocking, throwing;
+    private TextureRegion[] run, idle, jump, attack, block, throwProj;
     private int numCrystals;
     private int totalCrystals;
-    public double penelty;
+    private double penalty;
     private int MAX_AMMO = 5;
-    public int ammo = MAX_AMMO;
+    private int ammo = MAX_AMMO;
 
     public Player(Body body, Play play) {
         super(body, play);
-        Texture runningAnimation = play.game.getAssetManager().get("res/images/simple_run.png");
-        Texture attackingAnimation = play.game.getAssetManager().get("res/images/simple_attack.png");
-        Texture idlingAnimation = play.game.getAssetManager().get("res/images/simple_idle.png");
-        Texture blockingAnimation = play.game.getAssetManager().get("res/images/simple_block.png");
-        Texture throwingAnimation = play.game.getAssetManager().get("res/images/simple_throw1.png");
+        Texture runningAnimation = game.getAssetManager().get("res/images/simple_run.png");
+        Texture attackingAnimation = game.getAssetManager().get("res/images/simple_attack.png");
+        Texture idlingAnimation = game.getAssetManager().get("res/images/simple_idle.png");
+        Texture blockingAnimation = game.getAssetManager().get("res/images/simple_block.png");
+        Texture throwingAnimation = game.getAssetManager().get("res/images/simple_throw1.png");
 
         run = TextureRegion.split(runningAnimation, 54, 42)[0];
         idle = TextureRegion.split(idlingAnimation, 54, 42)[0];
         jump = run;
         attack = TextureRegion.split(attackingAnimation, 54, 42)[0];
-        shoot = TextureRegion.split(attackingAnimation, 54, 42)[0];
         block = TextureRegion.split(blockingAnimation, 54, 42)[0];
         throwProj = TextureRegion.split(throwingAnimation, 54, 42)[0];
         setAnimation(idle, 1 / 7f);
@@ -41,9 +39,24 @@ public class Player extends B2DSprite {
 
     }
 
-    public void collectCrystal() {
-        numCrystals++;
-        ammo += 3;
+    @Override
+    public void playerUpdate(float dt, float lastAttack) {
+        penalty = (getMaxStamina() - getStamina()) / 10;
+
+        if (getHealth() <= 0) {
+            kill();
+        }
+        if (attacked) {
+            animation.update(dt + (dt - lastAttack));
+            attacked = false;
+        } else
+            animation.update(dt);
+
+        if (TimeUtils.nanoTime() - lastAttack > 650000000f && getStamina() < getMaxStamina() && play.cl.isPlayerOnGround() && !attacked) {
+            addStamina(getMaxStamina() / 100);
+        }
+        if (running)
+            animation.setDelay(Math.abs(1 / (Math.abs(body.getLinearVelocity().x * 10) - 4)) < 1 / 5f ? 1 / 16f : 1 / (Math.abs(body.getLinearVelocity().x * 10) - 4));
     }
 
     public void toggleAnimation(String animation) {
@@ -105,63 +118,82 @@ public class Player extends B2DSprite {
 
     }
 
+    private void kill() {
+        this.body.setTransform(new Vector2(0, 7), body.getAngle());
+        setHealth(MAX_HEALTH);
+    }
+
+    public void collectCrystal() {
+        numCrystals++;
+        addAmmo(3);
+    }
+
     public boolean isRunning() {
         return running;
     }
 
-    public boolean isIdle() {
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public boolean isIdling() {
         return idling;
+    }
+
+    public void setIdling(boolean idling) {
+        this.idling = idling;
     }
 
     public boolean isJumping() {
         return jumping;
     }
 
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
+    }
+
     public boolean isAttacking() {
         return attacking;
     }
 
-    public void setAttacking(boolean b) {
-        attacking = b;
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
     }
 
-    public int getNumCrystal() {
-        return numCrystals;
+    public boolean isAttacked() {
+        return attacked;
     }
 
-    public int getTotalCrystals() {
-        return totalCrystals;
+    public void setAttacked(boolean attacked) {
+        this.attacked = attacked;
     }
 
-    public void setTotalCrystals(int i) {
-        totalCrystals = i;
+    public boolean isBlocking() {
+        return blocking;
     }
 
-    @Override
-    public void playerUpdate(float dt, float lastAttack) {
-        penelty = (getMaxStamina() - stamina) / 10;
-
-        if (health <= 0) {
-            kill();
-        }
-        if (attacked) {
-            animation.update(dt + (dt - lastAttack));
-            attacked = false;
-        } else
-            animation.update(dt);
-
-        if (TimeUtils.nanoTime() - lastAttack > 650000000f && stamina < getMaxStamina() &&  play.cl.isPlayerOnGround() && !attacked) {
-            stamina += getMaxStamina()/100;
-        }
-        if (running) animation.setDelay(Math.abs(1 / (Math.abs(body.getLinearVelocity().x*10)-4)) < 1/5f ? 1/16f : 1 / (Math.abs(body.getLinearVelocity().x*10)-4));
+    public void setBlocking(boolean blocking) {
+        this.blocking = blocking;
     }
 
-    public void kill() {
-        replace();
-        health = MAX_HEALTH;
+    public boolean isThrowing() {
+        return throwing;
     }
 
-    private void replace() {
-        this.body.setTransform(new Vector2(0, 7), body.getAngle());
+    public void setThrowing(boolean throwing) {
+        this.throwing = throwing;
     }
+
+    public void addAmmo(int amount) {
+        ammo += amount;
+    }
+
+    public int getAmmo() {
+        return ammo;
+    }
+
+    public void setAmmo(int ammo) {
+        this.ammo = ammo;
+    }
+
 }

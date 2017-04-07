@@ -49,7 +49,7 @@ public class Animation {
 
     public boolean getFinished() {
         System.out.println(currentFrame + ". " + frames.length);
-        return (currentFrame + 1 == frames.length ? true : false);
+        return (currentFrame + 1 == frames.length);
     }
 
     public TextureRegion getFrame() {

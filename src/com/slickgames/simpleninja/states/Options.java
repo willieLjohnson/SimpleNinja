@@ -4,154 +4,162 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.slickgames.simpleninja.handlers.Animation;
 import com.slickgames.simpleninja.main.SimpleNinja;
 
 public class Options extends GameState {
-    CheckBox shader;
-    Skin Lskin;
-    Skin skin;
-    TextureRegion[] background;
-    Animation menuAnimation;
-    private TextButton ResizeButton;
-    public Slider Diffculty;
-    private Table table;
-    private Sprite animationSprite;
+    private Sprite background;
 
     public Options(SimpleNinja game) {
         super(game);
 
-        viewPort = new ExtendViewport(SimpleNinja.V_WIDTH * SimpleNinja.SCALE, SimpleNinja.V_HEIGHT * SimpleNinja.SCALE, cam);
-        Lskin = new Skin(Gdx.files.internal("res/font/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/font/uiskin.atlas")));
-        skin = new Skin(Gdx.files.internal("res/font/uiskin.json"));
+        Skin skin = new Skin(Gdx.files.internal("res/ui/uiskin.json"), new TextureAtlas(Gdx.files.internal("res/ui/uiskin.atlas")));
 
-        table = new Table();
-        BitmapFont bt = new BitmapFont();
-        //  labels
-        Label.LabelStyle ls = new Label.LabelStyle(bt, Color.BLACK);
-        Label label = new Label("Difficulty", ls);
-        Label label2 = new Label("Easy    Normal   Hard", ls);
-        //diffculty
-        //skin
-        skin.add("knob", new Texture(Gdx.files.internal("res/Style/Knode.png")));
-        skin.add("bgs", new Texture(Gdx.files.internal("res/Style/diffculty.png")));
+        float dp = Gdx.graphics.getDensity();
 
+        // button style
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.getDrawable("default-round");
+        textButtonStyle.checked = skin.getDrawable("default-round-down");
+        textButtonStyle.down = skin.getDrawable("default-round-down");
+        textButtonStyle.pressedOffsetX = .5f * dp;
+        textButtonStyle.pressedOffsetY = -.5f * dp;
+        textButtonStyle.font = getGame().getFont("med");
+        textButtonStyle.fontColor = Color.BLACK;
 
-        //slider
-        Slider.SliderStyle DiffcultyStyle = new Slider.SliderStyle();
-        DiffcultyStyle.background = skin.getDrawable("bgs");
-        DiffcultyStyle.knob= skin.getDrawable("knob");
-        Diffculty = new Slider(1, 3, 1, false, DiffcultyStyle);
-        Diffculty.setVisible(true);
+        // label style
+        Label.LabelStyle labelStyle = new Label.LabelStyle(game.getFont("small"), Color.WHITE);
 
-        // garphics
-        VerticalGroup group = new VerticalGroup();
-        final Button Graphics = new TextButton("Graphics", skin, "toggle");
-        final Button GamePlay = new TextButton("SimpleNinja Play", skin, "toggle");
+        // slider style
+        Slider.SliderStyle sliderStyle = new Slider.SliderStyle();
+        skin.add("knob", new Texture(Gdx.files.internal("res/ui/knob.png")));
+        skin.add("bgs", new Texture(Gdx.files.internal("res/ui/difficulty.png")));
+        sliderStyle.background = skin.getDrawable("bgs");
+        sliderStyle.knob = skin.getDrawable("knob");
 
-        final Button tab3 = new TextButton("Tab3", skin, "toggle");
+        // tabs
+        Table table = new Table();
+        table.setFillParent(true);
 
-        group.addActor(Graphics);
-        group.addActor(GamePlay);
-        group.addActor(tab3);
+        table.align(Align.center|Align.top);
+        table.setOrigin(0, Gdx.graphics.getHeight());
 
-        table.add(group).left();
-        Stack content = new Stack();
-//        final Image content1 = new Image(skin.newDrawable("white", 0,0,1,1));
-//        content.addActor(content3);
-        VerticalGroup GamPSet = new VerticalGroup();//gameplay
-        GamPSet.addActor(label);
-        GamPSet.addActor(label2);
-        GamPSet.addActor(Diffculty);
-        VerticalGroup GraphSet = new VerticalGroup();// graphics
-        shader = new CheckBox("Shaders", Lskin);// need to make a better skin
-GraphSet.addActor(shader);
-        //content-actors
-        content.add(GraphSet);
-        content.add(GamPSet);
-        //content-table
-        table.add(content).center();
+        table.setDebug(false);
+
+        HorizontalGroup tabsGroup = new HorizontalGroup();
+        Button graphicsTab = new TextButton("graphics", textButtonStyle);
+        graphicsTab.pad(5 * dp);
+        Button gameplayTab = new TextButton("gameplay", textButtonStyle);
+        gameplayTab.pad(5 * dp);
+        Button tab3 = new TextButton("Tab3", textButtonStyle);
+        tab3.pad(5 * dp);
+
+        tabsGroup.addActor(graphicsTab);
+        tabsGroup.addActor(gameplayTab);
+        tabsGroup.addActor(tab3);
+
+        tabsGroup.padBottom(100 * dp);
+
+        ButtonGroup<Button> toggle = new ButtonGroup<>(graphicsTab, gameplayTab, tab3);
+        toggle.setMinCheckCount(1);
+        toggle.setMaxCheckCount(1);
+
+        table.add(tabsGroup);
         table.row();
-        //tab Action listener
-        ChangeListener tab_listener = new ChangeListener(){
-            @Override
-            public void changed (ChangeEvent event, Actor actor) {
-//                content1.setVisible(Graphics.isChecked());
-//                content2.setVisible(GamePlay.isChecked());
-//                content3.setVisible(tab3.isChecked());
-                GamPSet.setVisible(GamePlay.isChecked());
-                GraphSet.setVisible(shader.isChecked());
-            }
-        };
-game.setDifficulty(Diffculty.getValue());
-        Graphics.addListener(tab_listener);
-        GamePlay.addListener(tab_listener);
-        tab3.addListener(tab_listener);
-        //D-slider
-        ChangeListener Diffculy = new ChangeListener() {
 
+        // gameplay tab
+        Stack content = new Stack();
+
+        Label difficultyLabel = new Label("Difficulty", labelStyle);
+        Label difficultyLevels = new Label("Easy  Normal  Hard", labelStyle);
+
+        Slider difficultySlider = new Slider(1, 3, 1, false, sliderStyle);
+        difficultySlider.setVisible(true);
+
+        VerticalGroup gameplayContent = new VerticalGroup();
+        gameplayContent.addActor(difficultyLabel);
+        gameplayContent.addActor(difficultyLevels);
+        gameplayContent.addActor(difficultySlider);
+
+        content.add(gameplayContent);
+
+        table.add(content);
+
+        // back button
+        textButtonStyle.font = game.getFont("small");
+        Button backButton = new TextButton("back", textButtonStyle);
+
+        // listeners
+        graphicsTab.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+//                graphicsContent.setVisible(graphicsTab.isChecked());
             }
+        });
+        gameplayTab.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameplayContent.setVisible(gameplayTab.isChecked());
+            }
+        });
+        difficultySlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setDifficulty(difficultySlider.getValue());
+            }
+        });
+        tab3.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+//                tab3Content.setVisible(tab3.isChecked());
+            }
+        });
 
-        };
-        // Let only one tab button be checked at a time
-        ButtonGroup tabs = new ButtonGroup();
-        tabs.setMinCheckCount(1);
-        tabs.setMaxCheckCount(1);
-        tabs.add(Graphics);
-        tabs.add(GamePlay);
-        tabs.add(tab3);
-        //table
-        table.setFillParent(true);
-        table.align(Align.center);
-        table.padTop(20);
-        //stage
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MainMenu(game));
+                event.stop();
+            }
+        });
 
         stage.addActor(table);
-        //aimations and backgroud
-        menuAnimation = new Animation();
-        background = TextureRegion.split(game.getAssetManager().get("res/menu/optBack.png"), 500,500)[0];
-        menuAnimation.setFrames(background, 1f);
-        animationSprite = new Sprite(menuAnimation.getFrame());
-        animationSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.addActor(backButton);
+
+        // background
+        background = new Sprite(game.getAssetManager().get("res/menu/optBack.png"), 1500, 1000);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void handleInput() {
-
     }
 
     @Override
     public void update(float dt) {
-        menuAnimation.update(dt);
-        animationSprite = new Sprite(menuAnimation.getFrame());
-        animationSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        animationSprite.flip(true, false);
     }
 
     @Override
     public void render() {
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         sb.begin();
-        animationSprite.draw(sb);
+        background.draw(sb);
         sb.end();
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
     }
 
     @Override

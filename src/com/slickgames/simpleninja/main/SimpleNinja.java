@@ -7,45 +7,33 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.slickgames.simpleninja.handlers.MyInput;
 import com.slickgames.simpleninja.handlers.font.SmartFontGenerator;
 import com.slickgames.simpleninja.states.GameState;
 import com.slickgames.simpleninja.states.MainMenu;
 import com.slickgames.simpleninja.states.Play;
 
-
 public class SimpleNinja extends Game {
-
-    public static final String TITLE = "Simple Ninja";
-    public static final double GAME_VERSION = 2.0;
     public static final int V_WIDTH = 1366 / 4;
     public static final int V_HEIGHT = 720 / 4;
-    public static final int SCALE = 2;
-    public static final float STEP = 1 / 60f;
+    public static final String TITLE = "Simple Ninja";
 
-    public BitmapFont fontSmall, fontMedium, fontLarge;
-    private Stage stage;
-    public AssetManager assets;
-    private Viewport viewPort;
-    private float accum;
-    private SpriteBatch sb;
-    private OrthographicCamera cam;
+    static final double GAME_VERSION = 1;
+    static final int SCALE = 2;
 
-    private double difficulty = 1; // .5 CHEEZ, 1 normal, 2 hard?
+    private static final float STEP = 1 / 60f;
 
-    public Play play;
     public boolean debug = false;
+
+    private BitmapFont fontSmall, fontMedium, fontLarge;
+    private AssetManager assets;
+    private double difficulty = 1; // .5 CHEEZ, 1 normal, 2 hard?
+    private Play play;
 
     @Override
     public void create() {
-
         // fonts
         SmartFontGenerator fontGen = new SmartFontGenerator();
         FileHandle exoFile = Gdx.files.local("res/ui/acknowtt.ttf");
@@ -70,32 +58,31 @@ public class SimpleNinja extends Game {
         assets.load("res/images/enemy_attack.png", Texture.class);
         assets.load("res/images/enemy_run.png", Texture.class);
 
+        //enemy variants
 //        assets.load("res/images/big_enemy_idle.png", Texture.class);
 //        assets.load("res/images/big_enemy_attack.png", Texture.class);
 //        assets.load("res/images/big_enemy_run.png", Texture.class);
 
         //misc
         assets.load("res/images/crystal.png", Texture.class);
-        assets.load("res/images/hud.png", Texture.class);
-        assets.load("res/images/throw_knife2.png", Texture.class);
-        assets.load("res/images/throw_knife1.png", Texture.class);
+        assets.load("res/images/throw_knife.png", Texture.class);
 
         //main menu
-        assets.load("res/menu/waterfall_animation.Png", Texture.class);
-        assets.load("res/music/waterfall_music.mp3", Music.class);
-        assets.load("res/menu/treeBob_animation.png", Texture.class);
+        assets.load("res/menu/waterfallBackground.Png", Texture.class);
+        assets.load("res/music/waterfallMusic.mp3", Music.class);
+        assets.load("res/menu/twilightBackground.png", Texture.class);
 
         //sfx
         assets.load("res/sfx/hit/hita .wav", Sound.class);
         assets.load("res/sfx/hit/hit2.wav", Sound.class);
         assets.load("res/sfx/hit/hit3.wav", Sound.class);
-        assets.load("res/sfx/simple_step1.wav", Sound.class);
-        assets.load("res/sfx/simple_step2.wav", Sound.class);
+        assets.load("res/sfx/simpleStep1.wav", Sound.class);
+        assets.load("res/sfx/simpleStep2.wav", Sound.class);
 
         //Options
-        assets.load("res/Style/Knode.png", Texture.class);
-        assets.load("res/Style/diffculty.png", Texture.class);
-        assets.load("res/menu/optBack.png",Texture.class);
+        assets.load("res/ui/knob.png", Texture.class);
+        assets.load("res/ui/difficulty.png", Texture.class);
+        assets.load("res/menu/optBack.png", Texture.class);
 
         // reports progress for loading all assets
         while (!assets.update()) {
@@ -104,22 +91,11 @@ public class SimpleNinja extends Game {
         System.out.println(assets.getProgress() * 100 + "%");
         System.out.println(assets.getAssetNames() + " 100% loaded");
 
-        sb = new SpriteBatch();
-
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
-
-        viewPort = new ExtendViewport(SimpleNinja.V_WIDTH, SimpleNinja.V_HEIGHT, cam);
-        stage = new Stage(viewPort);
-        viewPort.apply();
-
         setScreen(new MainMenu(this));
     }
 
-
     @Override
     public void resize(int width, int height) {
-        viewPort.update(width, height);
     }
 
     @Override
@@ -129,7 +105,6 @@ public class SimpleNinja extends Game {
 
         ((GameState) getScreen()).update(STEP);
         ((GameState) getScreen()).render();
-
 
         MyInput.update();
     }
@@ -153,25 +128,32 @@ public class SimpleNinja extends Game {
         return assets;
     }
 
-    public SpriteBatch getSpriteBatch() {
-        return sb;
+    public BitmapFont getFont(String type) {
+        switch (type) {
+            case "small":
+                return fontSmall;
+            case "med":
+                return fontMedium;
+            case "big":
+                return fontLarge;
+            default:
+                return fontMedium;
+        }
     }
 
-    public OrthographicCamera getCamera() {
-        return cam;
+    public double getDifficulty() {
+        return difficulty;
     }
 
-    public Stage getStage() {
-        return stage;
+    public void setDifficulty(double d) {
+        difficulty = d;
     }
 
-    public Viewport getViewPort() {
-        return viewPort;
+    public Play getPlay() {
+        return play;
     }
 
-    public double getDifficulty() {return difficulty;};
-    public void setDifficulty(double d) {difficulty = d;}
-
-
-
+    public void setPlay(Play play) {
+        this.play = play;
+    }
 }
